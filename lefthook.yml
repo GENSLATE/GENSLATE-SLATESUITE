@@ -17,6 +17,9 @@ pre-commit:
 
     - name: rustfmt
       glob: '*.rs'
+      # moon templates contain Tera tags and are not valid Rust until rendered.
+      exclude:
+        - '.config/moon/templates/**'
       run: cargo fmt -- {staged_files}
       stage_fixed: true
 

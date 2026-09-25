@@ -1,0 +1,35 @@
+{
+  "name": "@genslate/{{ name }}",
+  "version": "0.1.0",
+  "private": true,
+  "description": "{{ title }}.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri",
+    "vite:dev": "vite",
+    "vite:build": "vite build",
+    "vite:preview": "vite preview"
+  },
+  "dependencies": {
+    "@genslate/design-system": "workspace:*",
+    "@genslate/tauri-bridge": "workspace:*",
+    "@genslate/tokens": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@genslate/config-typescript": "workspace:*",
+    "@genslate/config-vite": "workspace:*",
+    "@happy-dom/global-registrator": "catalog:",
+    "@tauri-apps/cli": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/bun": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "happy-dom": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

@@ -1,0 +1,16 @@
+# GENSLATE Example — development config.
+# Read by `genslate-core-example` (debug builds running from the repo). Installed builds read
+# `<OS config dir>/space.angeletti.genslate.example/example.toml`; portable builds read
+# `<exe dir>/example-data/config/example.toml`. Every key is optional.
+
+[appearance]
+# "system" | "polar-night" | "snow-storm"
+theme = "system"
+
+[window]
+# Restore window size and position between launches.
+remember-state = true
+
+[logging]
+# "off" | "error" | "warn" | "info" | "debug" | "trace"
+level = "debug"

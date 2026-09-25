@@ -113,13 +113,18 @@
       "version": "0.1.0",
       "dependencies": {
         "@tauri-apps/api": "catalog:",
+        "@tauri-apps/plugin-opener": "catalog:",
         "@tauri-apps/plugin-os": "catalog:",
       },
       "devDependencies": {
         "@genslate/config-typescript": "workspace:*",
+        "@happy-dom/global-registrator": "catalog:",
+        "@testing-library/react": "catalog:",
         "@types/bun": "catalog:",
         "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
         "react": "catalog:",
+        "react-dom": "catalog:",
         "typescript": "catalog:",
       },
       "peerDependencies": {

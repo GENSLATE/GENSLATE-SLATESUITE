@@ -10,7 +10,7 @@ members = [
     "crates/paths",
     "crates/testing",
     "crates/core/example",
-    # "desktop/*/src-tauri" is enabled once desktop/example exists (an unmatched glob is an error).
+    "desktop/*/src-tauri",
 ]
 
 [workspace.package]
@@ -44,6 +44,7 @@ log = "0.4.34"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
 thiserror = "2.0.21"
+tempfile = "3.27.0"
 toml = "1.1.6"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }

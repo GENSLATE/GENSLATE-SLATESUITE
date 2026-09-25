@@ -1,0 +1,23 @@
+$schema: '../../.config/moon/cache/schemas/project.json'
+
+language: 'typescript'
+layer: 'application'
+stack: 'frontend'
+tags: ['desktop-app']
+
+project:
+  title: '{{ title }}'
+  description: '{{ title }} desktop app.'
+
+dependsOn:
+  - 'design-system'
+  - 'tauri-bridge'
+  - 'tokens'
+  - id: 'config-vite'
+    scope: 'development'
+  - id: 'config-typescript'
+    scope: 'development'
+
+tasks:
+  test:
+    args: ['--preload', './tests/setup/dom.preload.ts']

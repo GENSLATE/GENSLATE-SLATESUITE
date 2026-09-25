@@ -12,3 +12,7 @@ project:
 dependsOn:
   - id: 'config-typescript'
     scope: 'development'
+
+tasks:
+  test:
+    args: ['--preload', './tests/setup/dom.preload.ts']

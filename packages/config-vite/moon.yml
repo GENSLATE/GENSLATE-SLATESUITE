@@ -12,7 +12,3 @@ project:
 dependsOn:
   - id: 'config-typescript'
     scope: 'development'
-
-workspace:
-  inheritedTasks:
-    exclude: ['test']

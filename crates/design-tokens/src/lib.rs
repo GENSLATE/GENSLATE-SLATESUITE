@@ -1,6 +1,6 @@
 //! GENSLATE design tokens (official Nord), generated from `packages/tokens`.
 //!
-//! Native code uses these to paint window backgrounds before the WebView loads (no white
+//! Native code uses these to paint window backgrounds before the `WebView` loads (no white
 //! flash) and to size windows consistently with the web UI.
 #![forbid(unsafe_code)]
 
