@@ -10,7 +10,7 @@ export const popoverVariants = tv({
       'shadow-[-0.5px_-0.5px_0_0_var(--gs-color-border)] data-[side=top]:shadow-[0.5px_0.5px_0_0_var(--gs-color-border)]',
       'data-[side=left]:shadow-[0.5px_-0.5px_0_0_var(--gs-color-border)] data-[side=right]:shadow-[-0.5px_0.5px_0_0_var(--gs-color-border)]',
     ],
-    title: 'font-semibold text-base text-fg-strong',
+    title: 'pr-6 font-semibold text-base text-fg-strong',
     description: 'mt-1 text-fg-secondary text-sm',
     close: [
       'focus-ring absolute top-2 right-2 flex size-5 items-center justify-center rounded-sm text-fg-muted',

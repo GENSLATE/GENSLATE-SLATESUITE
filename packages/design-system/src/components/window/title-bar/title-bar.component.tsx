@@ -46,7 +46,7 @@ export function TitleBar({
   const isMaximized = isMaximizedProp ?? windowState.isMaximized;
   const isFullscreen = isFullscreenProp ?? windowState.isFullscreen;
   const styles = titleBarVariants({ controls });
-  const maximizeOnDoubleClick = doubleClickToMaximize ?? platform !== 'macos';
+  const maximizeOnDoubleClick = (doubleClickToMaximize ?? false) && platform !== 'macos';
 
   const handleDoubleClick = (event: MouseEvent<HTMLElement>) => {
     onDoubleClick?.(event);

@@ -34,14 +34,14 @@ export const tabsVariants = tv({
       },
       pill: {
         root: 'flex-col gap-3',
-        list: 'inline-flex h-control-md w-fit items-stretch gap-0.5 rounded-control bg-control p-0.5 shadow-inset',
+        list: 'inline-flex h-control-md w-fit items-stretch gap-0.5 rounded-control bg-fill-pressed p-0.5',
         tab: [
           'focus-ring rounded-[5px] px-3 text-base text-fg-secondary',
           'hover:text-fg-strong data-active:text-fg-strong',
         ],
         indicator: [
           'top-(--active-tab-top) left-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left)',
-          'rounded-[5px] bg-surface-raised shadow-control ring-[0.5px] ring-border',
+          'inset-ring inset-ring-border-subtle rounded-[5px] bg-control shadow-control',
         ],
       },
     },

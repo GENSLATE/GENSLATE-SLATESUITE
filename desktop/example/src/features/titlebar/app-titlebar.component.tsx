@@ -47,7 +47,8 @@ export function AppTitleBar({
               sidebarCollapsed ? 'codicon:layout-sidebar-left-off' : 'codicon:layout-sidebar-left'
             }
             label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
-            tooltip={`${sidebarCollapsed ? 'Show' : 'Hide'} sidebar (${platform === 'macos' ? '⌘B' : 'Ctrl+B'})`}
+            tooltip={`${sidebarCollapsed ? 'Show' : 'Hide'} sidebar`}
+            tooltipShortcut="mod+b"
             onClick={onToggleSidebar}
           />
           <span
@@ -69,7 +70,8 @@ export function AppTitleBar({
             size="sm"
             icon={resolvedTheme === 'polar-night' ? 'codicon:color-mode' : 'codicon:lightbulb'}
             label={`Switch to ${nextTheme}`}
-            tooltip={`Switch to ${nextTheme} (${platform === 'macos' ? '⌘⇧L' : 'Ctrl+Shift+L'})`}
+            tooltip={`Switch to ${nextTheme}`}
+            tooltipShortcut="mod+shift+l"
             onClick={toggleTheme}
           />
           <IconButton

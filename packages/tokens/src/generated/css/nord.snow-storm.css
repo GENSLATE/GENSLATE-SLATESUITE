@@ -30,7 +30,7 @@
   --gs-color-accent-border: rgb(94 129 172 / 0.45);
   --gs-color-focus: var(--gs-nord-10);
   --gs-color-focus-halo: rgb(94 129 172 / 0.25);
-  --gs-color-selection: rgb(94 129 172 / 0.2);
+  --gs-color-selection: rgb(94 129 172 / 0.26);
   --gs-color-selection-inactive: rgb(46 52 64 / 0.08);
   --gs-color-fill-hover: rgb(46 52 64 / 0.05);
   --gs-color-fill-pressed: rgb(46 52 64 / 0.09);
@@ -136,7 +136,7 @@
     --gs-color-accent-border: rgb(94 129 172 / 0.45);
     --gs-color-focus: var(--gs-nord-10);
     --gs-color-focus-halo: rgb(94 129 172 / 0.25);
-    --gs-color-selection: rgb(94 129 172 / 0.2);
+    --gs-color-selection: rgb(94 129 172 / 0.26);
     --gs-color-selection-inactive: rgb(46 52 64 / 0.08);
     --gs-color-fill-hover: rgb(46 52 64 / 0.05);
     --gs-color-fill-pressed: rgb(46 52 64 / 0.09);

@@ -1,13 +1,13 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'bun:test';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '../../src/app/app.component';
 import { AppProviders } from '../../src/app/app.providers';
 
-function renderApp(onOpenCommandPalette?: () => void) {
+function renderApp() {
   return render(
     <AppProviders>
-      <App {...(onOpenCommandPalette ? { onOpenCommandPalette } : {})} />
+      <App />
     </AppProviders>,
   );
 }
@@ -53,8 +53,7 @@ describe('Design Kit app', () => {
 
   test('keyboard: mod+B toggles the sidebar, mod+K opens the palette, mod+shift+L toggles the theme', async () => {
     const user = userEvent.setup();
-    const onOpenCommandPalette = mock();
-    renderApp(onOpenCommandPalette);
+    renderApp();
     const shell = document.querySelector('[data-slot="app-shell"]');
     expect(shell).not.toHaveAttribute('data-sidebar-collapsed');
     // happy-dom's user agent is Linux, so `mod` is Control.
@@ -62,10 +61,20 @@ describe('Design Kit app', () => {
     expect(shell).toHaveAttribute('data-sidebar-collapsed');
     await user.keyboard('{Control>}b{/Control}');
     expect(shell).not.toHaveAttribute('data-sidebar-collapsed');
-    await user.keyboard('{Control>}k{/Control}');
-    expect(onOpenCommandPalette).toHaveBeenCalledTimes(1);
     await user.keyboard('{Control>}{Shift>}l{/Shift}{/Control}');
     expect(document.documentElement).toHaveAttribute('data-theme', 'snow-storm');
+  });
+
+  test('mod+K opens the command palette, which navigates to a page', async () => {
+    const user = userEvent.setup();
+    renderApp();
+    await user.keyboard('{Control>}k{/Control}');
+    expect(await screen.findByRole('dialog', { name: 'Command palette' })).toBeInTheDocument();
+    await user.keyboard('Segmented');
+    await user.keyboard('{Enter}');
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Segmented Control' }),
+    ).toBeInTheDocument();
   });
 
   test('the settings button opens the appearance inspector', async () => {

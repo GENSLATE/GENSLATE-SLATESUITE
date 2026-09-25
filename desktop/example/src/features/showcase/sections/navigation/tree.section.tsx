@@ -52,16 +52,14 @@ function Explorer(props: { indentGuides?: 'always' | 'hover' | 'none' }) {
 
 export function TreeSection() {
   return (
-    <>
-      <Specimen
-        title="Explorer tree"
-        description="22px rows, rotating chevrons, indent guides on hover. ↑↓ move · → expand · ← collapse · Enter/Space select · type to jump."
-        stageClassName="items-start gap-10"
-        code={`<Tree aria-label="Explorer" onSelect={open}>\n  <TreeItem id="src" label="src" icon="codicon:folder">\n    <TreeItem id="main" label="main.tsx" />\n  </TreeItem>\n</Tree>`}
-      >
-        <Explorer />
-        <Explorer indentGuides="always" />
-      </Specimen>
-    </>
+    <Specimen
+      title="Explorer tree"
+      description="22px rows, rotating chevrons, indent guides on hover. ↑↓ move · → expand · ← collapse · Enter/Space select · type to jump."
+      stageClassName="items-start gap-10"
+      code={`<Tree aria-label="Explorer" onSelect={open}>\n  <TreeItem id="src" label="src" icon="codicon:folder">\n    <TreeItem id="main" label="main.tsx" />\n  </TreeItem>\n</Tree>`}
+    >
+      <Explorer />
+      <Explorer indentGuides="always" />
+    </Specimen>
   );
 }

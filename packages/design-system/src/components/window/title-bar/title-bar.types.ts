@@ -21,7 +21,12 @@ export interface TitleBarProps extends Omit<ComponentPropsWithRef<'header'>, 'ti
   onMinimize?: (() => void) | undefined;
   onToggleMaximize?: (() => void) | undefined;
   onClose?: (() => void) | undefined;
-  /** Double-clicking empty titlebar space toggles maximize. @default true except on macOS (native). */
+  /**
+   * Double-clicking empty titlebar space calls `onToggleMaximize`. Off by default because Tauri's
+   * `data-tauri-drag-region` already maximizes on double-click natively (enabling both would
+   * toggle twice); turn it on for hosts without a native drag region. Never applies on macOS.
+   * @default false
+   */
   doubleClickToMaximize?: boolean | undefined;
   /** After the window controls (sidebar toggle, app icon…). */
   leading?: ReactNode | undefined;

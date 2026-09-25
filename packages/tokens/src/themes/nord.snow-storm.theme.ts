@@ -57,7 +57,7 @@ export const snowStorm: ThemeDefinition = {
     // Focus & selection
     focus: c('nord-10'),
     'focus-halo': c('nord-10', 0.25),
-    selection: c('nord-10', 0.2),
+    selection: c('nord-10', 0.26),
     'selection-inactive': c('nord-0', 0.08),
     // Fills & controls
     'fill-hover': c('nord-0', 0.05),

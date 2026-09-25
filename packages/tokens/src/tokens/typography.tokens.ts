@@ -34,8 +34,23 @@ const SCALE: Record<TypeScaleKey, TypeStep> = {
 
 export const TYPOGRAPHY: TypographyTokens = {
   family: {
-    sans: ['"Inter Variable"', 'Inter', 'system-ui', '"Segoe UI Variable Text"', '"Segoe UI"', 'Ubuntu', 'sans-serif'],
-    sansMacos: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Inter Variable"', 'system-ui', 'sans-serif'],
+    sans: [
+      '"Inter Variable"',
+      'Inter',
+      'system-ui',
+      '"Segoe UI Variable Text"',
+      '"Segoe UI"',
+      'Ubuntu',
+      'sans-serif',
+    ],
+    sansMacos: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"SF Pro Text"',
+      '"Inter Variable"',
+      'system-ui',
+      'sans-serif',
+    ],
     mono: [
       '"JetBrains Mono Variable"',
       '"JetBrains Mono"',

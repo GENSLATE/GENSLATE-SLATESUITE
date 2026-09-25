@@ -39,7 +39,9 @@ export type CodiconName = (typeof CODICON_NAMES)[number];
 const current = await readFile(outPath, 'utf8').catch(() => null);
 if (process.argv.includes('--check')) {
   if (current !== content) {
-    console.error(`✗ ${join('src/icons', 'codicon-names.generated.ts')} is stale — run \`bun scripts/build-icons.ts\``);
+    console.error(
+      `✗ ${join('src/icons', 'codicon-names.generated.ts')} is stale — run \`bun scripts/build-icons.ts\``,
+    );
     process.exit(1);
   }
   console.log('✓ codicon names up to date');

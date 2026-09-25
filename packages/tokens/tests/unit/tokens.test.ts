@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'bun:test';
+import { checkContrast } from '../../scripts/emit/data.emitter';
 import {
   CHROME_COLOR_KEYS,
   contrastRatio,
@@ -12,7 +13,6 @@ import {
   springStops,
   THEMES,
 } from '../../src/index';
-import { checkContrast } from '../../scripts/emit/data.emitter';
 
 describe('Nord palette', () => {
   test('matches the official hex values', () => {

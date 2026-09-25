@@ -25,23 +25,45 @@ export function NumberFieldSection() {
         rows={(['sm', 'md', 'lg'] as const).map((size) => ({
           label: size.toUpperCase(),
           cells: [
-            <NumberField className="w-36" key="rest" aria-label="Rest" size={size} defaultValue={12} />,
-            <NumberField className="w-36" key="max" aria-label="At max" size={size} defaultValue={8} max={8} />,
-            <NumberField className="w-36"
+            <NumberField
+              className="w-36"
+              key="rest"
+              aria-label="Rest"
+              size={size}
+              defaultValue={12}
+            />,
+            <NumberField
+              className="w-36"
+              key="max"
+              aria-label="At max"
+              size={size}
+              defaultValue={8}
+              max={8}
+            />,
+            <NumberField
+              className="w-36"
               key="invalid"
               aria-label="Invalid"
               size={size}
               defaultValue={-1}
               invalid
             />,
-            <NumberField className="w-36"
+            <NumberField
+              className="w-36"
               key="disabled"
               aria-label="Disabled"
               size={size}
               defaultValue={3}
               disabled
             />,
-            <NumberField className="w-36" key="bare" aria-label="Bare" size={size} defaultValue={640} hideStepper />,
+            <NumberField
+              className="w-36"
+              key="bare"
+              aria-label="Bare"
+              size={size}
+              defaultValue={640}
+              hideStepper
+            />,
           ],
         }))}
       />

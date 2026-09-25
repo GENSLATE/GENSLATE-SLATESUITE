@@ -54,7 +54,7 @@ Custom variants (`styles/variants.css`): `macos:` `windows:` `linux:` (from `htm
 - **Base UI (`@base-ui/react`):** use the **`render` prop** for polymorphism. Never write `asChild` (that's Radix). Style from Base UI's data attributes: `data-open`, `data-closed`, `data-highlighted`, `data-selected`, `data-checked`, `data-unchecked`, `data-indeterminate`, `data-disabled`, `data-active`, `data-pressed`, `data-starting-style`, `data-ending-style`, `data-side`, `data-orientation`. Verify the part names and props against the Base UI 1.8 docs (use the docs MCP / web). Don't guess.
 - **Styling:**
   - Combine classes as `className={cn(recipe({ variant, size }), className)}`.
-  - Put shared recipes in `src/recipes/*.recipe.ts`: `popupSurface`, `field`, `listItem`, `focusRing`.
+  - Put shared recipes in `src/recipes/*.recipe.ts`: `popupSurface`, `field`, `listItem`. Focus uses the `focus-ring` / `focus-ring-inset` utilities.
   - Every rendered part sets `data-slot="<component>-<part>"`.
 - **No CSS imports inside components.** All CSS ships through `design-system.css`.
 - **Tauri-free.** Never import `@tauri-apps/*` or `@genslate/tauri-bridge`. Window chrome takes props and callbacks (`onMinimize`, `onToggleMaximize`, `onClose`, `isMaximized`, `isFocused`, `platform`).

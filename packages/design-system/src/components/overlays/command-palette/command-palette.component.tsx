@@ -3,8 +3,8 @@ import { type KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
 import { listItem, listItemHint, popupSurface } from '../../../recipes';
 import { cn } from '../../../utils/cn.util';
 import { guessPlatform } from '../../../utils/platform.util';
-import { formatShortcut } from '../../../utils/shortcut.util';
 import { Icon } from '../../display/icon';
+import { formatChord } from '../menu/format-chord';
 import { filterCommands } from './command-palette.filter';
 import type { CommandPaletteMatch, CommandPaletteProps } from './command-palette.types';
 import { commandPaletteVariants } from './command-palette.variants';
@@ -205,7 +205,7 @@ export function CommandPalette({
                         ) : null}
                         {item.shortcut != null && (
                           <kbd className={cn(listItemHint(), 'font-sans')}>
-                            {formatShortcut(item.shortcut, os)}
+                            {formatChord(item.shortcut, os)}
                           </kbd>
                         )}
                       </div>

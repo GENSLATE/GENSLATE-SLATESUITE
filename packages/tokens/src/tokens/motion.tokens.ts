@@ -20,7 +20,8 @@ export function springStops(stiffness = 260, damping = 22, samples = 24): number
   for (let i = 0; i <= samples; i += 1) {
     const t = (i / samples) * duration;
     const envelope = Math.exp(-zeta * omega * t);
-    const value = 1 - envelope * (Math.cos(omegaD * t) + ((zeta * omega) / omegaD) * Math.sin(omegaD * t));
+    const value =
+      1 - envelope * (Math.cos(omegaD * t) + ((zeta * omega) / omegaD) * Math.sin(omegaD * t));
     stops.push(round(value, 4));
   }
   stops[stops.length - 1] = 1;

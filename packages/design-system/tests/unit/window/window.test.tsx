@@ -74,11 +74,19 @@ describe('TitleBar', () => {
     expect(screen.queryByRole('button', { name: 'Zoom' })).toBeNull();
   });
 
-  test('double-click on empty space toggles maximize (not on macOS, not on controls)', () => {
+  test('double-click leaves maximize to the native drag region by default', () => {
+    const onToggleMaximize = mock();
+    render(<TitleBar platform="linux" onToggleMaximize={onToggleMaximize} />);
+    fireEvent.doubleClick(screen.getByRole('banner'));
+    expect(onToggleMaximize).not.toHaveBeenCalled();
+  });
+
+  test('opt-in double-click toggles maximize (not on macOS, not on controls)', () => {
     const onToggleMaximize = mock();
     const { rerender } = render(
       <TitleBar
         platform="linux"
+        doubleClickToMaximize
         onToggleMaximize={onToggleMaximize}
         actions={<button type="button">A</button>}
       />,
@@ -87,7 +95,9 @@ describe('TitleBar', () => {
     expect(onToggleMaximize).toHaveBeenCalledTimes(1);
     fireEvent.doubleClick(screen.getByRole('button', { name: 'A' }));
     expect(onToggleMaximize).toHaveBeenCalledTimes(1);
-    rerender(<TitleBar platform="macos" onToggleMaximize={onToggleMaximize} />);
+    rerender(
+      <TitleBar platform="macos" doubleClickToMaximize onToggleMaximize={onToggleMaximize} />,
+    );
     fireEvent.doubleClick(screen.getByRole('banner'));
     expect(onToggleMaximize).toHaveBeenCalledTimes(1);
   });

@@ -7,14 +7,14 @@ export function TooltipSection() {
       <Specimen
         title="Toolbar tooltips"
         description="600ms before the first one; neighbours then show instantly (TooltipProvider)."
-        code={`<Tooltip content="Split Editor" shortcut="mod+\\\\">\n  <IconButton label="Split Editor" icon="codicon:split-horizontal" />\n</Tooltip>`}
+        code={`<Tooltip content="New File" shortcut="mod+n">\n  <IconButton label="New File" icon="codicon:new-file" />\n</Tooltip>`}
       >
         <TooltipProvider>
           <div className="flex items-center gap-1">
             <Tooltip content="New File" shortcut="mod+n">
               <IconButton label="New File" icon="codicon:new-file" tooltip={false} />
             </Tooltip>
-            <Tooltip content="Split Editor" shortcut="mod+\\">
+            <Tooltip content="Split Editor" shortcut={'mod+\\'}>
               <IconButton label="Split Editor" icon="codicon:split-horizontal" tooltip={false} />
             </Tooltip>
             <Tooltip content="Toggle Panel" shortcut="mod+j">

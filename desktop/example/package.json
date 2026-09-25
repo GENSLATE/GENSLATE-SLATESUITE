@@ -7,18 +7,14 @@
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "vite:dev": "vite",
-    "vite:build": "vite build",
-    "vite:preview": "vite preview"
+    "vite:dev": "bun --bun vite",
+    "vite:build": "bun --bun vite build",
+    "vite:preview": "bun --bun vite preview"
   },
   "dependencies": {
     "@genslate/design-system": "workspace:*",
     "@genslate/tauri-bridge": "workspace:*",
     "@genslate/tokens": "workspace:*",
-    "@tauri-apps/api": "catalog:",
-    "@tauri-apps/plugin-log": "catalog:",
-    "@tauri-apps/plugin-opener": "catalog:",
-    "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -34,7 +30,6 @@
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "happy-dom": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:"

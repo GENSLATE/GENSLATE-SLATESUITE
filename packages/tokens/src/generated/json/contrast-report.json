@@ -336,8 +336,8 @@
       "fg": "fg-strong",
       "bg": "selection",
       "fgHex": "#2e3440",
-      "bgHex": "#d6dfec",
-      "ratio": 9.29,
+      "bgHex": "#cdd8e7",
+      "ratio": 8.67,
       "min": 4.5,
       "pass": true
     },

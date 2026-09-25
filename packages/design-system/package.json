@@ -35,7 +35,6 @@
     "@fontsource-variable/jetbrains-mono": "catalog:",
     "@genslate/tokens": "workspace:*",
     "@vscode/codicons": "catalog:",
-    "lucide-react": "catalog:",
     "tailwind-merge": "catalog:",
     "tailwind-variants": "catalog:"
   },
@@ -54,7 +53,6 @@
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "happy-dom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwindcss": "catalog:",

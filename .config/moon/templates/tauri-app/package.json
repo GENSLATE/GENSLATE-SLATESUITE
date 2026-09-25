@@ -7,9 +7,9 @@
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "vite:dev": "vite",
-    "vite:build": "vite build",
-    "vite:preview": "vite preview"
+    "vite:dev": "bun --bun vite",
+    "vite:build": "bun --bun vite build",
+    "vite:preview": "bun --bun vite preview"
   },
   "dependencies": {
     "@genslate/design-system": "workspace:*",

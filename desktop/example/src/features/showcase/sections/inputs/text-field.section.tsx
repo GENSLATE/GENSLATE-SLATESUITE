@@ -34,36 +34,47 @@ export function TextFieldSection() {
         rows={SIZES.map((size) => ({
           label: size.toUpperCase(),
           cells: [
-            <TextField className="w-28" key="rest" aria-label="Rest" size={size} placeholder="Placeholder" />,
-            <TextField className="w-28"
+            <TextField
+              className="w-28"
+              key="rest"
+              aria-label="Rest"
+              size={size}
+              placeholder="Placeholder"
+            />,
+            <TextField
+              className="w-28"
               key="hover"
               aria-label="Hover"
               size={size}
               placeholder="Placeholder"
               controlClassName={HOVER}
             />,
-            <TextField className="w-28"
+            <TextField
+              className="w-28"
               key="focus"
               aria-label="Focus"
               size={size}
               defaultValue="Focused"
               controlClassName={FOCUS}
             />,
-            <TextField className="w-28"
+            <TextField
+              className="w-28"
               key="filled"
               aria-label="Filled"
               size={size}
               defaultValue="main.tsx"
               clearable
             />,
-            <TextField className="w-28"
+            <TextField
+              className="w-28"
               key="invalid"
               aria-label="Invalid"
               size={size}
               defaultValue="bad value"
               invalid
             />,
-            <TextField className="w-28"
+            <TextField
+              className="w-28"
               key="disabled"
               aria-label="Disabled"
               size={size}

@@ -6,7 +6,7 @@ export type IconButtonVariant = 'ghost' | 'secondary' | 'primary' | 'danger';
 
 export interface IconButtonProps
   extends Omit<BaseButton.Props, 'className' | 'children' | 'aria-label'> {
-  /** Accessible name — required; also shown as the native tooltip. */
+  /** Accessible name — required; also the default tooltip. */
   label: string;
   /** The glyph: a codicon ref or an element. */
   icon: IconSlot;
@@ -18,7 +18,9 @@ export interface IconButtonProps
   toggled?: boolean | undefined;
   /** Shows a spinner in place of the icon. */
   loading?: boolean | undefined;
-  /** Tooltip text. `false` disables the native `title`. @default label */
+  /** Tooltip text. `false` disables the tooltip. @default label */
   tooltip?: string | false | undefined;
+  /** Shortcut shown in the tooltip, e.g. `"mod+b"` → `⌘B` / `Ctrl+B`. */
+  tooltipShortcut?: string | undefined;
   className?: string | undefined;
 }

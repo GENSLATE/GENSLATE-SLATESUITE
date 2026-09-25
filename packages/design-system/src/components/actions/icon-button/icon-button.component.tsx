@@ -2,12 +2,13 @@ import { Button as BaseButton } from '@base-ui/react/button';
 import { cn } from '../../../utils/cn.util';
 import { renderIconSlot } from '../../display/icon/icon.slot';
 import { Spinner } from '../../feedback/spinner/spinner.component';
+import { Tooltip } from '../../overlays/tooltip/tooltip.component';
 import { BUTTON_ICON_SIZE } from '../button/button.component';
 import type { IconButtonProps } from './icon-button.types';
 import { iconButtonVariants } from './icon-button.variants';
 
 /**
- * An icon-only button. `label` is required (accessible name + native tooltip).
+ * An icon-only button. `label` is required (accessible name + tooltip).
  * Pass `toggled` to make it a toggle button (`aria-pressed`).
  */
 export function IconButton({
@@ -18,15 +19,16 @@ export function IconButton({
   toggled,
   loading = false,
   tooltip,
+  tooltipShortcut,
   disabled = false,
   focusableWhenDisabled = false,
   className,
   ...props
 }: IconButtonProps) {
   const iconSize = BUTTON_ICON_SIZE[size];
-  const title = tooltip === false ? undefined : (tooltip ?? label);
+  const tooltipText = tooltip === false ? undefined : (tooltip ?? label);
 
-  return (
+  const button = (
     <BaseButton
       data-slot="icon-button"
       data-variant={variant}
@@ -34,7 +36,6 @@ export function IconButton({
       aria-label={label}
       aria-pressed={toggled}
       aria-busy={loading || undefined}
-      title={title}
       disabled={disabled || loading}
       focusableWhenDisabled={loading || focusableWhenDisabled}
       className={cn(iconButtonVariants({ variant, size, toggled: toggled === true }), className)}
@@ -46,5 +47,13 @@ export function IconButton({
         renderIconSlot(icon, iconSize)
       )}
     </BaseButton>
+  );
+
+  return tooltipText ? (
+    <Tooltip content={tooltipText} shortcut={tooltipShortcut}>
+      {button}
+    </Tooltip>
+  ) : (
+    button
   );
 }

@@ -3,7 +3,6 @@
  * native window backgrounds).
  */
 
-import { PRIMITIVE_HEX } from '../tokens/color.tokens';
 import type {
   ColorValue,
   HexColor,
@@ -11,6 +10,7 @@ import type {
   TextPairKey,
   ThemeDefinition,
 } from '../token.types';
+import { PRIMITIVE_HEX } from '../tokens/color.tokens';
 import { composite, parseHex, round } from './color.math';
 
 export function primitiveHex(ref: string): HexColor {
@@ -57,7 +57,14 @@ export function resolveHex(theme: ThemeDefinition, key: TextPairKey): HexColor {
 export function shadowToCss(layers: readonly ShadowLayer[]): string {
   return layers
     .map((l) =>
-      [l.inset ? 'inset' : '', `${l.x}px`, `${l.y}px`, `${l.blur}px`, `${l.spread}px`, colorToCss(l.color)]
+      [
+        l.inset ? 'inset' : '',
+        `${l.x}px`,
+        `${l.y}px`,
+        `${l.blur}px`,
+        `${l.spread}px`,
+        colorToCss(l.color),
+      ]
         .filter(Boolean)
         .join(' '),
     )

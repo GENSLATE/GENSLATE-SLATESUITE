@@ -6,7 +6,9 @@
 @custom-variant web (&:where([data-platform='web'], [data-platform='web'] *));
 
 /* The window lost focus: chrome dims (macOS behaviour). */
-@custom-variant window-inactive (&:where([data-window-focused='false'], [data-window-focused='false'] *));
+@custom-variant window-inactive (
+  &:where([data-window-focused='false'], [data-window-focused='false'] *)
+);
 
 /* Translucent window material is available (macOS vibrancy / Windows mica). */
 @custom-variant vibrancy (&:where([data-vibrancy='true'], [data-vibrancy='true'] *));

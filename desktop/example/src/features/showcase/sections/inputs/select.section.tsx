@@ -56,14 +56,16 @@ export function SelectSection() {
         rows={(['sm', 'md', 'lg'] as const).map((size) => ({
           label: size.toUpperCase(),
           cells: [
-            <Select className="w-32"
+            <Select
+              className="w-32"
               key="rest"
               aria-label="Rest"
               size={size}
               options={LANGUAGES}
               defaultValue="ts"
             />,
-            <Select className="w-32"
+            <Select
+              className="w-32"
               key="hover"
               aria-label="Hover"
               size={size}
@@ -71,7 +73,8 @@ export function SelectSection() {
               defaultValue="ts"
               triggerClassName="border-border-strong"
             />,
-            <Select className="w-32"
+            <Select
+              className="w-32"
               key="focus"
               aria-label="Focus"
               size={size}
@@ -79,14 +82,16 @@ export function SelectSection() {
               defaultValue="ts"
               triggerClassName={FOCUS}
             />,
-            <Select className="w-32"
+            <Select
+              className="w-32"
               key="placeholder"
               aria-label="Placeholder"
               size={size}
               options={LANGUAGES}
               placeholder="Choose…"
             />,
-            <Select className="w-32"
+            <Select
+              className="w-32"
               key="invalid"
               aria-label="Invalid"
               size={size}
@@ -94,7 +99,8 @@ export function SelectSection() {
               defaultValue="rs"
               invalid
             />,
-            <Select className="w-32"
+            <Select
+              className="w-32"
               key="disabled"
               aria-label="Disabled"
               size={size}

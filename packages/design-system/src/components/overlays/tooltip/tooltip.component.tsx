@@ -1,7 +1,7 @@
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { cn } from '../../../utils/cn.util';
 import { guessPlatform } from '../../../utils/platform.util';
-import { formatShortcut } from '../../../utils/shortcut.util';
+import { formatChord } from '../menu/format-chord';
 import type { TooltipProps, TooltipProviderProps } from './tooltip.types';
 import { tooltipVariants } from './tooltip.variants';
 
@@ -49,7 +49,7 @@ export function Tooltip({
             <span>{content}</span>
             {shortcut != null && (
               <kbd data-slot="tooltip-shortcut" className={styles.shortcut()}>
-                {formatShortcut(shortcut, platform ?? guessPlatform())}
+                {formatChord(shortcut, platform ?? guessPlatform())}
               </kbd>
             )}
           </BaseTooltip.Popup>

@@ -6,7 +6,7 @@ import { tv } from '../utils/cn.util';
  */
 export const listItem = tv({
   base: [
-    'group/item relative flex h-menu-item w-full cursor-default items-center gap-2 rounded-menu-item px-2 text-base text-fg outline-none select-none',
+    'group/item relative flex h-menu-item w-full cursor-default select-none items-center gap-2 rounded-menu-item px-2 text-base text-fg outline-none',
     'data-highlighted:bg-accent data-highlighted:text-on-accent',
     'data-disabled:pointer-events-none data-disabled:text-fg-disabled',
   ],
@@ -24,5 +24,5 @@ export const listItem = tv({
 
 /** Trailing shortcut / hint text inside a list item. */
 export const listItemHint = tv({
-  base: 'ml-auto pl-4 text-sm text-fg-muted tabular-nums group-data-highlighted/item:text-on-accent',
+  base: 'ml-auto pl-4 text-fg-muted text-sm tabular-nums group-data-highlighted/item:text-on-accent',
 });

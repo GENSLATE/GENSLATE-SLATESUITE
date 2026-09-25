@@ -14,6 +14,8 @@ bradlc
 bunfig
 bunx
 cdylib
+checkmarked
+checkmarks
 clippy
 codegen
 codeowners
@@ -105,6 +107,7 @@ thiserror
 titlebar
 titlebars
 tokio
+treeitems
 truecolor
 tsdk
 tsgo

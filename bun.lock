@@ -24,10 +24,6 @@
         "@genslate/design-system": "workspace:*",
         "@genslate/tauri-bridge": "workspace:*",
         "@genslate/tokens": "workspace:*",
-        "@tauri-apps/api": "catalog:",
-        "@tauri-apps/plugin-log": "catalog:",
-        "@tauri-apps/plugin-opener": "catalog:",
-        "lucide-react": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
       },
@@ -43,7 +39,6 @@
         "@types/bun": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
-        "happy-dom": "catalog:",
         "tailwindcss": "catalog:",
         "typescript": "catalog:",
         "vite": "catalog:",
@@ -82,7 +77,6 @@
         "@fontsource-variable/jetbrains-mono": "catalog:",
         "@genslate/tokens": "workspace:*",
         "@vscode/codicons": "catalog:",
-        "lucide-react": "catalog:",
         "tailwind-merge": "catalog:",
         "tailwind-variants": "catalog:",
       },
@@ -96,7 +90,6 @@
         "@types/bun": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
-        "happy-dom": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "tailwindcss": "catalog:",
@@ -137,8 +130,6 @@
       "devDependencies": {
         "@genslate/config-typescript": "workspace:*",
         "@types/bun": "catalog:",
-        "tailwind-merge": "catalog:",
-        "tailwindcss": "catalog:",
         "typescript": "catalog:",
       },
     },
@@ -161,10 +152,8 @@
     "@tailwindcss/vite": "4.3.3",
     "@tauri-apps/api": "2.11.1",
     "@tauri-apps/cli": "2.11.5",
-    "@tauri-apps/plugin-log": "2.9.2",
     "@tauri-apps/plugin-opener": "2.5.5",
     "@tauri-apps/plugin-os": "2.3.2",
-    "@tauri-apps/plugin-window-state": "2.4.1",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",
@@ -176,10 +165,8 @@
     "@vscode/codicons": "0.0.46-24",
     "babel-plugin-react-compiler": "1.0.0",
     "cspell": "10.3.4",
-    "happy-dom": "20.14.5",
     "knip": "6.38.0",
     "lefthook": "2.1.14",
-    "lucide-react": "1.48.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "tailwind-merge": "3.7.0",
@@ -657,8 +644,6 @@
 
     "@tauri-apps/cli-win32-x64-msvc": ["@tauri-apps/cli-win32-x64-msvc@2.11.5", "", { "os": "win32", "cpu": "x64" }, "sha512-vaaOmavqdCeS7oMib2banBZemgrC5v54tSkwoBV+bxrXQZhQZrOwE2EO2i4x+CHNtvQUM/6bSs3iymZMAsycWg=="],
 
-    "@tauri-apps/plugin-log": ["@tauri-apps/plugin-log@2.9.2", "", { "dependencies": { "@tauri-apps/api": "^2.11.0" } }, "sha512-QC2uTQyC+4269xawGXzVLDzIvMB2JwzZHd1lg3ltXtXqrauwikqlbNt6Tm3H++1RN0gPtcvp4cBc5bF6u/DUnw=="],
-
     "@tauri-apps/plugin-opener": ["@tauri-apps/plugin-opener@2.5.5", "", { "dependencies": { "@tauri-apps/api": "^2.11.0" } }, "sha512-xvzGai5aQds8j8R8RsUK/lW6pGG50YgOYIPLzvkqmkwAj7dfySOD7sGtejRzvVdMmv1EQfKVEFh1MvmDp8QR0g=="],
 
     "@tauri-apps/plugin-os": ["@tauri-apps/plugin-os@2.3.2", "", { "dependencies": { "@tauri-apps/api": "^2.8.0" } }, "sha512-n+nXWeuSeF9wcEsSPmRnBEGrRgOy6jjkSU+UVCOV8YUGKb2erhDOxis7IqRXiRVHhY8XMKks00BJ0OAdkpf6+A=="],
@@ -944,8 +929,6 @@
     "lightningcss-win32-x64-msvc": ["lightningcss-win32-x64-msvc@1.33.0", "", { "os": "win32", "cpu": "x64" }, "sha512-OlEICDx/Xl0FqSp4bry8zFnCvGpig3Gl4gCquvYwHuqJKEC1+n9NgDniFvqHGmMv1ZkqDJrDqKKSykTDX+ehuA=="],
 
     "lines-and-columns": ["lines-and-columns@1.2.4", "", {}, "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="],
-
-    "lucide-react": ["lucide-react@1.48.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-R0CIKY/fXiC6y9xRBADgsK+VW2p/pcTJOMhLZf1T+uG+vJUvyUR02nGOgmIIC7MPkiNK4Ox8QDnbqF8rJYWPZQ=="],
 
     "lz-string": ["lz-string@1.5.0", "", { "bin": { "lz-string": "bin/bin.js" } }, "sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ=="],
 

@@ -1,5 +1,5 @@
-import type { ComponentType } from 'react';
 import type { CodiconRef } from '@genslate/design-system';
+import type { ComponentType } from 'react';
 
 /** Sidebar groups of the Design Kit showcase. */
 export type ShowcaseCategory =

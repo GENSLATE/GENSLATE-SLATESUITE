@@ -217,7 +217,7 @@ pub const SNOW_STORM: Theme = Theme {
         accent_border: Rgb::new(177, 194, 216),
         focus: Rgb::new(94, 129, 172),
         focus_halo: Rgb::new(207, 218, 232),
-        selection: Rgb::new(214, 223, 236),
+        selection: Rgb::new(205, 216, 231),
         selection_inactive: Rgb::new(228, 231, 237),
         fill_hover: Rgb::new(234, 237, 243),
         fill_pressed: Rgb::new(226, 229, 235),

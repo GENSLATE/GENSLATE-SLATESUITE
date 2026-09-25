@@ -142,7 +142,7 @@ export const THEME_COLORS = {
     "accent-border": "#b1c2d8",
     "focus": "#5e81ac",
     "focus-halo": "#cfdae8",
-    "selection": "#d6dfec",
+    "selection": "#cdd8e7",
     "selection-inactive": "#e4e7ed",
     "fill-hover": "#eaedf3",
     "fill-pressed": "#e2e5eb",

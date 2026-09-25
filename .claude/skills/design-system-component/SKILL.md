@@ -36,7 +36,7 @@ export const fooVariants = tv({
 });
 ```
 - Token utilities only (`bg-surface-raised`, `text-fg-secondary`, `border-border-subtle`, `rounded-popover`, `shadow-popover`, `duration-fast ease-standard`, …). No hex, no `gray-*`, no `dark:`.
-- Reuse shared recipes from `src/recipes/` (`popupSurface`, `field`, `listItem`, `focusRing`) instead of re-writing popup/field styles.
+- Reuse shared recipes from `src/recipes/` (`popupSurface`, `field`, `listItem`; focus uses the `focus-ring` utilities) instead of re-writing popup/field styles.
 - State styling via data attributes: `data-[highlighted]:bg-selection`, `data-[disabled]:text-fg-disabled`, `data-[open]:…`, and `window-inactive:` / `macos:` custom variants.
 
 ## 4. Component (`<name>.component.tsx`)

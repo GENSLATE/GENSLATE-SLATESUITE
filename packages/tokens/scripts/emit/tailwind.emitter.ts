@@ -13,7 +13,14 @@ import { TYPOGRAPHY } from '../../src/tokens/typography.tokens';
 import { cssBanner, tsBanner } from './emit.shared';
 
 /** Layout sizes that are also exposed as `max-w-*` / `w-*` container widths. */
-const CONTAINER_SIZES = ['command-center-max', 'palette', 'dialog-sm', 'dialog-md', 'dialog-lg', 'content-max'] as const;
+const CONTAINER_SIZES = [
+  'command-center-max',
+  'palette',
+  'dialog-sm',
+  'dialog-md',
+  'dialog-lg',
+  'content-max',
+] as const;
 
 export function emitTailwindThemeCss(): string {
   const lines: string[] = [];
@@ -44,13 +51,15 @@ export function emitTailwindThemeCss(): string {
   add('--text-code--line-height', 'var(--gs-text-code-line-height)');
   add('--font-weight-*', 'initial');
   add('--font-weight-normal', 'var(--gs-font-weight-regular)');
-  for (const k of ['medium', 'semibold', 'bold'] as const) add(`--font-weight-${k}`, `var(--gs-font-weight-${k})`);
+  for (const k of ['medium', 'semibold', 'bold'] as const)
+    add(`--font-weight-${k}`, `var(--gs-font-weight-${k})`);
   add('--leading-*', 'initial');
   for (const k of Object.keys(TYPOGRAPHY.leading)) add(`--leading-${k}`, `var(--gs-leading-${k})`);
 
   section('Radius');
   add('--radius-*', 'initial');
-  for (const k of [...Object.keys(RADIUS.scale), ...Object.keys(RADIUS.alias)]) add(`--radius-${k}`, `var(--gs-radius-${k})`);
+  for (const k of [...Object.keys(RADIUS.scale), ...Object.keys(RADIUS.alias)])
+    add(`--radius-${k}`, `var(--gs-radius-${k})`);
 
   section('Elevation');
   add('--shadow-*', 'initial');
@@ -60,7 +69,8 @@ export function emitTailwindThemeCss(): string {
   section('Motion');
   add('--ease-*', 'initial');
   for (const k of Object.keys(MOTION.easing)) add(`--ease-${k}`, `var(--gs-ease-${k})`);
-  for (const k of Object.keys(MOTION.duration)) add(`--transition-duration-${k}`, `var(--gs-duration-${k})`);
+  for (const k of Object.keys(MOTION.duration))
+    add(`--transition-duration-${k}`, `var(--gs-duration-${k})`);
   add('--default-transition-duration', 'var(--gs-duration-fast)');
   add('--default-transition-timing-function', 'var(--gs-ease-standard)');
 

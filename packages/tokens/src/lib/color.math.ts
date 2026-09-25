@@ -91,10 +91,7 @@ export function parseHex(hex: string): Rgb {
   if (typeof hex !== 'string' || !HEX_PATTERN.test(hex)) {
     throw new TypeError(`Invalid hex colour: ${JSON.stringify(hex)} (expected #rgb or #rrggbb)`);
   }
-  const digits =
-    hex.length === 4
-      ? [...hex.slice(1)].map((d) => d + d).join('')
-      : hex.slice(1);
+  const digits = hex.length === 4 ? [...hex.slice(1)].map((d) => d + d).join('') : hex.slice(1);
   return {
     r: Number.parseInt(digits.slice(0, 2), 16),
     g: Number.parseInt(digits.slice(2, 4), 16),

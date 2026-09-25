@@ -5,11 +5,11 @@
 import { contrastRatio, round } from '../../src/lib/color.math';
 import { colorToCss, resolveHex, shadowToCss } from '../../src/lib/theme.resolve';
 import { CHROME_COLOR_KEYS, SEMANTIC_COLOR_KEYS } from '../../src/token.keys';
+import type { HexColor, ThemeDefinition, ThemeId } from '../../src/token.types';
 import { DERIVED, NORD } from '../../src/tokens/color.tokens';
 import { LAYOUT_SIZE, RADIUS, SPACE, Z_INDEX } from '../../src/tokens/layout.tokens';
 import { MOTION } from '../../src/tokens/motion.tokens';
 import { TYPOGRAPHY } from '../../src/tokens/typography.tokens';
-import type { HexColor, ThemeDefinition, ThemeId } from '../../src/token.types';
 import { easingToCss, entries, tsBanner } from './emit.shared';
 
 export interface ContrastResult {
@@ -77,10 +77,16 @@ export function emitTokensJson(themes: readonly ThemeDefinition[]): string {
     $description: 'GENSLATE design tokens (official Nord). Generated — edit packages/tokens/src.',
     primitive: {
       nord: Object.fromEntries(
-        entries(NORD).map(([k, v]) => [k, { $type: 'color', $value: v.hex, group: v.group, $description: v.usage }]),
+        entries(NORD).map(([k, v]) => [
+          k,
+          { $type: 'color', $value: v.hex, group: v.group, $description: v.usage },
+        ]),
       ),
       derived: Object.fromEntries(
-        entries(DERIVED).map(([k, v]) => [k, { $type: 'color', $value: v.hex, from: v.from, op: v.op, $description: v.reason }]),
+        entries(DERIVED).map(([k, v]) => [
+          k,
+          { $type: 'color', $value: v.hex, from: v.from, op: v.op, $description: v.reason },
+        ]),
       ),
     },
     theme: Object.fromEntries(
@@ -95,7 +101,9 @@ export function emitTokensJson(themes: readonly ThemeDefinition[]): string {
               { $type: 'color', $value: colorToCss(v), resolved: resolveHex(t, k) },
             ]),
           ),
-          shadow: Object.fromEntries(entries(t.shadow).map(([k, v]) => [k, { $type: 'shadow', $value: shadowToCss(v) }])),
+          shadow: Object.fromEntries(
+            entries(t.shadow).map(([k, v]) => [k, { $type: 'shadow', $value: shadowToCss(v) }]),
+          ),
         },
       ]),
     ),

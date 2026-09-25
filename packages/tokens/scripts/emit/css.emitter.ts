@@ -7,11 +7,11 @@
  */
 
 import { colorToCss, shadowToCss } from '../../src/lib/theme.resolve';
+import type { ThemeDefinition } from '../../src/token.types';
 import { DERIVED, NORD } from '../../src/tokens/color.tokens';
 import { LAYOUT_SIZE, RADIUS, SPACE, Z_INDEX } from '../../src/tokens/layout.tokens';
 import { MOTION } from '../../src/tokens/motion.tokens';
 import { TYPOGRAPHY } from '../../src/tokens/typography.tokens';
-import type { ThemeDefinition } from '../../src/token.types';
 import { block, cssBanner, easingFallbackToCss, easingToCss, entries, px } from './emit.shared';
 
 export function emitPrimitivesCss(): string {
@@ -36,15 +36,23 @@ export function emitScalesCss(): string {
     decls.push([`--gs-text-${k}-line-height`, px(s.lineHeight)]);
     decls.push([`--gs-text-${k}-tracking`, `${s.tracking}em`]);
   }
-  decls.push(['--gs-text-code', px(t.code.size)], ['--gs-text-code-line-height', px(t.code.lineHeight)]);
+  decls.push(
+    ['--gs-text-code', px(t.code.size)],
+    ['--gs-text-code-line-height', px(t.code.lineHeight)],
+  );
 
   for (const [k, v] of entries(RADIUS.scale)) decls.push([`--gs-radius-${k}`, px(v)]);
-  for (const [k, v] of entries(RADIUS.alias)) decls.push([`--gs-radius-${k}`, `var(--gs-radius-${v})`]);
+  for (const [k, v] of entries(RADIUS.alias))
+    decls.push([`--gs-radius-${k}`, `var(--gs-radius-${v})`]);
   for (const [k, v] of entries(SPACE)) decls.push([`--gs-space-${k.replace('.', '_')}`, px(v)]);
   for (const [k, v] of entries(Z_INDEX)) decls.push([`--gs-z-${k}`, String(v)]);
   for (const [k, v] of entries(MOTION.duration)) decls.push([`--gs-duration-${k}`, `${v}ms`]);
-  for (const [k, v] of entries(MOTION.easing)) decls.push([`--gs-ease-${k}`, easingFallbackToCss(v)]);
-  decls.push(['--gs-motion-distance', px(MOTION.distance)], ['--gs-motion-scale-from', String(MOTION.scaleFrom)]);
+  for (const [k, v] of entries(MOTION.easing))
+    decls.push([`--gs-ease-${k}`, easingFallbackToCss(v)]);
+  decls.push(
+    ['--gs-motion-distance', px(MOTION.distance)],
+    ['--gs-motion-scale-from', String(MOTION.scaleFrom)],
+  );
   for (const [k, v] of entries(LAYOUT_SIZE)) decls.push([`--gs-size-${k}`, px(v)]);
 
   const linearEasings = entries(MOTION.easing)
@@ -73,7 +81,9 @@ function themeDeclarations(theme: ThemeDefinition): Array<[string, string]> {
     ['color-scheme', theme.scheme],
     ...entries(theme.color).map(([k, v]) => [`--gs-color-${k}`, colorToCss(v)] as [string, string]),
     ...entries(theme.component).map(([k, v]) => [`--gs-${k}`, colorToCss(v)] as [string, string]),
-    ...entries(theme.shadow).map(([k, v]) => [`--gs-shadow-${k}`, shadowToCss(v)] as [string, string]),
+    ...entries(theme.shadow).map(
+      ([k, v]) => [`--gs-shadow-${k}`, shadowToCss(v)] as [string, string],
+    ),
   ];
 }
 
@@ -94,12 +104,16 @@ export function emitThemeCss(theme: ThemeDefinition, isDefault: boolean): string
     const hc = Object.entries(theme.highContrast).flatMap(([k, v]) =>
       v === undefined ? [] : [[`--gs-color-${k}`, colorToCss(v)] as [string, string]],
     );
-    parts.push(`@media (prefers-contrast: more) {\n${block(`[data-theme="${theme.id}"]`, hc, '  ')}}\n`);
+    parts.push(
+      `@media (prefers-contrast: more) {\n${block(`[data-theme="${theme.id}"]`, hc, '  ')}}\n`,
+    );
   }
   return parts.join('\n');
 }
 
 export function emitIndexCss(themeFiles: readonly string[]): string {
-  const imports = ['nord.primitives.css', 'tokens.scales.css', ...themeFiles].map((f) => `@import './${f}';`);
+  const imports = ['nord.primitives.css', 'tokens.scales.css', ...themeFiles].map(
+    (f) => `@import './${f}';`,
+  );
   return `${cssBanner()}\n${imports.join('\n')}\n`;
 }

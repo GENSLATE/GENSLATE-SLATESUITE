@@ -1,4 +1,10 @@
-import { DesignSystemProvider, useTheme } from '@genslate/design-system';
+import {
+  DesignSystemProvider,
+  ToastProvider,
+  ToastViewport,
+  TooltipProvider,
+  useTheme,
+} from '@genslate/design-system';
 import {
   detectPlatform,
   setNativeTheme,
@@ -17,7 +23,10 @@ function NativeThemeSync() {
   return null;
 }
 
-/** Platform, native window state and theme for the whole app, wired to `@genslate/tauri-bridge`. */
+/**
+ * Platform, native window state and theme for the whole app (wired to `@genslate/tauri-bridge`),
+ * plus the app-wide tooltip grouping and toast host.
+ */
 export function AppProviders({ children }: { children: ReactNode }) {
   const [platform] = useState(detectPlatform);
   const { isFocused, isMaximized, isFullscreen } = useWindowControls();
@@ -30,7 +39,12 @@ export function AppProviders({ children }: { children: ReactNode }) {
       windowState={{ isFocused, isMaximized, isFullscreen }}
     >
       <NativeThemeSync />
-      {children}
+      <TooltipProvider>
+        <ToastProvider>
+          {children}
+          <ToastViewport />
+        </ToastProvider>
+      </TooltipProvider>
     </DesignSystemProvider>
   );
 }

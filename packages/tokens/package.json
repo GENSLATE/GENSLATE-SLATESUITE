@@ -24,8 +24,6 @@
   "devDependencies": {
     "@genslate/config-typescript": "workspace:*",
     "@types/bun": "catalog:",
-    "tailwind-merge": "catalog:",
-    "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }
 }
