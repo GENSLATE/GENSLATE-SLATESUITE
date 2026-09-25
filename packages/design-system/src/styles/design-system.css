@@ -1,0 +1,23 @@
+/*
+ * @genslate/design-system — the single CSS entry.
+ *
+ * In an app's CSS entry:
+ *   @import '@genslate/design-system/design-system.css';
+ *   @source '../';            (your own sources)
+ * and from JS, once: import '@genslate/design-system/fonts.css';
+ */
+
+@import 'tailwindcss';
+
+/* Tokens: primitives, scales, both Nord themes, and the Tailwind theme mapping. */
+@import '@genslate/tokens/css/tokens.css';
+@import '@genslate/tokens/tailwind.css';
+
+@import './design-system.variants.css';
+@import './design-system.utilities.css';
+@import './design-system.base.css';
+@import './design-system.animations.css';
+
+/* Workspace packages live behind node_modules symlinks, which Tailwind's auto-detection skips. */
+@source '../components';
+@source '../recipes';

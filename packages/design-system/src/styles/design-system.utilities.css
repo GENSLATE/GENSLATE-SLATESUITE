@@ -1,0 +1,93 @@
+/* Custom utilities shared by every component. */
+
+/* Keyboard focus: a 2px Frost ring outside the element, only for :focus-visible. */
+@utility focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  &:focus-visible {
+    outline-color: var(--gs-color-focus);
+  }
+}
+
+/* Focus ring drawn inside the element — rows, tabs and cells that sit edge to edge. */
+@utility focus-ring-inset {
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
+  &:focus-visible {
+    outline-color: var(--gs-color-focus);
+  }
+}
+
+/* A focus ring for containers whose inner input is focused (text fields). */
+@utility focus-ring-within {
+  &:focus-within {
+    border-color: var(--gs-color-accent);
+    box-shadow: 0 0 0 3px var(--gs-color-focus-halo);
+  }
+}
+
+/* macOS-style translucent material for floating surfaces. */
+@utility surface-glass {
+  background-color: color-mix(in srgb, var(--gs-color-surface-popover) 82%, transparent);
+  backdrop-filter: blur(24px) saturate(1.6);
+
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: var(--gs-color-surface-popover);
+    backdrop-filter: none;
+  }
+}
+
+/* Hairlines: 1px separators that never add layout height. */
+@utility hairline-t {
+  box-shadow: inset 0 1px 0 0 var(--gs-color-border-subtle);
+}
+
+@utility hairline-b {
+  box-shadow: inset 0 -1px 0 0 var(--gs-color-border-subtle);
+}
+
+@utility hairline-l {
+  box-shadow: inset 1px 0 0 0 var(--gs-color-border-subtle);
+}
+
+@utility hairline-r {
+  box-shadow: inset -1px 0 0 0 var(--gs-color-border-subtle);
+}
+
+/* VS Code-style thin scrollbars that appear on hover. */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color var(--gs-duration-base) var(--gs-ease-standard);
+
+  &:hover,
+  &:focus-within {
+    scrollbar-color: var(--gs-scrollbar-thumb) transparent;
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Window-chrome behaviour: default cursor, no text selection, no drag ghosts. */
+@utility chrome {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Text truncation that also works inside flex rows. */
+@utility truncate-flex {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

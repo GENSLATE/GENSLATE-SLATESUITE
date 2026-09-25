@@ -1,0 +1,8 @@
+/*
+ * Fonts and icon glyphs. Import once from JavaScript so the bundler resolves the font files:
+ *   import '@genslate/design-system/fonts.css';
+ */
+
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
+@import '@vscode/codicons/dist/codicon.css';

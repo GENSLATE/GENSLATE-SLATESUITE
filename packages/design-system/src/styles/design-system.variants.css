@@ -1,0 +1,16 @@
+/* Custom variants. `html` carries data-platform, data-window-focused and data-vibrancy. */
+
+@custom-variant macos (&:where([data-platform='macos'], [data-platform='macos'] *));
+@custom-variant windows (&:where([data-platform='windows'], [data-platform='windows'] *));
+@custom-variant linux (&:where([data-platform='linux'], [data-platform='linux'] *));
+@custom-variant web (&:where([data-platform='web'], [data-platform='web'] *));
+
+/* The window lost focus: chrome dims (macOS behaviour). */
+@custom-variant window-inactive (&:where([data-window-focused='false'], [data-window-focused='false'] *));
+
+/* Translucent window material is available (macOS vibrancy / Windows mica). */
+@custom-variant vibrancy (&:where([data-vibrancy='true'], [data-vibrancy='true'] *));
+
+/* Theme scheme, for the rare component that must know (never use for colours — tokens swap). */
+@custom-variant scheme-dark (&:where([data-theme='polar-night'], [data-theme='polar-night'] *));
+@custom-variant scheme-light (&:where([data-theme='snow-storm'], [data-theme='snow-storm'] *));
