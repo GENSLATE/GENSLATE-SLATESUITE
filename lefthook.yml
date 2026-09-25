@@ -44,5 +44,9 @@ commit-msg:
 
 pre-push:
   jobs:
-    - name: typecheck + tests
-      run: bun x moon run :typecheck :test root:rust-test
+    # The bun commands use moon when it can load the workspace and fall back to running
+    # bun/cargo directly otherwise (e.g. offline), so the hook works everywhere.
+    - name: typecheck + lint
+      run: bun run check --ts
+    - name: tests
+      run: bun run test
