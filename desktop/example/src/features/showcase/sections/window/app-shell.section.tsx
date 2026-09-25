@@ -69,7 +69,9 @@ export function AppShellSection() {
             inspector={
               <Panel surface="sidebar" className="h-full">
                 <PanelHeader title="Inspector" />
-                <PanelBody className="px-3 text-sm text-fg-muted">Details of the selection.</PanelBody>
+                <PanelBody className="px-3 text-fg-muted text-sm">
+                  Details of the selection.
+                </PanelBody>
               </Panel>
             }
             inspectorWidth={180}
@@ -77,7 +79,9 @@ export function AppShellSection() {
               <StatusBar>
                 <StatusBarSection>
                   <StatusBarItem
-                    icon={collapsed ? 'codicon:layout-sidebar-left-off' : 'codicon:layout-sidebar-left'}
+                    icon={
+                      collapsed ? 'codicon:layout-sidebar-left-off' : 'codicon:layout-sidebar-left'
+                    }
                     label="Toggle sidebar"
                     onClick={() => setCollapsed(!collapsed)}
                   >
@@ -103,10 +107,28 @@ export function AppShellSection() {
 
       <PropsTable
         rows={[
-          { name: 'titleBar · sidebar · inspector · statusBar', type: 'ReactNode', description: 'The regions; children render in <main>.' },
-          { name: 'sidebarWidth / defaultSidebarWidth', type: 'number', default: '248', description: 'Clamped to sidebarMinWidth…sidebarMaxWidth (180…420).' },
-          { name: 'sidebarCollapsed / defaultSidebarCollapsed', type: 'boolean', default: 'false', description: 'Dragging far past the minimum also collapses.' },
-          { name: 'persistKey', type: 'string', description: 'Remembers width and collapsed state in localStorage.' },
+          {
+            name: 'titleBar · sidebar · inspector · statusBar',
+            type: 'ReactNode',
+            description: 'The regions; children render in <main>.',
+          },
+          {
+            name: 'sidebarWidth / defaultSidebarWidth',
+            type: 'number',
+            default: '248',
+            description: 'Clamped to sidebarMinWidth…sidebarMaxWidth (180…420).',
+          },
+          {
+            name: 'sidebarCollapsed / defaultSidebarCollapsed',
+            type: 'boolean',
+            default: 'false',
+            description: 'Dragging far past the minimum also collapses.',
+          },
+          {
+            name: 'persistKey',
+            type: 'string',
+            description: 'Remembers width and collapsed state in localStorage.',
+          },
         ]}
       />
     </>

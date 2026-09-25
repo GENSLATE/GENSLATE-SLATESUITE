@@ -2,7 +2,7 @@ import { tv } from '../../../utils/cn.util';
 
 export const badgeVariants = tv({
   slots: {
-    root: 'inline-flex w-fit shrink-0 align-middle items-center gap-1 whitespace-nowrap font-medium tabular-nums',
+    root: 'inline-flex w-fit shrink-0 items-center gap-1 whitespace-nowrap align-middle font-medium tabular-nums',
     dot: 'size-1.5 shrink-0 rounded-full bg-current',
   },
   variants: {

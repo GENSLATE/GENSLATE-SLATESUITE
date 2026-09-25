@@ -76,12 +76,40 @@ export function TitleBarSection() {
 
       <PropsTable
         rows={[
-          { name: 'platform', type: "'macos' | 'windows' | 'linux' | 'web'", default: 'context', description: 'Chooses the default controls and shortcut glyphs.' },
-          { name: 'controls', type: "'traffic-lights' | 'windows' | 'none'", default: 'by platform', description: 'macOS → none (native lights + 78px spacer).' },
-          { name: 'leading / center / actions', type: 'ReactNode', description: 'Slots: sidebar toggle, command center, icon buttons.' },
-          { name: 'onMinimize · onToggleMaximize · onClose', type: '() => void', description: 'Wire to useWindowControls() from the bridge.' },
-          { name: 'isFocused · isMaximized · isFullscreen', type: 'boolean', default: 'context', description: 'Window state; inactive windows dim the chrome.' },
-          { name: 'doubleClickToMaximize', type: 'boolean', default: 'not macOS', description: 'Double-click on empty titlebar space.' },
+          {
+            name: 'platform',
+            type: "'macos' | 'windows' | 'linux' | 'web'",
+            default: 'context',
+            description: 'Chooses the default controls and shortcut glyphs.',
+          },
+          {
+            name: 'controls',
+            type: "'traffic-lights' | 'windows' | 'none'",
+            default: 'by platform',
+            description: 'macOS → none (native lights + 78px spacer).',
+          },
+          {
+            name: 'leading / center / actions',
+            type: 'ReactNode',
+            description: 'Slots: sidebar toggle, command center, icon buttons.',
+          },
+          {
+            name: 'onMinimize · onToggleMaximize · onClose',
+            type: '() => void',
+            description: 'Wire to useWindowControls() from the bridge.',
+          },
+          {
+            name: 'isFocused · isMaximized · isFullscreen',
+            type: 'boolean',
+            default: 'context',
+            description: 'Window state; inactive windows dim the chrome.',
+          },
+          {
+            name: 'doubleClickToMaximize',
+            type: 'boolean',
+            default: 'not macOS',
+            description: 'Double-click on empty titlebar space.',
+          },
         ]}
       />
     </>

@@ -47,7 +47,7 @@ export const selectItemIndicatorVariants = tv({
 });
 
 export const selectGroupLabelVariants = tv({
-  base: 'flex h-6 select-none items-center px-2 pl-7 font-semibold text-fg-muted text-xs',
+  base: 'flex h-6 select-none items-center pr-2 pl-7 font-semibold text-fg-muted text-xs',
 });
 
 export const selectSeparatorVariants = tv({

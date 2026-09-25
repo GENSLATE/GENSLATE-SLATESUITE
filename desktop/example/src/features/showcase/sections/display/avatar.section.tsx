@@ -6,7 +6,10 @@ const PEOPLE = ['Arctic Ice', 'Polar Night', 'Snow Storm', 'Frost', 'Aurora Bore
 export function AvatarSection() {
   return (
     <>
-      <Specimen title="Sizes" description="16 · 20 · 24 · 32 · 40 — initials when there is no image.">
+      <Specimen
+        title="Sizes"
+        description="16 · 20 · 24 · 32 · 40 — initials when there is no image."
+      >
         {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
           <Avatar key={size} size={size} name="Arctic Ice" />
         ))}
@@ -20,9 +23,9 @@ export function AvatarSection() {
         <Avatar size="lg" />
       </Specimen>
       <Specimen title="Stack">
-        <div className="flex -space-x-1.5">
+        <div className="flex -space-x-2">
           {PEOPLE.map((name) => (
-            <Avatar key={name} size="md" name={name} className="rounded-full ring-2 ring-canvas" />
+            <Avatar key={name} size="lg" name={name} className="rounded-full ring-2 ring-canvas" />
           ))}
         </div>
       </Specimen>

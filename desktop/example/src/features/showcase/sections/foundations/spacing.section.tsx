@@ -22,12 +22,29 @@ const RADIUS_CLASS: Readonly<Record<string, string>> = {
 
 const SIZE_GROUPS = [
   { title: 'Chrome', keys: ['titlebar', 'statusbar', 'tabbar', 'toolbar', 'panel-header'] },
-  { title: 'Controls & rows', keys: ['control-xs', 'control-sm', 'control-md', 'control-lg', 'control-xl', 'row-sm', 'row-md', 'menu-item'] },
-  { title: 'Panes', keys: ['sidebar', 'sidebar-min', 'sidebar-max', 'command-center-max', 'palette', 'content-max'] },
+  {
+    title: 'Controls & rows',
+    keys: [
+      'control-xs',
+      'control-sm',
+      'control-md',
+      'control-lg',
+      'control-xl',
+      'row-sm',
+      'row-md',
+      'menu-item',
+    ],
+  },
+  {
+    title: 'Panes',
+    keys: ['sidebar', 'sidebar-min', 'sidebar-max', 'command-center-max', 'palette', 'content-max'],
+  },
 ] as const;
 
 export function SpacingSection() {
-  const spaces = Object.entries(SPACE).filter(([key]) => key !== '0');
+  const spaces = Object.entries(SPACE)
+    .filter(([key]) => key !== '0')
+    .sort(([, a], [, b]) => a - b);
   return (
     <>
       <Specimen
@@ -37,8 +54,8 @@ export function SpacingSection() {
       >
         {spaces.map(([key, px]) => (
           <div key={key} className="grid grid-cols-[4rem_3rem_1fr] items-center gap-3">
-            <span className="font-mono text-code text-accent-fg">{key}</span>
-            <span className="text-sm text-fg-muted tabular-nums">{px}px</span>
+            <span className="font-mono text-accent-fg text-code">{key}</span>
+            <span className="text-fg-muted text-sm tabular-nums">{px}px</span>
             <span className="h-3 rounded-xs bg-accent/70" style={{ width: px * 4 }} />
           </div>
         ))}
@@ -51,9 +68,13 @@ export function SpacingSection() {
       >
         {Object.entries(RADIUS.scale).map(([key, px]) => (
           <div key={key} className="flex flex-col items-center gap-2">
-            <div className={`size-16 bg-accent-subtle inset-ring inset-ring-accent-border ${RADIUS_CLASS[key] ?? ''}`} />
+            <div
+              className={`inset-ring inset-ring-accent-border size-16 bg-accent-subtle ${RADIUS_CLASS[key] ?? ''}`}
+            />
             <span className="font-mono text-code text-fg">rounded-{key}</span>
-            <span className="text-xs text-fg-muted tabular-nums">{px === 9999 ? 'pill' : `${px}px`}</span>
+            <span className="text-fg-muted text-xs tabular-nums">
+              {px === 9999 ? 'pill' : `${px}px`}
+            </span>
           </div>
         ))}
       </Specimen>
@@ -69,20 +90,30 @@ export function SpacingSection() {
             className={`flex h-24 flex-col justify-end gap-0.5 rounded-card bg-surface-raised p-3 ${shadow.className}`}
           >
             <span className="font-mono text-code text-fg">{shadow.name}</span>
-            <span className="text-xs text-fg-muted">{shadow.use}</span>
+            <span className="text-fg-muted text-xs">{shadow.use}</span>
           </div>
         ))}
       </Specimen>
 
-      <Specimen title="Layout sizes" description="Density from VS Code, proportions from macOS." bare>
+      <Specimen
+        title="Layout sizes"
+        description="Density from VS Code, proportions from macOS."
+        bare
+      >
         <div className="grid grid-cols-3 gap-4">
           {SIZE_GROUPS.map((group) => (
-            <div key={group.title} className="flex flex-col rounded-card py-2 inset-ring inset-ring-border-subtle">
-              <span className="px-4 pt-1 pb-2 text-2xs font-semibold tracking-wider text-fg-muted uppercase">
+            <div
+              key={group.title}
+              className="inset-ring inset-ring-border-subtle flex flex-col rounded-card py-2"
+            >
+              <span className="px-4 pt-1 pb-2 font-semibold text-2xs text-fg-muted uppercase tracking-wider">
                 {group.title}
               </span>
               {group.keys.map((key) => (
-                <div key={key} className="flex items-center justify-between gap-2 px-4 py-1.5 text-sm">
+                <div
+                  key={key}
+                  className="flex items-center justify-between gap-2 px-4 py-1.5 text-sm"
+                >
                   <span className="font-mono text-code text-fg">{key}</span>
                   <span className="text-fg-muted tabular-nums">{LAYOUT_SIZE[key]}px</span>
                 </div>

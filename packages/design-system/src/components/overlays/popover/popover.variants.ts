@@ -13,7 +13,7 @@ export const popoverVariants = tv({
     title: 'font-semibold text-base text-fg-strong',
     description: 'mt-1 text-fg-secondary text-sm',
     close: [
-      'focus-ring absolute top-2 right-2 flex size-5 items-center justify-center rounded-sm text-fg-muted outline-none',
+      'focus-ring absolute top-2 right-2 flex size-5 items-center justify-center rounded-sm text-fg-muted',
       'transition-colors duration-fast ease-standard hover:bg-fill-hover hover:text-fg active:bg-fill-pressed',
     ],
   },

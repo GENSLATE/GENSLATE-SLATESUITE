@@ -11,7 +11,7 @@ export const checkboxLabelVariants = tv({
 /** The 14px box: flat field at rest, accent fill when checked or mixed. */
 export const checkboxBoxVariants = tv({
   base: [
-    'focus-ring relative inline-flex size-3.5 shrink-0 items-center justify-center rounded-xs outline-none',
+    'focus-ring relative inline-flex size-3.5 shrink-0 items-center justify-center rounded-xs',
     'border border-border-strong bg-field text-on-accent shadow-inset',
     'transition-[background-color,border-color,box-shadow] duration-fast ease-standard',
     'hover:border-fg-muted',

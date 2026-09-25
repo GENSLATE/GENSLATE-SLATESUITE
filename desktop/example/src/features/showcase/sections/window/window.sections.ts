@@ -9,7 +9,8 @@ export const windowSections: readonly ShowcaseSection[] = [
   {
     id: 'title-bar',
     title: 'Title Bar',
-    description: 'A 38px unified titlebar with a VS Code command center, per-platform window controls and drag regions.',
+    description:
+      'A 38px unified titlebar with a VS Code command center, per-platform window controls and drag regions.',
     category: 'window',
     icon: 'codicon:window',
     component: TitleBarSection,
@@ -17,7 +18,8 @@ export const windowSections: readonly ShowcaseSection[] = [
   {
     id: 'traffic-lights',
     title: 'Window Controls',
-    description: 'Pixel-accurate macOS traffic lights and Windows caption buttons for custom titlebars.',
+    description:
+      'Pixel-accurate macOS traffic lights and Windows caption buttons for custom titlebars.',
     category: 'window',
     icon: 'codicon:chrome-restore',
     component: TrafficLightsSection,

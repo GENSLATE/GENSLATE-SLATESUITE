@@ -6,10 +6,19 @@ function Example() {
   return (
     <StatusBar>
       <StatusBarSection>
-        <StatusBarItem accent icon="codicon:remote" label="Open a remote window" onClick={() => undefined}>
+        <StatusBarItem
+          accent
+          icon="codicon:remote"
+          label="Open a remote window"
+          onClick={() => undefined}
+        >
           WSL: Ubuntu
         </StatusBarItem>
-        <StatusBarItem icon="codicon:git-branch" label="Checkout branch" onClick={() => undefined}>
+        <StatusBarItem
+          icon="codicon:source-control"
+          label="Checkout branch"
+          onClick={() => undefined}
+        >
           main
         </StatusBarItem>
         <StatusBarItem icon="codicon:sync" label="Synchronize changes" onClick={() => undefined}>
@@ -39,21 +48,19 @@ function Example() {
 
 export function StatusBarSectionPage() {
   return (
-    <>
-      <Specimen
-        title="Status bar"
-        description="24px, 12px text and 14px icons. Items with onClick are buttons; the accent item is the only coloured one."
-        stageClassName="flex-col items-stretch gap-6 bg-surface-sunken p-8"
-      >
-        <DemoWindow label="Focused window">
-          <div className="h-16 bg-canvas" />
-          <Example />
-        </DemoWindow>
-        <DemoWindow inactive label="Inactive window">
-          <div className="h-16 bg-canvas" />
-          <Example />
-        </DemoWindow>
-      </Specimen>
-    </>
+    <Specimen
+      title="Status bar"
+      description="24px, 12px text and 14px icons. Items with onClick are buttons; the accent item is the only coloured one."
+      stageClassName="flex-col items-stretch gap-6 bg-surface-sunken p-8"
+    >
+      <DemoWindow label="Focused window">
+        <div className="h-16 bg-canvas" />
+        <Example />
+      </DemoWindow>
+      <DemoWindow inactive label="Inactive window">
+        <div className="h-16 bg-canvas" />
+        <Example />
+      </DemoWindow>
+    </Specimen>
   );
 }

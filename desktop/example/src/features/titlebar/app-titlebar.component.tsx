@@ -43,20 +43,26 @@ export function AppTitleBar({
         <div data-tauri-drag-region className="flex min-w-0 items-center gap-1.5">
           <IconButton
             size="sm"
-            icon={sidebarCollapsed ? 'codicon:layout-sidebar-left-off' : 'codicon:layout-sidebar-left'}
+            icon={
+              sidebarCollapsed ? 'codicon:layout-sidebar-left-off' : 'codicon:layout-sidebar-left'
+            }
             label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
             tooltip={`${sidebarCollapsed ? 'Show' : 'Hide'} sidebar (${platform === 'macos' ? '⌘B' : 'Ctrl+B'})`}
             onClick={onToggleSidebar}
           />
           <span
             data-tauri-drag-region
-            className="truncate-flex pl-1 text-sm font-medium text-titlebar-fg window-inactive:text-titlebar-fg-inactive"
+            className="truncate-flex pl-1 font-medium text-sm text-titlebar-fg window-inactive:text-titlebar-fg-inactive"
           >
             GENSLATE <span className="font-normal opacity-70">Design Kit</span>
           </span>
         </div>
       }
-      center={<TitleBarCommandCenter onClick={onOpenCommandPalette}>Search components…</TitleBarCommandCenter>}
+      center={
+        <TitleBarCommandCenter onClick={onOpenCommandPalette}>
+          Search components…
+        </TitleBarCommandCenter>
+      }
       actions={
         <>
           <IconButton

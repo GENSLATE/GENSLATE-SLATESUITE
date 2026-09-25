@@ -10,7 +10,8 @@ export const foundationsSections: readonly ShowcaseSection[] = [
   {
     id: 'colors',
     title: 'Colors',
-    description: 'Official Nord, mapped to semantic and chrome roles. Swatches follow the current theme.',
+    description:
+      'Official Nord, mapped to semantic and chrome roles. Swatches follow the current theme.',
     category: 'foundations',
     icon: 'codicon:symbol-color',
     component: ColorsSection,

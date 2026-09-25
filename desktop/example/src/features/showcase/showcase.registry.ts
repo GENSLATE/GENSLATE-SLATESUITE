@@ -19,7 +19,12 @@ export interface ShowcaseGroup {
 
 /** Sidebar groups, in order. */
 export const SHOWCASE_GROUPS: readonly ShowcaseGroup[] = [
-  { id: 'foundations', title: 'Foundations', icon: 'codicon:symbol-color', sections: foundationsSections },
+  {
+    id: 'foundations',
+    title: 'Foundations',
+    icon: 'codicon:symbol-color',
+    sections: foundationsSections,
+  },
   { id: 'window', title: 'Window', icon: 'codicon:window', sections: windowSections },
   { id: 'layout', title: 'Layout', icon: 'codicon:layout', sections: layoutSections },
   { id: 'actions', title: 'Actions', icon: 'codicon:symbol-event', sections: actionsSections },
@@ -31,7 +36,9 @@ export const SHOWCASE_GROUPS: readonly ShowcaseGroup[] = [
 ];
 
 /** Every showcase page, flattened in sidebar order. */
-export const SHOWCASE_SECTIONS: readonly ShowcaseSection[] = SHOWCASE_GROUPS.flatMap((group) => group.sections);
+export const SHOWCASE_SECTIONS: readonly ShowcaseSection[] = SHOWCASE_GROUPS.flatMap(
+  (group) => group.sections,
+);
 
 export const DEFAULT_SECTION_ID = SHOWCASE_SECTIONS[0]?.id ?? 'colors';
 

@@ -4,7 +4,7 @@ import { Specimen } from '../../components/specimen.component';
 export function EmptyStateSection() {
   return (
     <Specimen title="Empty state" stageClassName="grid grid-cols-2 items-stretch gap-6 p-4">
-      <div className="rounded-card inset-ring inset-ring-border-subtle">
+      <div className="inset-ring inset-ring-border-subtle rounded-card">
         <EmptyState
           icon="codicon:search"
           title="No results"
@@ -19,7 +19,7 @@ export function EmptyStateSection() {
           }
         />
       </div>
-      <div className="flex items-center justify-center rounded-card bg-surface-sidebar inset-ring inset-ring-border-subtle">
+      <div className="inset-ring inset-ring-border-subtle flex items-center justify-center rounded-card bg-surface-sidebar">
         <EmptyState
           size="sm"
           icon="codicon:folder-opened"

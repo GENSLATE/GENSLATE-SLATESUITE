@@ -14,7 +14,11 @@ export function App() {
 
 export function CodeBlockSection() {
   return (
-    <Specimen title="Code block" description="Monospaced, sunken, copyable. No highlighting library." bare>
+    <Specimen
+      title="Code block"
+      description="Monospaced, sunken, copyable. No highlighting library."
+      bare
+    >
       <div className="grid grid-cols-1 gap-4">
         <CodeBlock title="app.tsx" language="tsx" code={SAMPLE} lineNumbers />
         <CodeBlock code="bun install && bun run dev" />

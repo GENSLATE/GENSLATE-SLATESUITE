@@ -6,7 +6,7 @@ export const breadcrumbsVariants = tv({
     list: 'm-0 flex min-w-0 list-none items-center p-0',
     item: 'flex min-w-0 items-center',
     link: [
-      'focus-ring flex min-w-0 items-center gap-1 rounded-xs px-1 text-fg-muted no-underline outline-none',
+      'focus-ring flex min-w-0 items-center gap-1 rounded-xs px-1 text-fg-muted no-underline',
       'transition-colors duration-fast ease-standard hover:bg-fill-hover hover:text-fg hover:no-underline active:bg-fill-pressed',
     ],
     current: 'flex min-w-0 items-center gap-1 px-1 text-fg',

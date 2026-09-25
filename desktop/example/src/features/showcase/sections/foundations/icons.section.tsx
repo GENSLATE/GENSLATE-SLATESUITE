@@ -36,22 +36,31 @@ export function IconsSection() {
             type="button"
             title={`codicon:${name}`}
             onClick={() => copy(name)}
-            className="group flex h-20 min-w-0 flex-col items-center justify-center gap-2 rounded-control px-1 text-fg focus-ring-inset transition-colors duration-fast hover:bg-fill-hover active:bg-fill-pressed"
+            className="group focus-ring-inset flex h-20 min-w-0 flex-col items-center justify-center gap-2 rounded-control px-1 text-fg transition-colors duration-fast hover:bg-fill-hover active:bg-fill-pressed"
           >
-            <Icon name={`codicon:${name}`} size={20} className="text-fg-secondary group-hover:text-fg-strong" />
+            <Icon
+              name={`codicon:${name}`}
+              size={20}
+              className="text-fg-secondary group-hover:text-fg-strong"
+            />
             <span className="w-full truncate text-center text-2xs text-fg-muted">
               {copied === name ? 'Copied' : name}
             </span>
           </button>
         ))}
-        {names.length === 0 && <p className="col-span-full py-8 text-center text-fg-muted">No icons match.</p>}
+        {names.length === 0 && (
+          <p className="col-span-full py-8 text-center text-fg-muted">No icons match.</p>
+        )}
       </Specimen>
 
-      <Specimen title="Sizes" description="16 by default, 14 in dense spots, 12 in badges, 20 for empty states.">
+      <Specimen
+        title="Sizes"
+        description="16 by default, 14 in dense spots, 12 in badges, 20 for empty states."
+      >
         {([12, 14, 16, 20] as const).map((size) => (
           <div key={size} className="flex w-20 flex-col items-center gap-2">
             <Icon name="codicon:symbol-color" size={size} className="text-fg" />
-            <span className="text-xs text-fg-muted tabular-nums">{size}px</span>
+            <span className="text-fg-muted text-xs tabular-nums">{size}px</span>
           </div>
         ))}
       </Specimen>

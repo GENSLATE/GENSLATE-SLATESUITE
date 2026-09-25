@@ -1,3 +1,4 @@
+export { CODICON_NAMES, type CodiconName } from '../../../icons/codicon-names.generated';
 export { Icon } from './icon.component';
 export { type IconSlot, renderIconSlot } from './icon.slot';
 export type {
@@ -9,4 +10,3 @@ export type {
   SvgIconProps,
 } from './icon.types';
 export { iconVariants } from './icon.variants';
-export { CODICON_NAMES, type CodiconName } from '../../../icons/codicon-names.generated';

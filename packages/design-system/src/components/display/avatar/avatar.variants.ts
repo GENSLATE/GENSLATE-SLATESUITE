@@ -3,9 +3,14 @@ import { tv } from '../../../utils/cn.util';
 export const avatarVariants = tv({
   slots: {
     root: 'relative inline-flex shrink-0 select-none items-center justify-center align-middle',
-    clip: 'inset-ring inset-ring-border-subtle flex size-full items-center justify-center overflow-hidden bg-accent-subtle text-accent-fg',
+    // Opaque base so stacked avatars never show through; the hairline sits above image and fallback.
+    clip: [
+      'relative flex size-full items-center justify-center overflow-hidden bg-canvas',
+      'after:pointer-events-none after:absolute after:inset-0 after:inset-ring after:inset-ring-border-subtle after:rounded-[inherit] after:content-[""]',
+    ],
     image: 'size-full object-cover',
-    fallback: 'flex size-full items-center justify-center font-semibold uppercase',
+    fallback:
+      'flex size-full items-center justify-center bg-accent-subtle font-semibold text-accent-fg uppercase',
     status: 'absolute right-0 bottom-0 rounded-full ring-2 ring-canvas',
   },
   variants: {

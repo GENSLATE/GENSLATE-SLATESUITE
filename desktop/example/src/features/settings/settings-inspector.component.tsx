@@ -34,11 +34,13 @@ export function SettingsInspector({ onClose }: { onClose: () => void }) {
       <PanelHeader
         title="Appearance"
         actionsVisible
-        actions={<IconButton size="sm" icon="codicon:close" label="Close inspector" onClick={onClose} />}
+        actions={
+          <IconButton size="sm" icon="codicon:close" label="Close inspector" onClick={onClose} />
+        }
       />
-      <PanelBody className="flex flex-col gap-5 overflow-y-auto scrollbar-thin px-3 pt-1 pb-4">
+      <PanelBody className="scrollbar-thin flex flex-col gap-5 overflow-y-auto px-3 pt-1 pb-4">
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-fg">Theme</span>
+          <span className="font-medium text-fg text-sm">Theme</span>
           <SegmentedControl<ThemePreference>
             aria-label="Theme"
             size="sm"
@@ -50,11 +52,13 @@ export function SettingsInspector({ onClose }: { onClose: () => void }) {
             <SegmentedControlItem value="snow-storm">Light</SegmentedControlItem>
             <SegmentedControlItem value="system">Auto</SegmentedControlItem>
           </SegmentedControl>
-          <p className="text-xs text-fg-muted">Official Nord: Polar Night (dark) and Snow Storm (light).</p>
+          <p className="text-fg-muted text-xs">
+            Official Nord: Polar Night (dark) and Snow Storm (light).
+          </p>
         </div>
         <Separator />
         <div className="flex flex-col gap-2.5">
-          <span className="text-sm font-medium text-fg">Shortcuts</span>
+          <span className="font-medium text-fg text-sm">Shortcuts</span>
           <Row label="Command palette">
             <Kbd shortcut="mod+k" size="sm" />
           </Row>
@@ -67,7 +71,7 @@ export function SettingsInspector({ onClose }: { onClose: () => void }) {
         </div>
         <Separator />
         <div className="flex flex-col gap-2.5">
-          <span className="text-sm font-medium text-fg">About</span>
+          <span className="font-medium text-fg text-sm">About</span>
           <Row label="Runtime">
             <Badge size="sm" tone={isTauri() ? 'accent' : 'neutral'}>
               {isTauri() ? 'Tauri' : 'Browser'}

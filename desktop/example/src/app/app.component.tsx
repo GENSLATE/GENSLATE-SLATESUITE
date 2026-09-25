@@ -23,7 +23,11 @@ export interface AppProps {
 
 /** GENSLATE Design Kit: titlebar · sidebar + page · status bar. */
 export function App({ onOpenCommandPalette }: AppProps) {
-  const [pageId, setPageId] = usePersistentState('genslate.example.page', DEFAULT_SECTION_ID, isString);
+  const [pageId, setPageId] = usePersistentState(
+    'genslate.example.page',
+    DEFAULT_SECTION_ID,
+    isString,
+  );
   const [sidebarCollapsed, setSidebarCollapsed] = usePersistentState(
     'genslate.example.sidebar-collapsed',
     false,
@@ -58,10 +62,15 @@ export function App({ onOpenCommandPalette }: AppProps) {
         />
       }
       sidebar={<AppSidebar selectedId={section?.id ?? ''} onSelect={setPageId} />}
-      inspector={inspectorOpen ? <SettingsInspector onClose={() => setInspectorOpen(false)} /> : undefined}
+      inspector={
+        inspectorOpen ? <SettingsInspector onClose={() => setInspectorOpen(false)} /> : undefined
+      }
       inspectorWidth={272}
       statusBar={
-        <AppStatusBar pageCount={SHOWCASE_SECTIONS.length} onOpenInspector={() => setInspectorOpen(true)} />
+        <AppStatusBar
+          pageCount={SHOWCASE_SECTIONS.length}
+          onOpenInspector={() => setInspectorOpen(true)}
+        />
       }
     >
       <ScrollArea key={section?.id} className="flex-1" viewportClassName="select-text">

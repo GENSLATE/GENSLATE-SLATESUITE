@@ -21,7 +21,7 @@ export const dialogVariants = tv({
     body: 'scrollbar-thin -mx-5 mt-4 min-h-0 flex-1 overflow-y-auto px-5',
     footer: 'mt-5 flex flex-wrap items-center justify-end gap-2',
     close: [
-      'focus-ring absolute top-3 right-3 flex size-6 items-center justify-center rounded-sm text-fg-muted outline-none',
+      'focus-ring absolute top-3 right-3 flex size-6 items-center justify-center rounded-sm text-fg-muted',
       'transition-colors duration-fast ease-standard hover:bg-fill-hover hover:text-fg active:bg-fill-pressed',
     ],
   },
@@ -39,7 +39,7 @@ export const dialogVariants = tv({
 export const dialogButtonVariants = tv({
   base: [
     'focus-ring inline-flex h-control-md min-w-20 cursor-default items-center justify-center gap-1.5 rounded-control px-3',
-    'select-none whitespace-nowrap font-medium text-base outline-none',
+    'select-none whitespace-nowrap font-medium text-base',
     'transition-colors duration-fast ease-standard',
     'disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50',
   ],

@@ -16,12 +16,20 @@ interface SpecimenProps {
 }
 
 /** A titled demo block: heading, a hairline stage with the live component, and optional code. */
-export function Specimen({ title, description, aside, code, stageClassName, bare = false, children }: SpecimenProps) {
+export function Specimen({
+  title,
+  description,
+  aside,
+  code,
+  stageClassName,
+  bare = false,
+  children,
+}: SpecimenProps) {
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-end justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-0.5">
-          <h2 className="text-md font-semibold text-fg-strong">{title}</h2>
+          <h2 className="font-semibold text-fg-strong text-md">{title}</h2>
           {description != null && <p className="text-base text-fg-muted">{description}</p>}
         </div>
         {aside != null && <div className="flex shrink-0 items-center gap-2">{aside}</div>}
@@ -29,12 +37,14 @@ export function Specimen({ title, description, aside, code, stageClassName, bare
       {bare ? (
         children
       ) : (
-        <div className="overflow-hidden rounded-card inset-ring inset-ring-border-subtle">
-          <div className={cn('flex flex-wrap items-center gap-3 p-6', stageClassName)}>{children}</div>
+        <div className="inset-ring inset-ring-border-subtle overflow-hidden rounded-card">
+          <div className={cn('flex flex-wrap items-center gap-3 p-6', stageClassName)}>
+            {children}
+          </div>
           {code != null && (
             <CodeBlock
               code={code}
-              className="rounded-none bg-surface-sunken inset-ring-0 hairline-t"
+              className="hairline-t inset-ring-0 rounded-none bg-surface-sunken"
               language="tsx"
             />
           )}

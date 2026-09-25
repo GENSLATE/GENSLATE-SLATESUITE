@@ -9,8 +9,8 @@ import {
 } from '@genslate/design-system';
 import { useState } from 'react';
 import { DemoWindow } from '../../components/demo-window.component';
-import { StateMatrix } from '../../components/state-matrix.component';
 import { Specimen } from '../../components/specimen.component';
+import { StateMatrix } from '../../components/state-matrix.component';
 
 function SourceList({ label }: { label: string }) {
   const [selected, setSelected] = useState('src');
@@ -35,7 +35,15 @@ function SourceList({ label }: { label: string }) {
           <SidebarItem icon="codicon:folder" depth={1} {...item('styles')}>
             styles
           </SidebarItem>
-          <SidebarItem icon="codicon:beaker" {...item('tests')} badge={<Badge size="sm" tone="success">pass</Badge>}>
+          <SidebarItem
+            icon="codicon:beaker"
+            {...item('tests')}
+            badge={
+              <Badge size="sm" tone="success">
+                pass
+              </Badge>
+            }
+          >
             tests
           </SidebarItem>
         </SidebarSection>
@@ -73,18 +81,56 @@ export function SidebarSectionPage() {
 
       <StateMatrix
         caption="Sidebar item states"
-        columns={['Rest', 'Hover', 'Pressed', 'Focus', 'Selected', 'Selected · inactive', 'Disabled']}
+        columns={[
+          'Rest',
+          'Hover',
+          'Pressed',
+          'Focus',
+          'Selected',
+          'Selected · inactive',
+          'Disabled',
+        ]}
         rows={[
           {
             label: 'Item',
             cells: [
-              <div key="rest" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder">Folder</SidebarItem></div>,
-              <div key="hover" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder" className="bg-fill-hover">Folder</SidebarItem></div>,
-              <div key="pressed" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder" className="bg-fill-pressed">Folder</SidebarItem></div>,
-              <div key="focus" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder" className="outline-focus!">Folder</SidebarItem></div>,
-              <div key="selected" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder" selected>Folder</SidebarItem></div>,
-              <div key="inactive" data-window-focused="false" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder" selected>Folder</SidebarItem></div>,
-              <div key="disabled" className="-mx-2 w-40 bg-surface-sidebar py-1"><SidebarItem icon="codicon:folder" disabled>Folder</SidebarItem></div>,
+              <div key="rest" className="-mx-2 w-40 bg-surface-sidebar py-1">
+                <SidebarItem icon="codicon:folder">Folder</SidebarItem>
+              </div>,
+              <div key="hover" className="-mx-2 w-40 bg-surface-sidebar py-1">
+                <SidebarItem icon="codicon:folder" className="bg-fill-hover">
+                  Folder
+                </SidebarItem>
+              </div>,
+              <div key="pressed" className="-mx-2 w-40 bg-surface-sidebar py-1">
+                <SidebarItem icon="codicon:folder" className="bg-fill-pressed">
+                  Folder
+                </SidebarItem>
+              </div>,
+              <div key="focus" className="-mx-2 w-40 bg-surface-sidebar py-1">
+                <SidebarItem icon="codicon:folder" className="outline-focus!">
+                  Folder
+                </SidebarItem>
+              </div>,
+              <div key="selected" className="-mx-2 w-40 bg-surface-sidebar py-1">
+                <SidebarItem icon="codicon:folder" selected>
+                  Folder
+                </SidebarItem>
+              </div>,
+              <div
+                key="inactive"
+                data-window-focused="false"
+                className="-mx-2 w-40 bg-surface-sidebar py-1"
+              >
+                <SidebarItem icon="codicon:folder" selected>
+                  Folder
+                </SidebarItem>
+              </div>,
+              <div key="disabled" className="-mx-2 w-40 bg-surface-sidebar py-1">
+                <SidebarItem icon="codicon:folder" disabled>
+                  Folder
+                </SidebarItem>
+              </div>,
             ],
           },
         ]}

@@ -16,7 +16,8 @@ const NORD_GROUPS = [
 const SEMANTIC_GROUPS: readonly { title: string; match: (key: SemanticKey) => boolean }[] = [
   {
     title: 'Surfaces',
-    match: (key) => key === 'canvas' || key.startsWith('surface') || key === 'field' || key === 'scrim',
+    match: (key) =>
+      key === 'canvas' || key.startsWith('surface') || key === 'field' || key === 'scrim',
   },
   { title: 'Borders', match: (key) => key.startsWith('border') },
   { title: 'Text', match: (key) => key.startsWith('fg') || key.startsWith('on-') },
@@ -53,10 +54,22 @@ export function ColorsSection() {
   return (
     <>
       {NORD_GROUPS.map((group) => (
-        <Specimen key={group.title} title={group.title} description={group.description} stageClassName={GRID}>
+        <Specimen
+          key={group.title}
+          title={group.title}
+          description={group.description}
+          stageClassName={GRID}
+        >
           {group.keys.map((index) => {
             const key = `nord-${index}` as keyof typeof NORD_HEX;
-            return <ColorSwatch key={key} color={NORD_HEX[key]} name={`nord${index}`} value={NORD_HEX[key]} />;
+            return (
+              <ColorSwatch
+                key={key}
+                color={NORD_HEX[key]}
+                name={`nord${index}`}
+                value={NORD_HEX[key]}
+              />
+            );
           })}
         </Specimen>
       ))}
@@ -69,18 +82,28 @@ export function ColorsSection() {
           stageClassName={GRID}
         >
           {SEMANTIC_COLOR_KEYS.filter(group.match).map((key) => (
-            <ColorSwatch key={key} color={`var(--gs-color-${key})`} name={key} value={resolved[key]} />
+            <ColorSwatch
+              key={key}
+              color={`var(--gs-color-${key})`}
+              name={key}
+              value={resolved[key]}
+            />
           ))}
         </Specimen>
       ))}
 
       {CHROME_GROUPS.map((group) => (
-        <Specimen key={group.title} title={group.title} description="Window chrome roles." stageClassName={GRID}>
-          {CHROME_COLOR_KEYS.filter((key: ChromeKey) => group.prefix.some((prefix) => key.startsWith(prefix))).map(
-            (key) => (
-              <ColorSwatch key={key} color={`var(--gs-${key})`} name={key} value={resolved[key]} />
-            ),
-          )}
+        <Specimen
+          key={group.title}
+          title={group.title}
+          description="Window chrome roles."
+          stageClassName={GRID}
+        >
+          {CHROME_COLOR_KEYS.filter((key: ChromeKey) =>
+            group.prefix.some((prefix) => key.startsWith(prefix)),
+          ).map((key) => (
+            <ColorSwatch key={key} color={`var(--gs-${key})`} name={key} value={resolved[key]} />
+          ))}
         </Specimen>
       ))}
     </>

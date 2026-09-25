@@ -6,7 +6,7 @@ export const colorSwatchVariants = tv({
     chip: [
       'relative shrink-0 overflow-hidden',
       // The hairline sits above the fill so colours equal to the canvas still read as a chip.
-      'after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:inset-ring after:inset-ring-border after:content-[""]',
+      'after:pointer-events-none after:absolute after:inset-0 after:inset-ring after:inset-ring-border after:rounded-[inherit] after:content-[""]',
       // A checkerboard shows through translucent colours.
       'bg-[conic-gradient(var(--gs-color-fill-pressed)_25%,transparent_0_50%,var(--gs-color-fill-pressed)_0_75%,transparent_0)] bg-size-[8px_8px]',
     ],

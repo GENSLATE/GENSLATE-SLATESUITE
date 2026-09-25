@@ -9,7 +9,8 @@ export const layoutSections: readonly ShowcaseSection[] = [
   {
     id: 'sidebar',
     title: 'Sidebar',
-    description: 'The macOS source list at VS Code density, with pill selection that dims in background windows.',
+    description:
+      'The macOS source list at VS Code density, with pill selection that dims in background windows.',
     category: 'layout',
     icon: 'codicon:layout-sidebar-left',
     component: SidebarSectionPage,

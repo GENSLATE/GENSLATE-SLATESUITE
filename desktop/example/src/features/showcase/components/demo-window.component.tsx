@@ -15,10 +15,19 @@ interface DemoWindowProps {
  * A miniature app window for chrome demos. `inactive` scopes `window-inactive:` styles to the subtree
  * (the variant matches any ancestor with `data-window-focused="false"`).
  */
-export function DemoWindow({ children, height, inactive = false, className, label }: DemoWindowProps) {
+export function DemoWindow({
+  children,
+  height,
+  inactive = false,
+  className,
+  label,
+}: DemoWindowProps) {
   return (
     <figure
-      className={cn('m-0 flex w-full flex-col overflow-hidden rounded-window bg-canvas shadow-dialog', className)}
+      className={cn(
+        'm-0 flex w-full flex-col overflow-hidden rounded-window bg-canvas shadow-dialog',
+        className,
+      )}
       style={height ? { height } : undefined}
       data-window-focused={inactive ? 'false' : undefined}
       aria-label={label}

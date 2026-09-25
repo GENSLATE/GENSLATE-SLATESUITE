@@ -7,7 +7,7 @@ export const radioLabelVariants = tv({
 /** 14px circle; accent fill with a centred dot when checked. */
 export const radioVariants = tv({
   base: [
-    'focus-ring relative inline-flex size-3.5 shrink-0 items-center justify-center rounded-full outline-none',
+    'focus-ring relative inline-flex size-3.5 shrink-0 items-center justify-center rounded-full',
     'border border-border-strong bg-field shadow-inset',
     'transition-[background-color,border-color] duration-fast ease-standard',
     'hover:border-fg-muted',

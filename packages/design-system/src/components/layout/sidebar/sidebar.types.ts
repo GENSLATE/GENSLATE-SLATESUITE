@@ -24,7 +24,7 @@ export interface SidebarSectionProps extends Omit<ComponentPropsWithRef<'div'>, 
   open?: boolean | undefined;
   /** @default true */
   defaultOpen?: boolean | undefined;
-  onOpenChange?: (open: boolean) => void | undefined;
+  onOpenChange?: ((open: boolean) => void) | undefined;
   /** Trailing section actions (shown on hover). */
   actions?: ReactNode | undefined;
 }

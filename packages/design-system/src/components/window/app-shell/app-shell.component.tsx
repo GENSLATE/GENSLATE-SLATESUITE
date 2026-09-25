@@ -85,7 +85,6 @@ export function AppShell({
 
   const sidebarId = useId();
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
   const drag = useRef<{ startX: number; startWidth: number; width: number; frame: number } | null>(
     null,
   );
@@ -155,7 +154,6 @@ export function AppShell({
 
   return (
     <div
-      ref={rootRef}
       data-slot="app-shell"
       data-sidebar-collapsed={hasSidebar && collapsed ? '' : undefined}
       data-resizing={dragging ? '' : undefined}

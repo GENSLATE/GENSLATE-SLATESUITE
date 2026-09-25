@@ -57,6 +57,7 @@ export function TreeItem({
   };
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: keyboard interaction is handled by the parent <Tree> (APG).
     <li
       role="treeitem"
       data-id={id}
@@ -114,6 +115,7 @@ export function TreeItem({
         )}
       </div>
       {open && (
+        // biome-ignore lint/a11y/useSemanticElements: APG tree groups are role="group" lists.
         <ul role="group" data-slot="tree-group" className={styles.group()}>
           <TreeLevelContext value={level + 1}>{children}</TreeLevelContext>
         </ul>

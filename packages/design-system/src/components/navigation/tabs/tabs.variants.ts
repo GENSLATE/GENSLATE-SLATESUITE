@@ -5,13 +5,13 @@ export const tabsVariants = tv({
     root: 'flex min-w-0 data-[orientation=vertical]:flex-row',
     list: 'relative z-base flex',
     tab: [
-      'relative z-raised inline-flex shrink-0 cursor-default select-none items-center justify-center gap-1.5 whitespace-nowrap outline-none',
+      'relative z-raised inline-flex shrink-0 cursor-default select-none items-center justify-center gap-1.5 whitespace-nowrap',
       'transition-colors duration-fast ease-standard',
       'data-disabled:pointer-events-none data-disabled:text-fg-disabled',
     ],
     indicator:
       'pointer-events-none absolute transition-[translate,width,height] duration-base ease-standard',
-    panel: 'focus-ring-inset min-w-0 flex-1 outline-none',
+    panel: 'focus-ring-inset min-w-0 flex-1',
   },
   variants: {
     variant: {

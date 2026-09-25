@@ -47,12 +47,15 @@ export function ProgressSection() {
         <ProgressBar label="Disk almost full" tone="warning" value={88} showValue />
       </Specimen>
 
-      <Specimen title="Spinner" description="A thin ring in the current colour: 12 · 14 · 16 · 20 · 32.">
+      <Specimen
+        title="Spinner"
+        description="A thin ring in the current colour: 12 · 14 · 16 · 20 · 32."
+      >
         {([12, 14, 16, 20, 32] as const).map((size) => (
           <Spinner key={size} size={size} className="text-fg-secondary" />
         ))}
         <Spinner size={16} className="text-accent-fg" label="Connecting" />
-        <span className="flex items-center gap-2 text-sm text-fg-muted">
+        <span className="flex items-center gap-2 text-fg-muted text-sm">
           <Spinner size={14} decorative /> Loading extensions…
         </span>
       </Specimen>

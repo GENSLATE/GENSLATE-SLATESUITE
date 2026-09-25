@@ -17,17 +17,27 @@ const DURATIONS = [
   { name: 'slow', className: 'duration-slow' },
 ] as const;
 
-function Track({ label, meta, moved, className }: { label: string; meta: string; moved: boolean; className: string }) {
+function Track({
+  label,
+  meta,
+  moved,
+  className,
+}: {
+  label: string;
+  meta: string;
+  moved: boolean;
+  className: string;
+}) {
   return (
-    <div className="grid grid-cols-[7rem_1fr_11rem] items-center gap-4">
-      <span className="font-mono text-code text-accent-fg">{label}</span>
+    <div className="grid grid-cols-[10rem_1fr_13rem] items-center gap-4">
+      <span className="whitespace-nowrap font-mono text-accent-fg text-code">{label}</span>
       <div className="@container relative h-6 rounded-full bg-fill-hover">
         <span
           className={`absolute top-1 left-1 size-4 rounded-full bg-accent shadow-control transition-transform ${className}`}
           style={{ transform: moved ? 'translateX(calc(100cqw - 1.5rem))' : 'translateX(0)' }}
         />
       </div>
-      <span className="text-sm text-fg-muted">{meta}</span>
+      <span className="truncate text-fg-muted text-sm">{meta}</span>
     </div>
   );
 }
@@ -35,7 +45,11 @@ function Track({ label, meta, moved, className }: { label: string; meta: string;
 export function MotionSection() {
   const [moved, setMoved] = useState(false);
   const reduced = useReducedMotion();
-  const play = <Button size="sm" leadingIcon="codicon:play" onClick={() => setMoved(!moved)}>Play</Button>;
+  const play = (
+    <Button size="sm" leadingIcon="codicon:play" onClick={() => setMoved(!moved)}>
+      Play
+    </Button>
+  );
 
   return (
     <>
@@ -68,10 +82,13 @@ export function MotionSection() {
         ))}
       </Specimen>
 
-      <Specimen title="Popup choreography" stageClassName="flex-col items-start gap-1 text-base text-fg-secondary">
+      <Specimen
+        title="Popup choreography"
+        stageClassName="flex-col items-start gap-1 text-base text-fg-secondary"
+      >
         <p>
-          Enter: opacity 0 → 1, scale {MOTION.scaleFrom} → 1, {MOTION.distance}px rise · duration-base ·
-          ease-enter
+          Enter: opacity 0 → 1, scale {MOTION.scaleFrom} → 1, {MOTION.distance}px rise ·
+          duration-base · ease-enter
         </p>
         <p>Exit: reverse · duration-fast · ease-exit</p>
         <p>Theme switches repaint instantly (transitions are suspended for one frame).</p>

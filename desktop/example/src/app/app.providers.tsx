@@ -1,5 +1,10 @@
 import { DesignSystemProvider, useTheme } from '@genslate/design-system';
-import { detectPlatform, setNativeTheme, useSystemTheme, useWindowControls } from '@genslate/tauri-bridge';
+import {
+  detectPlatform,
+  setNativeTheme,
+  useSystemTheme,
+  useWindowControls,
+} from '@genslate/tauri-bridge';
 import { type ReactNode, useEffect, useState } from 'react';
 
 /** Keeps the native window appearance (title bar, vibrancy, scrollbars) in step with the app theme. */

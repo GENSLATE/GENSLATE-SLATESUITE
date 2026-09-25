@@ -8,7 +8,7 @@ export const textFieldAdornmentVariants = tv({
 /** The small inline clear (×) button. */
 export const textFieldClearVariants = tv({
   base: [
-    'focus-ring -mr-1 flex size-5 shrink-0 items-center justify-center rounded-sm text-fg-muted outline-none',
+    'focus-ring -mr-1 flex size-5 shrink-0 items-center justify-center rounded-sm text-fg-muted',
     'transition-colors duration-fast ease-standard hover:bg-fill-hover hover:text-fg active:bg-fill-pressed',
   ],
 });

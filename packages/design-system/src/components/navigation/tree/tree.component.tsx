@@ -184,6 +184,7 @@ export function Tree({
     <TreeContext value={context}>
       <ul
         ref={rootRef}
+        // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: an APG tree is a list of treeitems.
         role="tree"
         aria-label={
           props['aria-labelledby'] == null

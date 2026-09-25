@@ -6,14 +6,20 @@ export interface PropRow {
 }
 
 /** A light props reference. */
-export function PropsTable({ rows, caption = 'Props' }: { rows: readonly PropRow[]; caption?: string }) {
+export function PropsTable({
+  rows,
+  caption = 'Props',
+}: {
+  rows: readonly PropRow[];
+  caption?: string;
+}) {
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-md font-semibold text-fg-strong">{caption}</h2>
-      <div className="overflow-x-auto scrollbar-thin rounded-card inset-ring inset-ring-border-subtle">
+      <h2 className="font-semibold text-fg-strong text-md">{caption}</h2>
+      <div className="scrollbar-thin inset-ring inset-ring-border-subtle overflow-x-auto rounded-card">
         <table className="w-full border-separate border-spacing-0 text-left text-sm">
           <thead>
-            <tr className="text-2xs font-semibold tracking-wider text-fg-muted uppercase">
+            <tr className="font-semibold text-2xs text-fg-muted uppercase tracking-wider">
               <th scope="col" className="px-4 py-2">
                 Prop
               </th>
@@ -31,14 +37,16 @@ export function PropsTable({ rows, caption = 'Props' }: { rows: readonly PropRow
           <tbody>
             {rows.map((row) => (
               <tr key={row.name} className="align-top">
-                <td className="px-4 py-2 font-mono text-code whitespace-nowrap text-accent-fg hairline-t select-text">
+                <td className="hairline-t select-text whitespace-nowrap px-4 py-2 font-mono text-accent-fg text-code">
                   {row.name}
                 </td>
-                <td className="px-4 py-2 font-mono text-code text-fg-secondary hairline-t select-text">{row.type}</td>
-                <td className="px-4 py-2 font-mono text-code whitespace-nowrap text-fg-muted hairline-t">
+                <td className="hairline-t select-text px-4 py-2 font-mono text-code text-fg-secondary">
+                  {row.type}
+                </td>
+                <td className="hairline-t whitespace-nowrap px-4 py-2 font-mono text-code text-fg-muted">
                   {row.default ?? '—'}
                 </td>
-                <td className="px-4 py-2 text-fg-secondary hairline-t">{row.description}</td>
+                <td className="hairline-t px-4 py-2 text-fg-secondary">{row.description}</td>
               </tr>
             ))}
           </tbody>

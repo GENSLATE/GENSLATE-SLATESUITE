@@ -1,6 +1,6 @@
 import { TrafficLights, WindowControls } from '@genslate/design-system';
-import { StateMatrix } from '../../components/state-matrix.component';
 import { Specimen } from '../../components/specimen.component';
+import { StateMatrix } from '../../components/state-matrix.component';
 
 const SHOW_GLYPHS = '[&_svg]:opacity-100';
 const PRESSED =

@@ -1,14 +1,21 @@
 import { ToggleButton, ToggleGroup } from '@genslate/design-system';
 import { useState } from 'react';
-import { StateMatrix } from '../../components/state-matrix.component';
 import { Specimen } from '../../components/specimen.component';
+import { StateMatrix } from '../../components/state-matrix.component';
 
 export function ToggleButtonSection() {
   const [align, setAlign] = useState<string[]>(['left']);
   return (
     <>
-      <Specimen title="Toggle group" description="Single choice with arrow-key roving focus, or multiple with `multiple`.">
-        <ToggleGroup aria-label="Text alignment" value={align} onValueChange={(value) => value.length && setAlign(value)}>
+      <Specimen
+        title="Toggle group"
+        description="Single choice with arrow-key roving focus, or multiple with `multiple`."
+      >
+        <ToggleGroup
+          aria-label="Text alignment"
+          value={align}
+          onValueChange={(value) => value.length && setAlign(value)}
+        >
           <ToggleButton value="left" icon="codicon:arrow-left" label="Align left" />
           <ToggleButton value="center" icon="codicon:arrow-both" label="Align centre" />
           <ToggleButton value="right" icon="codicon:arrow-right" label="Align right" />
@@ -36,12 +43,41 @@ export function ToggleButtonSection() {
               variant={variant}
               icon="codicon:bold"
               label="Bold"
-              className={variant === 'ghost' ? 'bg-fill-hover text-fg-strong' : 'bg-control-hover text-fg-strong'}
+              className={
+                variant === 'ghost'
+                  ? 'bg-fill-hover text-fg-strong'
+                  : 'bg-control-hover text-fg-strong'
+              }
             />,
-            <ToggleButton key="on" variant={variant} icon="codicon:bold" label="Bold" defaultPressed />,
-            <ToggleButton key="focus" variant={variant} icon="codicon:bold" label="Bold" className="outline-focus!" />,
-            <ToggleButton key="disabled" variant={variant} icon="codicon:bold" label="Bold" disabled />,
-            <ToggleButton key="disabled-on" variant={variant} icon="codicon:bold" label="Bold" disabled defaultPressed />,
+            <ToggleButton
+              key="on"
+              variant={variant}
+              icon="codicon:bold"
+              label="Bold"
+              defaultPressed
+            />,
+            <ToggleButton
+              key="focus"
+              variant={variant}
+              icon="codicon:bold"
+              label="Bold"
+              className="outline-focus!"
+            />,
+            <ToggleButton
+              key="disabled"
+              variant={variant}
+              icon="codicon:bold"
+              label="Bold"
+              disabled
+            />,
+            <ToggleButton
+              key="disabled-on"
+              variant={variant}
+              icon="codicon:bold"
+              label="Bold"
+              disabled
+              defaultPressed
+            />,
           ],
         }))}
       />

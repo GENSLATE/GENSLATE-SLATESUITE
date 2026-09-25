@@ -31,11 +31,11 @@ export const toastVariants = tv({
     title: 'font-semibold text-base text-fg-strong',
     description: 'text-fg-secondary text-sm',
     action: [
-      'focus-ring mt-1.5 w-fit rounded-sm font-medium text-accent-fg text-sm outline-none',
+      'focus-ring mt-1.5 w-fit rounded-sm font-medium text-accent-fg text-sm',
       'hover:underline hover:underline-offset-2',
     ],
     close: [
-      'focus-ring -mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-sm text-fg-muted outline-none',
+      'focus-ring -mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-sm text-fg-muted',
       'transition-colors duration-fast ease-standard hover:bg-fill-hover hover:text-fg active:bg-fill-pressed',
     ],
   },

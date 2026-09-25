@@ -214,9 +214,9 @@ export function CommandPalette({
                   if (group.name == null) return rows;
                   const labelId = `${id}-group-${groupIndex}`;
                   return (
+                    // biome-ignore lint/a11y/useSemanticElements: a listbox group must be role="group", not a fieldset.
                     <div
                       key={group.name}
-                      // biome-ignore lint/a11y/useSemanticElements: a listbox group must be role="group", not a fieldset.
                       role="group"
                       aria-labelledby={labelId}
                       data-slot="command-palette-group"

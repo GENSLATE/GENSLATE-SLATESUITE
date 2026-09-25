@@ -6,7 +6,8 @@
     background-color: var(--gs-color-canvas);
     color: var(--gs-color-fg);
     font-family: var(--gs-font-sans);
-    font-size: var(--gs-text-base);
+    /* The 13px base lives on body: html stays at the UA 16px so rem-based utilities keep the
+       4px spacing grid (p-2 = 8px) and respect the user's font-size preference. */
     line-height: var(--gs-text-base-line-height);
     letter-spacing: var(--gs-text-base-tracking);
     font-feature-settings: var(--gs-font-features);
@@ -24,6 +25,7 @@
   body {
     height: 100%;
     margin: 0;
+    font-size: var(--gs-text-base);
     overflow: hidden;
     cursor: default;
   }
@@ -80,7 +82,9 @@
   pre {
     font-family: var(--gs-font-mono);
     font-size: var(--gs-text-code);
-    font-feature-settings: 'calt' 1, 'liga' 0;
+    font-feature-settings:
+      'calt' 1,
+      'liga' 0;
   }
 
   img,

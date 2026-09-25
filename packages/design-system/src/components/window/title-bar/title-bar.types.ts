@@ -29,7 +29,7 @@ export interface TitleBarProps extends Omit<ComponentPropsWithRef<'header'>, 'ti
   center?: ReactNode | undefined;
   /** Right-aligned actions (icon buttons). */
   actions?: ReactNode | undefined;
-  labels?: TrafficLightsLabels & { restore?: string } | undefined;
+  labels?: (TrafficLightsLabels & { restore?: string }) | undefined;
 }
 
 export interface TitleBarCommandCenterProps

@@ -36,7 +36,11 @@ export function BannerSection() {
           </Button>
         )}
       </Specimen>
-      <Specimen title="Bar" description="Full-width strip under a toolbar or titlebar." stageClassName="flex-col items-stretch gap-0 p-0">
+      <Specimen
+        title="Bar"
+        description="Full-width strip under a toolbar or titlebar."
+        stageClassName="flex-col items-stretch gap-0 p-0"
+      >
         <Banner variant="bar" tone="warning" actions={<Button size="xs">Reload</Button>}>
           The workspace changed on disk.
         </Banner>
