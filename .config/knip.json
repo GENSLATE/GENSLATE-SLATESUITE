@@ -1,0 +1,49 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": ["**/generated/**", "**/*.generated.ts", ".config/moon/templates/**"],
+  "ignoreBinaries": ["moon", "cargo", "tauri"],
+  "ignoreExportsUsedInFile": true,
+  "workspaces": {
+    ".": {
+      "entry": [
+        "scripts/bun-commands/**/*.ts",
+        ".claude/hooks/*.ts",
+        ".claude/statusline/*.ts",
+        ".config/*.ts",
+        "tests/**/*.ts"
+      ],
+      "project": ["scripts/**/*.ts", ".claude/**/*.ts", ".config/*.ts", "tests/**/*.ts"],
+      "ignoreDependencies": [
+        "@commitlint/cli",
+        "@commitlint/config-conventional",
+        "@moonrepo/cli",
+        "lefthook",
+        "cspell"
+      ]
+    },
+    "packages/tokens": {
+      "entry": ["src/index.ts", "scripts/build-tokens.ts", "tests/**/*.test.ts"],
+      "project": ["src/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
+    },
+    "packages/design-system": {
+      "entry": ["src/index.ts", "scripts/*.ts", "tests/**/*.{ts,tsx}"],
+      "project": ["src/**/*.{ts,tsx}", "scripts/**/*.ts", "tests/**/*.{ts,tsx}"]
+    },
+    "packages/tauri-bridge": {
+      "entry": ["src/index.ts", "tests/**/*.test.ts"],
+      "project": ["src/**/*.ts", "tests/**/*.ts"]
+    },
+    "packages/config-vite": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts"]
+    },
+    "packages/config-typescript": {
+      "entry": [],
+      "project": []
+    },
+    "desktop/*": {
+      "entry": ["src/main.tsx", "vite.config.ts", "tests/**/*.{ts,tsx}"],
+      "project": ["src/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}"]
+    }
+  }
+}

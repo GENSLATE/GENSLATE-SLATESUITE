@@ -1,0 +1,38 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — Cargo configuration (included from /.cargo/config.toml)
+#  https://doc.rust-lang.org/cargo/reference/config.html
+#  No target-dir override: the workspace shares /target, which moon and
+#  `bun run package` expect.
+# ──────────────────────────────────────────────────────────────────────
+
+[alias]
+# Mirrors the moon tasks (`moon run root:rust-*`) for quick local use.
+lint = "clippy --workspace --all-targets --locked -- -D warnings"
+fmt-check = "fmt --all --check"
+t = "test --workspace --locked"
+docs = "doc --workspace --no-deps --document-private-items"
+deny-check = "deny --config .config/cargo/deny.toml check"
+mutants-ws = "mutants --config .config/cargo/mutants.toml"
+cov = "tarpaulin --config .config/cargo/tarpaulin.toml"
+
+[build]
+# Keep incremental builds on for dev; release profiles disable it themselves.
+incremental = true
+
+[cargo-new]
+# New crates live inside the monorepo's git repository.
+vcs = "none"
+
+[net]
+retry = 3
+# Use the system git (respects proxies/credential helpers) for git dependencies.
+git-fetch-with-cli = true
+
+[term]
+color = "auto"
+progress.when = "auto"
+progress.width = 80
+
+[env]
+# Default log filter for `cargo run` / tests; overridable via RUST_LOG in .env.
+RUST_LOG = { value = "info", force = false }

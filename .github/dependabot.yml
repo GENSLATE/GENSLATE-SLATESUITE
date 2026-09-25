@@ -1,0 +1,84 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — Dependabot
+#  npm deps are pinned exactly in the root package.json `workspaces.catalog`
+#  (bun ecosystem), crates in the root Cargo.toml, actions by commit SHA.
+#  `cooldown` quarantines brand-new releases before a PR is opened.
+#  Tool versions (.prototools: moon, bun, rust) are bumped by hand.
+# ──────────────────────────────────────────────────────────────────────
+version: 2
+
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: 'chore(deps)'
+    labels: [dependencies, javascript]
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
+    groups:
+      tauri-js:
+        patterns: ['@tauri-apps/*']
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom', 'babel-plugin-react-compiler']
+      tailwind:
+        patterns: ['tailwindcss', '@tailwindcss/*', 'tailwind-merge', 'tailwind-variants']
+      testing:
+        patterns: ['@testing-library/*', 'happy-dom', '@happy-dom/*']
+      tooling:
+        patterns: ['@biomejs/biome', '@commitlint/*', 'cspell', 'knip', 'lefthook', '@moonrepo/cli', 'typescript', '@types/bun']
+      build:
+        patterns: ['vite', '@vitejs/*', '@rolldown/*', '@babel/*']
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+    labels: [dependencies, rust]
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
+    groups:
+      tauri-rust:
+        patterns: ['tauri', 'tauri-*']
+      serde:
+        patterns: ['serde', 'serde_*']
+      tracing:
+        patterns: ['tracing', 'tracing-*', 'log']
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Etc/UTC
+    commit-message:
+      prefix: 'chore(ci)'
+    labels: [dependencies, ci]
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']

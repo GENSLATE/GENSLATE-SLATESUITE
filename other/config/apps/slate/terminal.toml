@@ -1,0 +1,9 @@
+# GENSLATE Terminal — development config (reserved; the app does not exist yet).
+# When desktop/terminal is created (`bun run new-app terminal`), its core crate will read this file in dev
+# builds, like other/config/apps/example.toml. Expected shape:
+#
+# [appearance]
+# theme = "system"   # "system" | "polar-night" | "snow-storm"
+#
+# [logging]
+# level = "info"     # "off" | "error" | "warn" | "info" | "debug" | "trace"

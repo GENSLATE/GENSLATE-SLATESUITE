@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en,en-GB",
+  "useGitignore": true,
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": "./cspell/project-words.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": [
+    "project-words",
+    "bash",
+    "companies",
+    "css",
+    "en_US",
+    "filetypes",
+    "fonts",
+    "html",
+    "node",
+    "npm",
+    "rust",
+    "softwareTerms",
+    "typescript"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/target/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/generated/**",
+    "**/*.generated.ts",
+    "**/src-tauri/gen/**",
+    "**/icons/**",
+    "bun.lock",
+    "Cargo.lock",
+    "release/**",
+    "other/logs/**",
+    ".config/moon/cache/**",
+    ".claude/logs/**",
+    "LICENSE",
+    "other/licenses/**",
+    "**/*.svg",
+    "**/*.{png,jpg,jpeg,gif,ico,icns,webp,woff,woff2,ttf,otf}"
+  ],
+  "ignoreRegExpList": [
+    "/#[0-9a-fA-F]{3,8}\\b/g",
+    "/\\b[0-9a-f]{40}\\b/g",
+    "/sha(256|384|512)-[A-Za-z0-9+/=]+/g"
+  ],
+  "overrides": [
+    {
+      "filename": "**/*.rs",
+      "dictionaries": ["rust"]
+    }
+  ]
+}

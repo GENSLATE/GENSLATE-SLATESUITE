@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — cargo-tarpaulin (Rust code coverage)
+#  Run: `cargo tarpaulin --config .config/cargo/tarpaulin.toml` (alias: `cargo cov`)
+#  https://github.com/xd009642/tarpaulin#config-file
+# ──────────────────────────────────────────────────────────────────────
+
+[default]
+workspace = true
+# LLVM source-based coverage works on Linux, macOS and Windows.
+engine = "Llvm"
+locked = true
+skip-clean = true
+timeout = "180s"
+out = ["Html", "Lcov"]
+output-dir = "target/coverage"
+# Generated tables and Tauri entry points (`main.rs`) are not meaningful coverage targets.
+exclude-files = [
+    "crates/design-tokens/src/generated/*",
+    "desktop/*/src-tauri/src/main.rs",
+    "desktop/*/src-tauri/build.rs",
+]
+fail-under = 0

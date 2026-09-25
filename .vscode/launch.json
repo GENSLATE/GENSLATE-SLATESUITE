@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Tauri: debug example (Rust)",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--package", "genslate-example", "--bin", "genslate-example"],
+        "filter": { "name": "genslate-example", "kind": "bin" }
+      },
+      "cwd": "${workspaceFolder}/desktop/example/src-tauri",
+      "env": { "RUST_LOG": "debug", "RUST_BACKTRACE": "1" },
+      "preLaunchTask": "example: vite dev server"
+    },
+    {
+      "name": "Rust: debug workspace unit tests",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["test", "--no-run", "--workspace", "--lib"]
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "bun test: current file",
+      "type": "bun",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "runtimeArgs": ["test"],
+      "watchMode": false,
+      "stopOnEntry": false
+    },
+    {
+      "name": "bun: run current script",
+      "type": "bun",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "stopOnEntry": false,
+      "watchMode": false
+    }
+  ]
+}

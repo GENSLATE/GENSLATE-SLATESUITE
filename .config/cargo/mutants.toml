@@ -1,0 +1,25 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — cargo-mutants (mutation testing)
+#  Run: `cargo mutants --config .config/cargo/mutants.toml` (alias: `cargo mutants-ws`)
+#  https://mutants.rs/config.html
+# ──────────────────────────────────────────────────────────────────────
+
+# Mutate the shared crates; desktop app shells are thin Tauri glue covered by e2e tests.
+examine_globs = ["crates/**/*.rs"]
+
+exclude_globs = [
+    # Generated from packages/tokens — mutating data tables is noise.
+    "crates/design-tokens/src/generated/**",
+    # Test helpers.
+    "crates/testing/**",
+]
+
+# Never mutate logging / tracing calls or Debug impls.
+exclude_re = ["impl Debug", "impl fmt::Debug", "tracing::", "log::"]
+
+# Run the whole workspace's tests against each mutant (crates are tested from dependents too).
+test_workspace = true
+additional_cargo_test_args = ["--locked"]
+
+timeout_multiplier = 3.0
+minimum_test_timeout = 30

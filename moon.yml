@@ -60,14 +60,15 @@ tasks:
     toolchains: ['rust']
 
   # ── Repo-wide quality ───────────────────────────────────────────────
+  # Biome does not auto-discover `.config/biome.json`, so the path is always passed.
   lint:
     command: 'biome'
-    args: ['check', '.']
-    inputs: ['/**/*.{ts,tsx,js,json,jsonc,css}', '/biome.jsonc']
+    args: ['check', '--config-path=.config/biome.json', '.']
+    inputs: ['/**/*.{ts,tsx,js,json,jsonc,css}', '/.config/biome.json']
     toolchains: ['javascript', 'bun']
   format:
     command: 'biome'
-    args: ['check', '--write', '.']
+    args: ['check', '--config-path=.config/biome.json', '--write', '.']
     preset: 'utility'
     toolchains: ['javascript', 'bun']
   spell:
