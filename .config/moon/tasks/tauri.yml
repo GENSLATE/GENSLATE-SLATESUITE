@@ -1,0 +1,47 @@
+# Inherited by every Tauri desktop app (projects tagged `desktop-app`).
+$schema: '../cache/schemas/tasks.json'
+
+inheritedBy:
+  tags: ['desktop-app']
+
+fileGroups:
+  tauri:
+    - 'src-tauri/**/*'
+    - '!src-tauri/gen/**/*'
+  web:
+    - 'index.html'
+    - 'vite.config.ts'
+    - 'public/**/*'
+
+tasks:
+  # Native window + Vite HMR (runs `beforeDevCommand` from tauri.conf.json).
+  dev:
+    command: 'bun'
+    args: ['run', 'tauri', 'dev']
+    preset: 'server'
+    toolchains: ['javascript', 'bun']
+
+  # Frontend only, in a normal browser (tauri-bridge calls become no-ops).
+  web-dev:
+    command: 'bun'
+    args: ['run', 'vite:dev']
+    preset: 'server'
+    toolchains: ['javascript', 'bun']
+
+  web-build:
+    command: 'bun'
+    args: ['run', 'vite:build']
+    inputs: ['@group(sources)', '@group(web)', '@group(configs)']
+    outputs: ['dist/**/*']
+    toolchains: ['javascript', 'bun']
+
+  # Release build + installers (target/release/bundle/**). Packaging into
+  # release/ is done by `bun run package`.
+  build:
+    command: 'bun'
+    args: ['run', 'tauri', 'build']
+    inputs: ['@group(sources)', '@group(web)', '@group(tauri)', '@group(configs)']
+    toolchains: ['javascript', 'bun']
+    options:
+      cache: false
+      runInCI: false

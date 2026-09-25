@@ -1,0 +1,4 @@
+{
+  "extends": "@genslate/config-typescript/tsconfig.bun.json",
+  "include": ["src"]
+}

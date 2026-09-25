@@ -1,0 +1,32 @@
+# Normalise all text to LF in the repository.
+* text=auto eol=lf
+
+# Windows scripts keep CRLF.
+*.cmd  text eol=crlf
+*.bat  text eol=crlf
+*.ps1  text eol=crlf
+
+# Binary assets.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.icns  binary
+*.webp  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.exe   binary
+*.msi   binary
+*.dmg   binary
+
+# Lockfiles: never merge by hand, collapse in diffs.
+bun.lock   linguist-generated=true -diff
+Cargo.lock linguist-generated=true -diff
+
+# Generated design tokens — edit packages/tokens/src, then run `bun run tokens`.
+packages/tokens/src/generated/**            linguist-generated=true
+crates/design-tokens/src/generated/**       linguist-generated=true
+packages/design-system/src/icons/*.generated.ts linguist-generated=true

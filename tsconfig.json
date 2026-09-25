@@ -1,0 +1,5 @@
+{
+  "extends": "@genslate/config-typescript/tsconfig.bun.json",
+  "include": ["scripts", ".claude/hooks", ".claude/statusline", ".config/*.ts", "tests"],
+  "exclude": ["node_modules", "**/node_modules", "target"]
+}

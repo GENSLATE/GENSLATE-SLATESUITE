@@ -1,0 +1,565 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "theme": "polar-night",
+      "fg": "fg",
+      "bg": "canvas",
+      "fgHex": "#d8dee9",
+      "bgHex": "#2e3440",
+      "ratio": 9.25,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg",
+      "bg": "surface-sidebar",
+      "fgHex": "#d8dee9",
+      "bgHex": "#272c38",
+      "ratio": 10.34,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg",
+      "bg": "surface-raised",
+      "fgHex": "#d8dee9",
+      "bgHex": "#3b4252",
+      "ratio": 7.45,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg",
+      "bg": "surface-popover",
+      "fgHex": "#d8dee9",
+      "bgHex": "#3b4252",
+      "ratio": 7.45,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg",
+      "bg": "field",
+      "fgHex": "#d8dee9",
+      "bgHex": "#272c38",
+      "ratio": 10.34,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg-strong",
+      "bg": "selection",
+      "fgHex": "#eceff4",
+      "bgHex": "#485e7b",
+      "ratio": 5.76,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg-secondary",
+      "bg": "canvas",
+      "fgHex": "#bfc5d0",
+      "bgHex": "#2e3440",
+      "ratio": 7.2,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg-secondary",
+      "bg": "surface-sidebar",
+      "fgHex": "#bfc5d0",
+      "bgHex": "#272c38",
+      "ratio": 8.06,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg-muted",
+      "bg": "canvas",
+      "fgHex": "#aeb4bf",
+      "bgHex": "#2e3440",
+      "ratio": 6,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg-muted",
+      "bg": "surface-sidebar",
+      "fgHex": "#aeb4bf",
+      "bgHex": "#272c38",
+      "ratio": 6.7,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "fg-muted",
+      "bg": "surface-popover",
+      "fgHex": "#aeb4bf",
+      "bgHex": "#3b4252",
+      "ratio": 4.83,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "on-accent",
+      "bg": "accent",
+      "fgHex": "#2e3440",
+      "bgHex": "#88c0d0",
+      "ratio": 6.24,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "on-accent",
+      "bg": "accent-hover",
+      "fgHex": "#2e3440",
+      "bgHex": "#91cada",
+      "ratio": 6.94,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "accent-fg",
+      "bg": "canvas",
+      "fgHex": "#88c0d0",
+      "bgHex": "#2e3440",
+      "ratio": 6.24,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "focus",
+      "bg": "canvas",
+      "fgHex": "#88c0d0",
+      "bgHex": "#2e3440",
+      "ratio": 6.24,
+      "min": 3,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "focus",
+      "bg": "surface-sidebar",
+      "fgHex": "#88c0d0",
+      "bgHex": "#272c38",
+      "ratio": 6.98,
+      "min": 3,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "on-danger",
+      "bg": "danger",
+      "fgHex": "#ffffff",
+      "bgHex": "#a44953",
+      "ratio": 5.74,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "danger-fg",
+      "bg": "canvas",
+      "fgHex": "#f6929a",
+      "bgHex": "#2e3440",
+      "ratio": 5.65,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "on-warning",
+      "bg": "warning",
+      "fgHex": "#2e3440",
+      "bgHex": "#ebcb8b",
+      "ratio": 8,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "warning-fg",
+      "bg": "canvas",
+      "fgHex": "#ebcb8b",
+      "bgHex": "#2e3440",
+      "ratio": 8,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "on-success",
+      "bg": "success",
+      "fgHex": "#2e3440",
+      "bgHex": "#a3be8c",
+      "ratio": 6.13,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "success-fg",
+      "bg": "canvas",
+      "fgHex": "#a3be8c",
+      "bgHex": "#2e3440",
+      "ratio": 6.13,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "on-info",
+      "bg": "info",
+      "fgHex": "#2e3440",
+      "bgHex": "#81a1c1",
+      "ratio": 4.64,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "info-fg",
+      "bg": "canvas",
+      "fgHex": "#99badb",
+      "bgHex": "#2e3440",
+      "ratio": 6.19,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "titlebar-fg",
+      "bg": "titlebar-bg",
+      "fgHex": "#bfc5d0",
+      "bgHex": "#272c38",
+      "ratio": 8.06,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "statusbar-fg",
+      "bg": "statusbar-bg",
+      "fgHex": "#aeb4bf",
+      "bgHex": "#272c38",
+      "ratio": 6.7,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "statusbar-accent-fg",
+      "bg": "statusbar-accent-bg",
+      "fgHex": "#2e3440",
+      "bgHex": "#88c0d0",
+      "ratio": 6.24,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "tooltip-fg",
+      "bg": "tooltip-bg",
+      "fgHex": "#eceff4",
+      "bgHex": "#3b4252",
+      "ratio": 8.73,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg",
+      "bg": "canvas",
+      "fgHex": "#3b4252",
+      "bgHex": "#f4f7fc",
+      "ratio": 9.37,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg",
+      "bg": "surface-sidebar",
+      "fgHex": "#3b4252",
+      "bgHex": "#eceff4",
+      "ratio": 8.73,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg",
+      "bg": "surface-raised",
+      "fgHex": "#3b4252",
+      "bgHex": "#ffffff",
+      "ratio": 10.06,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg",
+      "bg": "surface-popover",
+      "fgHex": "#3b4252",
+      "bgHex": "#f4f7fc",
+      "ratio": 9.37,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg",
+      "bg": "field",
+      "fgHex": "#3b4252",
+      "bgHex": "#ffffff",
+      "ratio": 10.06,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg-strong",
+      "bg": "selection",
+      "fgHex": "#2e3440",
+      "bgHex": "#d6dfec",
+      "ratio": 9.29,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg-secondary",
+      "bg": "canvas",
+      "fgHex": "#434c5e",
+      "bgHex": "#f4f7fc",
+      "ratio": 8.03,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg-secondary",
+      "bg": "surface-sidebar",
+      "fgHex": "#434c5e",
+      "bgHex": "#eceff4",
+      "ratio": 7.49,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg-muted",
+      "bg": "canvas",
+      "fgHex": "#4c566a",
+      "bgHex": "#f4f7fc",
+      "ratio": 6.87,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg-muted",
+      "bg": "surface-sidebar",
+      "fgHex": "#4c566a",
+      "bgHex": "#eceff4",
+      "ratio": 6.4,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "fg-muted",
+      "bg": "surface-popover",
+      "fgHex": "#4c566a",
+      "bgHex": "#f4f7fc",
+      "ratio": 6.87,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "on-accent",
+      "bg": "accent",
+      "fgHex": "#ffffff",
+      "bgHex": "#476993",
+      "ratio": 5.66,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "on-accent",
+      "bg": "accent-hover",
+      "fgHex": "#ffffff",
+      "bgHex": "#42648d",
+      "ratio": 6.11,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "accent-fg",
+      "bg": "canvas",
+      "fgHex": "#476993",
+      "bgHex": "#f4f7fc",
+      "ratio": 5.27,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "focus",
+      "bg": "canvas",
+      "fgHex": "#5e81ac",
+      "bgHex": "#f4f7fc",
+      "ratio": 3.75,
+      "min": 3,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "focus",
+      "bg": "surface-sidebar",
+      "fgHex": "#5e81ac",
+      "bgHex": "#eceff4",
+      "ratio": 3.5,
+      "min": 3,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "on-danger",
+      "bg": "danger",
+      "fgHex": "#ffffff",
+      "bgHex": "#a44953",
+      "ratio": 5.74,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "danger-fg",
+      "bg": "canvas",
+      "fgHex": "#9e434e",
+      "bgHex": "#f4f7fc",
+      "ratio": 5.81,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "on-warning",
+      "bg": "warning",
+      "fgHex": "#2e3440",
+      "bgHex": "#ebcb8b",
+      "ratio": 8,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "warning-fg",
+      "bg": "canvas",
+      "fgHex": "#7a5d1b",
+      "bgHex": "#f4f7fc",
+      "ratio": 5.74,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "on-success",
+      "bg": "success",
+      "fgHex": "#2e3440",
+      "bgHex": "#8ba574",
+      "ratio": 4.6,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "success-fg",
+      "bg": "canvas",
+      "fgHex": "#51693b",
+      "bgHex": "#f4f7fc",
+      "ratio": 5.7,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "on-info",
+      "bg": "info",
+      "fgHex": "#ffffff",
+      "bgHex": "#587795",
+      "ratio": 4.68,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "info-fg",
+      "bg": "canvas",
+      "fgHex": "#476583",
+      "bgHex": "#f4f7fc",
+      "ratio": 5.66,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "titlebar-fg",
+      "bg": "titlebar-bg",
+      "fgHex": "#434c5e",
+      "bgHex": "#eceff4",
+      "ratio": 7.49,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "statusbar-fg",
+      "bg": "statusbar-bg",
+      "fgHex": "#4c566a",
+      "bgHex": "#eceff4",
+      "ratio": 6.4,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "statusbar-accent-fg",
+      "bg": "statusbar-accent-bg",
+      "fgHex": "#ffffff",
+      "bgHex": "#476993",
+      "ratio": 5.66,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "tooltip-fg",
+      "bg": "tooltip-bg",
+      "fgHex": "#eceff4",
+      "bgHex": "#3b4252",
+      "ratio": 8.73,
+      "min": 4.5,
+      "pass": true
+    }
+  ]
+}

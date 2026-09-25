@@ -1,0 +1,5 @@
+# Kept in sync with .prototools by moon (`rust.syncToolchainConfig`).
+[toolchain]
+channel = "1.98.1"
+profile = "minimal"
+components = ["clippy", "rustfmt"]

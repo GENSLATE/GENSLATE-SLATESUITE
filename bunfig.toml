@@ -1,0 +1,16 @@
+# Bun only reads bunfig.toml from the directory it runs in, so this file stays at the root.
+# https://bun.com/docs/runtime/bunfig
+
+[install]
+# Each workspace package only sees the dependencies it declares.
+linker = "isolated"
+# Pin exact versions (catalog versions are exact too).
+exact = true
+# Supply chain: exact pins + committed bun.lock + `--frozen-lockfile` in CI. New releases
+# are quarantined at the update-PR level (Dependabot `cooldown` + dependency-review), not
+# here — an install-time `minimumReleaseAge` would block the reviewed latest-stable pins.
+
+[test]
+coverageReporter = ["text", "lcov"]
+coverageDir = "coverage"
+coverageSkipTestFiles = true

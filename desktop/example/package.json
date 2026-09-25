@@ -1,0 +1,42 @@
+{
+  "name": "@genslate/example",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GENSLATE Example: the Design Kit showcase desktop app.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri",
+    "vite:dev": "vite",
+    "vite:build": "vite build",
+    "vite:preview": "vite preview"
+  },
+  "dependencies": {
+    "@genslate/design-system": "workspace:*",
+    "@genslate/tauri-bridge": "workspace:*",
+    "@genslate/tokens": "workspace:*",
+    "@tauri-apps/api": "catalog:",
+    "@tauri-apps/plugin-log": "catalog:",
+    "@tauri-apps/plugin-opener": "catalog:",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@genslate/config-typescript": "workspace:*",
+    "@genslate/config-vite": "workspace:*",
+    "@happy-dom/global-registrator": "catalog:",
+    "@tauri-apps/cli": "catalog:",
+    "@testing-library/dom": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/bun": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "happy-dom": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

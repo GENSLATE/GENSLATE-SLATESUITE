@@ -1,0 +1,31 @@
+# Inherited by every TypeScript project.
+$schema: '../cache/schemas/tasks.json'
+
+inheritedBy:
+  languages: ['typescript']
+
+implicitInputs:
+  - '/packages/config-typescript/*.json'
+  - '/bun.lock'
+
+tasks:
+  # Strict type-check with the native TypeScript 7 compiler (no emit).
+  typecheck:
+    command: 'tsc'
+    args: ['--noEmit', '--project', 'tsconfig.json']
+    inputs:
+      - '@group(sources)'
+      - '@group(tests)'
+      - '@group(configs)'
+      - '*.ts'
+    toolchains: ['javascript', 'bun']
+
+  # Unit + component tests with bun's test runner.
+  test:
+    command: 'bun'
+    args: ['test']
+    inputs:
+      - '@group(sources)'
+      - '@group(tests)'
+      - '@group(configs)'
+    toolchains: ['javascript', 'bun']

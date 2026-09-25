@@ -1,0 +1,30 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — moon toolchains (v2 WASM plugins)
+#  Versions are inherited from the root `.prototools` (single source of truth).
+#  https://moonrepo.dev/docs/config/toolchain
+# ──────────────────────────────────────────────────────────────────────
+$schema: './cache/schemas/toolchains.json'
+
+javascript:
+  packageManager: 'bun'
+  dependencyVersionFormat: 'workspace'
+  inferTasksFromScripts: false
+  syncPackageManagerField: true
+  syncProjectWorkspaceDependencies: true
+  dedupeOnLockfileChange: true
+
+# Bun is the only JavaScript runtime — no Node toolchain.
+bun: {}
+
+typescript:
+  # Packages ship TypeScript source (no emit), so project references are not used.
+  syncProjectReferences: false
+  createMissingConfig: false
+  routeOutDirToCache: false
+
+rust:
+  syncToolchainConfig: true
+  components: ['clippy', 'rustfmt']
+  bins:
+    - 'cargo-deny'
+    - 'cargo-machete'

@@ -1,0 +1,6 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — moon extensions (WASM plugins run with `moon ext <id>`)
+#  https://moonrepo.dev/docs/config/extensions
+#  None are needed yet; register them here when they are.
+# ──────────────────────────────────────────────────────────────────────
+$schema: './cache/schemas/extensions.json'

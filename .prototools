@@ -1,0 +1,8 @@
+# Single source of truth for toolchain versions.
+# moon inherits these (versionFromPrototools) and moonrepo/setup-toolchain reads them in CI.
+moon = "2.5.5"
+bun = "1.4.2"
+rust = "1.98.1"
+
+[settings]
+auto-install = true

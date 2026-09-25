@@ -1,0 +1,2 @@
+# Cargo only reads `.cargo/config.toml`; the real configuration lives in `.config/cargo/`.
+include = ["../.config/cargo/config.toml"]
