@@ -1,6 +1,6 @@
-/**
- * @genslate/design-system/actions
- * Planned exports: Button, IconButton, SegmentedControl, SegmentedControlItem, Toolbar, ToolbarGroup, ToolbarSeparator.
- * One `export * from './<name>';` line per component folder.
- */
-export {};
+/** @genslate/design-system/actions */
+export * from './button';
+export * from './icon-button';
+export * from './segmented-control';
+export * from './toggle-button';
+export * from './toolbar';

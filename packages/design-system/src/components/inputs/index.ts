@@ -1,6 +1,15 @@
 /**
  * @genslate/design-system/inputs
- * Planned exports: TextField, SearchField, Textarea, Checkbox, CheckboxGroup, Switch, RadioGroup, Radio, Select (+ parts), Slider.
  * One `export * from './<name>';` line per component folder.
  */
-export {};
+export * from './checkbox';
+export * from './checkbox-group';
+export * from './field';
+export * from './number-field';
+export * from './radio-group';
+export * from './search-field';
+export * from './select';
+export * from './slider';
+export * from './switch';
+export * from './text-field';
+export * from './textarea';

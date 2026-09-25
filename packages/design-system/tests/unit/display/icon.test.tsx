@@ -27,7 +27,7 @@ describe('Icon', () => {
 
 describe('cn', () => {
   test('merges token utilities without dropping colour vs size', () => {
-    expect(cn('text-sm text-fg-muted', 'text-base')).toBe('text-fg-muted text-base');
+    expect(cn('text-fg-muted text-sm', 'text-base')).toBe('text-fg-muted text-base');
     expect(cn('bg-surface', 'bg-accent')).toBe('bg-accent');
     expect(cn('h-control-md', 'h-control-sm')).toBe('h-control-sm');
     expect(cn('z-popover', 'z-dialog')).toBe('z-dialog');

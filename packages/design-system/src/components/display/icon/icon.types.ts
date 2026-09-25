@@ -13,12 +13,12 @@ export type SvgIconComponent = ComponentType<
 
 interface IconBaseProps {
   /** Pixel size. Codicons are drawn on a 16px grid; 14 in dense spots. */
-  size?: IconSize;
+  size?: IconSize | undefined;
   /** Accessible name. Omit for decorative icons (they are hidden from assistive tech). */
-  label?: string;
-  className?: string;
+  label?: string | undefined;
+  className?: string | undefined;
   /** Spin (e.g. `codicon:loading`, `codicon:sync`). Honours reduced motion. */
-  spin?: boolean;
+  spin?: boolean | undefined;
 }
 
 export interface CodiconIconProps extends IconBaseProps {

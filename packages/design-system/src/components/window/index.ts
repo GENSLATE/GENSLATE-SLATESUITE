@@ -1,6 +1,6 @@
-/**
- * @genslate/design-system/window
- * Planned exports: TitleBar, TrafficLights, StatusBar, StatusBarItem, AppShell.
- * One `export * from './<name>';` line per component folder.
- */
-export {};
+/** @genslate/design-system/window */
+export * from './app-shell';
+export * from './status-bar';
+export * from './title-bar';
+export * from './traffic-lights';
+export * from './window-controls';

@@ -1,6 +1,12 @@
 /**
  * @genslate/design-system/overlays
- * Planned exports: Tooltip, Popover, Menu (+ parts), ContextMenu (+ parts), Dialog (+ parts), AlertDialog (+ parts), CommandPalette, Toast, useToast.
  * One `export * from './<name>';` line per component folder.
  */
-export {};
+export * from './alert-dialog';
+export * from './command-palette';
+export * from './context-menu';
+export * from './dialog';
+export * from './menu';
+export * from './popover';
+export * from './toast';
+export * from './tooltip';

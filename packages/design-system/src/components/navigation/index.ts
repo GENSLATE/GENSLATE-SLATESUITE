@@ -1,6 +1,7 @@
 /**
  * @genslate/design-system/navigation
- * Planned exports: Tabs, TabsList, Tab, TabsPanel, Tree, TreeItem.
  * One `export * from './<name>';` line per component folder.
  */
-export {};
+export * from './breadcrumbs';
+export * from './tabs';
+export * from './tree';
