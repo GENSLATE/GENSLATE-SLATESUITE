@@ -1,0 +1,30 @@
+{
+  "guard-generated": {
+    "PreToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ./hooks/guard-generated.hook.ts",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "format-on-edit": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ./hooks/format-on-edit.hook.ts",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

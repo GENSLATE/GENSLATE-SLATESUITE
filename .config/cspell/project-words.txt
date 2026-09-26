@@ -116,6 +116,7 @@ unminimize
 vadimcn
 vibrancy
 WCAG
+webapps
 webkit
 webkitgtk
 webview
