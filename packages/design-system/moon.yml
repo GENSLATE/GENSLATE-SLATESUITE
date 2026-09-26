@@ -1,0 +1,19 @@
+$schema: '../../.config/moon/cache/schemas/project.json'
+
+language: 'typescript'
+layer: 'library'
+stack: 'frontend'
+tags: ['ui']
+
+project:
+  title: 'Design System'
+  description: 'Nord · macOS-refined · VS Code-flat React component kit (Base UI + Tailwind CSS v4).'
+
+dependsOn:
+  - 'tokens'
+  - id: 'config-typescript'
+    scope: 'development'
+
+tasks:
+  test:
+    args: ['--preload', './tests/setup/dom.preload.ts']

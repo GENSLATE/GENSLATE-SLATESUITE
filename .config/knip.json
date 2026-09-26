@@ -1,0 +1,41 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "workspaces": {
+    ".": {
+      "entry": [
+        "scripts/bun-commands/**/*.ts",
+        ".claude/hooks/*.ts",
+        ".claude/statusline/*.ts",
+        ".config/*.ts",
+        "scripts/tests/**/*.test.ts"
+      ],
+      "project": ["scripts/**/*.ts", ".claude/**/*.ts", ".config/*.ts"],
+      "ignoreDependencies": ["@commitlint/config-conventional"]
+    },
+    "packages/tokens": {
+      "entry": ["tests/**/*.test.ts"],
+      "project": ["src/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
+    },
+    "packages/design-system": {
+      "entry": ["scripts/*.ts", "tests/**/*.{ts,tsx}", "tests/setup/*.ts"],
+      "project": ["src/**/*.{ts,tsx}", "scripts/**/*.ts", "tests/**/*.{ts,tsx}"]
+    },
+    "packages/tauri-bridge": {
+      "entry": ["tests/**/*.test.ts", "tests/setup/*.ts"],
+      "project": ["src/**/*.ts", "tests/**/*.ts"]
+    },
+    "packages/config-vite": {
+      "entry": [],
+      "project": ["src/**/*.ts"]
+    },
+    "packages/config-typescript": {
+      "entry": [],
+      "project": []
+    },
+    "desktop/*": {
+      "entry": ["tests/**/*.{ts,tsx}", "tests/setup/*.ts"],
+      "project": ["src/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}"]
+    }
+  }
+}

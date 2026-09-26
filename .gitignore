@@ -1,5 +1,45 @@
-# GENLATE DEV STUFF STORAGE
+# ─── GENSLATE ─────────────────────────────────────────────────────────
 .genslate/*
 
-# GENSLATE SENSISTIVE DATAS
-.claude/mcp.json
+# ─── Dependencies ─────────────────────────────────────────────────────
+node_modules/
+
+# ─── Build output ─────────────────────────────────────────────────────
+dist/
+target/
+coverage/
+*.tsbuildinfo
+desktop/*/src-tauri/gen/schemas/
+
+# ─── Packaged releases (keep the folder) ──────────────────────────────
+release/*
+!release/.gitkeep
+
+# ─── moon ─────────────────────────────────────────────────────────────
+.config/moon/cache/
+.config/moon/docker/
+
+# ─── Secrets & environment ────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+**/credentials.toml
+*.pem
+*.key
+
+# ─── Claude Code (personal / runtime) ─────────────────────────────────
+.claude/settings.local.json
+.claude/logs/*
+!.claude/logs/.gitkeep
+CLAUDE.local.md
+
+# ─── App runtime logs (keep the folders) ──────────────────────────────
+other/logs/**/*.log
+other/logs/**/*.log.*
+
+# ─── OS / editor noise ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/

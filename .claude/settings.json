@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(bun run *)",
+      "Bash(bun test *)",
+      "Bash(bun install)",
+      "Bash(bun install --frozen-lockfile)",
+      "Bash(bun scripts/bun-commands/*)",
+      "Bash(bun packages/tokens/scripts/build-tokens.ts *)",
+      "Bash(bun x moon run *)",
+      "Bash(bun x moon check *)",
+      "Bash(bun x moon ci *)",
+      "Bash(bun x moon query *)",
+      "Bash(bun x moon project *)",
+      "Bash(bun x moon projects *)",
+      "Bash(bun x moon task *)",
+      "Bash(bun x moon tasks *)",
+      "Bash(bun x biome check *)",
+      "Bash(bun x biome format *)",
+      "Bash(bun x biome lint *)",
+      "Bash(bun x cspell *)",
+      "Bash(bun x knip *)",
+      "Bash(bun x tsc --noEmit *)",
+      "Bash(moon run *)",
+      "Bash(moon check *)",
+      "Bash(moon query *)",
+      "Bash(moon project *)",
+      "Bash(moon task *)",
+      "Bash(cargo check *)",
+      "Bash(cargo clippy *)",
+      "Bash(cargo test *)",
+      "Bash(cargo fmt *)",
+      "Bash(cargo build *)",
+      "Bash(cargo doc *)",
+      "Bash(cargo tree *)",
+      "Bash(cargo metadata *)",
+      "Bash(cargo deny *)",
+      "Bash(cargo machete *)",
+      "Bash(cargo lint)",
+      "Bash(cargo fmt-check)",
+      "Bash(cargo t *)",
+      "Bash(rustfmt *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git branch --show-current)",
+      "Bash(git ls-files *)",
+      "Bash(git blame *)",
+      "Bash(git rev-parse *)",
+      "Bash(git grep *)",
+      "WebFetch(domain:code.claude.com)",
+      "WebFetch(domain:base-ui.com)",
+      "WebFetch(domain:tailwindcss.com)",
+      "WebFetch(domain:tailwind-variants.org)",
+      "WebFetch(domain:v2.tauri.app)",
+      "WebFetch(domain:docs.rs)",
+      "WebFetch(domain:moonrepo.dev)",
+      "WebFetch(domain:bun.com)",
+      "WebFetch(domain:biomejs.dev)",
+      "WebFetch(domain:react.dev)",
+      "WebFetch(domain:www.nordtheme.com)",
+      "WebFetch(domain:microsoft.github.io)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)",
+      "Bash(git rebase *)",
+      "Bash(bun add *)",
+      "Bash(bun remove *)",
+      "Bash(bun update *)",
+      "Bash(cargo add *)",
+      "Bash(cargo update *)",
+      "Bash(bun run clean *)",
+      "Bash(bun run package *)",
+      "Bash(bun run version *)",
+      "Bash(gh release *)",
+      "Bash(gh pr merge *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/credentials.toml)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/secrets/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.cargo/credentials.toml)",
+      "Read(~/.npmrc)",
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~)",
+      "Bash(rm -rf ~/*)",
+      "Bash(rm -rf .)",
+      "Bash(rm -rf .git *)",
+      "Bash(sudo *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git push --force-with-lease *)",
+      "Bash(git push * --force)",
+      "Bash(git push * -f)",
+      "Bash(cargo publish *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(yarn *)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.hook.ts",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-generated.hook.ts",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-on-edit.hook.ts",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/statusline/statusline.ts",
+    "padding": 0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@genslate/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GENSLATE design tokens (official Nord): one typed source generating CSS, a Tailwind v4 theme, TS, JSON and Rust.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": "./src/index.ts",
+    "./generated": "./src/generated/ts/tokens.generated.ts",
+    "./tw-merge": "./src/generated/ts/tw-merge.config.ts",
+    "./css/*": {
+      "style": "./src/generated/css/*",
+      "default": "./src/generated/css/*"
+    },
+    "./tailwind.css": {
+      "style": "./src/generated/css/tailwind.theme.css",
+      "default": "./src/generated/css/tailwind.theme.css"
+    },
+    "./tokens.json": "./src/generated/json/tokens.json",
+    "./contrast-report.json": "./src/generated/json/contrast-report.json"
+  },
+  "devDependencies": {
+    "@genslate/config-typescript": "workspace:*",
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  }
+}

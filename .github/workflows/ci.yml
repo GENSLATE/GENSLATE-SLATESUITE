@@ -1,0 +1,107 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — CI
+#  moon runs only the tasks affected by the change (`moon ci`); toolchains come
+#  from /.prototools via moonrepo/setup-toolchain, npm deps from the frozen bun.lock.
+# ──────────────────────────────────────────────────────────────────────
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: '0'
+  FORCE_COLOR: '1'
+
+jobs:
+  web:
+    name: TypeScript · lint · tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # moon compares against the base branch for affected detection
+          persist-credentials: false
+
+      - name: Setup toolchain (moon · bun · rust from .prototools)
+        uses: moonrepo/setup-toolchain@261c62cb5b0f580c7be7c8cd0f023a2e96756095 # v0.6.4
+        with:
+          auto-install: true
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck, test, lint, spelling, dead code, token drift, web build
+        run: >-
+          bun x moon ci
+          :typecheck :test :web-build
+          root:lint root:spell root:knip
+          tokens:check
+
+  rust:
+    name: Rust · fmt · clippy · tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install Tauri system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev
+
+      - name: Setup toolchain (moon · bun · rust from .prototools)
+        uses: moonrepo/setup-toolchain@261c62cb5b0f580c7be7c8cd0f023a2e96756095 # v0.6.4
+        with:
+          auto-install: true
+
+      # moon's rust toolchain defers to rustup (`syncToolchainConfig: true`) rather than
+      # installing its own, and it probes `~/.rustup/toolchains/<channel>` directly instead of
+      # going through the `cargo`/`rustup` shims that auto-install a missing override toolchain.
+      # Installing it explicitly here (matching rust-toolchain.toml, which mirrors .prototools)
+      # means moon finds it already in place.
+      #
+      # moonrepo/setup-toolchain's own toolchain cache restores a Rust "install" that registers
+      # the toolchain with rustup but is missing rustc itself (seen in CI: rustup reports the
+      # toolchain present and "unchanged" while `rustc -vV` fails with "'rustc' is not installed
+      # for the toolchain"). Neither a plain install nor `--force` gets past that "unchanged"
+      # shortcut — rustup skips re-verifying an already-recorded toolchain's files either way.
+      # Uninstalling first removes the directory outright, so the install that follows has
+      # nothing to shortcut and always downloads a complete toolchain.
+      - name: Install pinned Rust toolchain
+        run: |
+          channel=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain uninstall "$channel" || true
+          rustup toolchain install "$channel" --profile minimal --component clippy --component rustfmt
+          rustup run "$channel" rustc -vV
+          rustup run "$channel" cargo -V
+
+      - name: Cache cargo registry + target
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          shared-key: ci-linux
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: rustfmt, clippy, tests
+        run: bun x moon ci root:rust-fmt root:rust-lint root:rust-test

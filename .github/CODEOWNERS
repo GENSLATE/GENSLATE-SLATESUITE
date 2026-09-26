@@ -1,0 +1,12 @@
+# Default owner for everything.
+*                               @ATOMANGELETTI
+
+# Security-sensitive paths get an explicit owner so reviews are always requested.
+/.github/                       @ATOMANGELETTI
+/.config/cargo/deny.toml        @ATOMANGELETTI
+/desktop/*/src-tauri/           @ATOMANGELETTI
+/packages/tauri-bridge/         @ATOMANGELETTI
+/packages/tokens/               @ATOMANGELETTI
+/packages/design-system/        @ATOMANGELETTI
+/Cargo.toml                     @ATOMANGELETTI
+/package.json                   @ATOMANGELETTI

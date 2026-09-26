@@ -1,0 +1,83 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — root project
+#  Owns the Cargo workspace (one moon project avoids cargo build-lock
+#  contention) and repo-wide quality tasks.
+# ──────────────────────────────────────────────────────────────────────
+$schema: './.config/moon/cache/schemas/project.json'
+
+id: 'root'
+language: 'rust'
+layer: 'tool'
+stack: 'infrastructure'
+tags: ['repo']
+
+project:
+  title: 'GENSLATE (root)'
+  description: 'Cargo workspace + repo-wide lint, format, spelling and dead-code checks.'
+
+workspace:
+  inheritedTasks:
+    include: []
+
+fileGroups:
+  rust:
+    - '/crates/**/*.rs'
+    - '/crates/**/Cargo.toml'
+    - '/desktop/*/src-tauri/src/**/*.rs'
+    - '/desktop/*/src-tauri/Cargo.toml'
+    - '/Cargo.toml'
+    - '/Cargo.lock'
+    - '/rust-toolchain.toml'
+    - '/rustfmt.toml'
+    - '/.config/cargo/**/*'
+
+tasks:
+  # ── Rust ────────────────────────────────────────────────────────────
+  rust-fmt:
+    command: 'cargo'
+    args: ['fmt', '--all', '--check']
+    inputs: ['@group(rust)']
+    toolchains: ['rust']
+  rust-lint:
+    command: 'cargo'
+    args: ['clippy', '--workspace', '--all-targets', '--locked', '--', '-D', 'warnings']
+    inputs: ['@group(rust)']
+    toolchains: ['rust']
+  rust-test:
+    command: 'cargo'
+    args: ['test', '--workspace', '--locked']
+    inputs: ['@group(rust)']
+    toolchains: ['rust']
+  rust-deny:
+    command: 'cargo'
+    args: ['deny', '--config', '.config/cargo/deny.toml', 'check']
+    inputs: ['@group(rust)']
+    toolchains: ['rust']
+  rust-machete:
+    command: 'cargo'
+    args: ['machete']
+    inputs: ['@group(rust)']
+    toolchains: ['rust']
+
+  # ── Repo-wide quality ───────────────────────────────────────────────
+  # Biome does not auto-discover `.config/biome.json`, so the path is always passed.
+  lint:
+    command: 'biome'
+    args: ['check', '--config-path=.config/biome.json', '.']
+    inputs: ['/**/*.{ts,tsx,js,json,jsonc,css}', '/.config/biome.json']
+    toolchains: ['javascript', 'bun']
+  format:
+    command: 'biome'
+    args: ['check', '--config-path=.config/biome.json', '--write', '.']
+    preset: 'utility'
+    toolchains: ['javascript', 'bun']
+  spell:
+    command: 'cspell'
+    args: ['--config', '.config/cspell.json', '--no-progress', '--gitignore', '.']
+    inputs: ['/**/*', '/.config/cspell.json', '/.config/cspell/**/*']
+    toolchains: ['javascript', 'bun']
+  knip:
+    command: 'knip'
+    args: ['--config', '.config/knip.json']
+    inputs: ['/**/*.{ts,tsx,json}', '/.config/knip.json']
+    toolchains: ['javascript', 'bun']

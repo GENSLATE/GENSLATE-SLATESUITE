@@ -1,0 +1,52 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — git hooks (lefthook 2)
+#  Installed by `bun run setup` (`bun x lefthook install`). Everything runs through bun.
+#  Skip once with `LEFTHOOK=0 git commit …` — CI runs the same checks anyway.
+#  https://lefthook.dev/configuration/
+# ──────────────────────────────────────────────────────────────────────
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: biome
+      glob: '*.{ts,tsx,js,mjs,cjs,json,jsonc,css}'
+      run: >-
+        bun x biome check --config-path=.config/biome.json --write
+        --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+
+    - name: rustfmt
+      glob: '*.rs'
+      # moon templates contain Tera tags and are not valid Rust until rendered.
+      exclude:
+        - '.config/moon/templates/**'
+      run: cargo fmt -- {staged_files}
+      stage_fixed: true
+
+    # Generated token files must match the token source (packages/tokens/src).
+    - name: tokens
+      glob:
+        - 'packages/tokens/src/**/*.ts'
+        - 'packages/tokens/scripts/**/*.ts'
+        - 'crates/design-tokens/src/generated/**'
+      run: bun packages/tokens/scripts/build-tokens.ts --check
+
+    - name: spelling
+      glob: '*.{ts,tsx,rs,md,json,yml,yaml,toml,css}'
+      run: >-
+        bun x cspell --config .config/cspell.json --no-progress --no-summary
+        --no-must-find-files {staged_files}
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: bun x --bun commitlint --config .config/commitlint.config.ts --edit {1}
+
+pre-push:
+  jobs:
+    # The bun commands use moon when it can load the workspace and fall back to running
+    # bun/cargo directly otherwise (e.g. offline), so the hook works everywhere.
+    - name: typecheck + lint
+      run: bun run check --ts
+    - name: tests
+      run: bun run test

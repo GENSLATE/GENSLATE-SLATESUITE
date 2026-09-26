@@ -1,0 +1,40 @@
+$schema: '../../.config/moon/cache/schemas/project.json'
+
+language: 'typescript'
+layer: 'library'
+stack: 'frontend'
+tags: ['tokens']
+
+project:
+  title: 'Tokens'
+  description: 'Nord design tokens: typed source + generator (CSS, Tailwind @theme, TS, JSON, Rust).'
+
+dependsOn:
+  - id: 'config-typescript'
+    scope: 'development'
+
+fileGroups:
+  tokenSources:
+    - 'src/**/*.ts'
+    - '!src/generated/**/*'
+    - 'scripts/**/*.ts'
+
+tasks:
+  # Regenerate every token output (CSS, Tailwind theme, TS, JSON, Rust crate).
+  build:
+    command: 'bun'
+    args: ['scripts/build-tokens.ts']
+    inputs: ['@group(tokenSources)']
+    outputs:
+      - 'src/generated/**/*'
+      - '/crates/design-tokens/src/generated/**/*'
+    options:
+      runInCI: false
+  # Fails when committed generated files drift from the token source.
+  check:
+    command: 'bun'
+    args: ['scripts/build-tokens.ts', '--check']
+    inputs:
+      - '@group(tokenSources)'
+      - 'src/generated/**/*'
+      - '/crates/design-tokens/src/generated/**/*'

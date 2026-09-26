@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest a new component, app capability or tooling improvement.
+title: 'feat: '
+labels: [enhancement, triage]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - desktop app
+        - design system
+        - design tokens
+        - tauri-bridge
+        - Rust crates
+        - tooling / scripts / CI
+        - docs
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should happen? For UI, describe states and both themes; mockups welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: Fits the design contract (Nord, flat, VS Code density, macOS refinement).
+        - label: I searched existing issues.

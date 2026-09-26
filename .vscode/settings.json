@@ -1,0 +1,121 @@
+{
+  // ── Formatting: Biome for web files, rust-analyzer for Rust ─────────
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "editor.rulers": [100],
+  "editor.tabSize": 2,
+  "biome.enabled": true,
+  "biome.requireConfiguration": true,
+  // Biome does not auto-discover .config/biome.json.
+  "biome.configurationPath": ".config/biome.json",
+  "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[json]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[css]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[tailwindcss]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[rust]": { "editor.defaultFormatter": "rust-lang.rust-analyzer", "editor.tabSize": 4 },
+  "[toml]": { "editor.defaultFormatter": "tamasfe.even-better-toml" },
+  "[markdown]": { "files.trimTrailingWhitespace": false },
+  "prettier.enable": false,
+  "eslint.enable": false,
+
+  // ── TypeScript 7 (native compiler, via the TypeScript Native Preview extension) ──
+  "js/ts.tsdk.path": "node_modules/typescript",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifierEnding": "minimal",
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+
+  // ── Rust ────────────────────────────────────────────────────────────
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.check.allTargets": true,
+  "rust-analyzer.check.extraArgs": ["--locked"],
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.rustfmt.extraArgs": ["--config-path", "rustfmt.toml"],
+  "rust-analyzer.linkedProjects": ["Cargo.toml"],
+
+  // ── Tailwind CSS v4 IntelliSense ────────────────────────────────────
+  "tailwindCSS.experimental.configFile": "packages/design-system/src/styles/design-system.css",
+  "tailwindCSS.classFunctions": ["tv", "cn"],
+  "tailwindCSS.classAttributes": ["class", "className"],
+  "tailwindCSS.lint.cssConflict": "warning",
+  "css.lint.unknownAtRules": "ignore",
+
+  // ── Files ───────────────────────────────────────────────────────────
+  "files.associations": {
+    "*.css": "tailwindcss",
+    ".prototools": "toml",
+    "bun.lock": "jsonc",
+    "*.jsonc": "jsonc",
+    "tsconfig*.json": "jsonc",
+    ".claude/settings*.json": "jsonc",
+    "CODEOWNERS": "ignore",
+    ".env.example": "properties"
+  },
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.readonlyInclude": {
+    "packages/tokens/src/generated/**": true,
+    "crates/design-tokens/src/generated/**": true,
+    "**/*.generated.ts": true,
+    "bun.lock": true,
+    "Cargo.lock": true
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    ".config/moon/cache": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/target/**": true,
+    "**/dist/**": true,
+    "release/**": true,
+    ".config/moon/cache/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/target": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "**/generated": true,
+    "**/*.generated.ts": true,
+    "**/src-tauri/gen": true,
+    "bun.lock": true,
+    "Cargo.lock": true,
+    "release": true,
+    ".config/moon/cache": true
+  },
+
+  // ── Explorer: nest related files by our dotted naming ───────────────
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.component.tsx": "${capture}.variants.ts, ${capture}.types.ts, ${capture}.context.ts, ${capture}-*.component.tsx",
+    "*.provider.tsx": "${capture}.context.ts, ${capture}.types.ts, ${capture}.script.ts",
+    "package.json": "bun.lock, bunfig.toml, tsconfig.json, tsconfig.*.json, moon.yml, vite.config.ts, knip.json",
+    "Cargo.toml": "Cargo.lock, build.rs, rust-toolchain.toml, rustfmt.toml, tauri.conf.json, tauri.*.conf.json",
+    "README.md": "LICENSE, CLAUDE.md, CLAUDE.local.md, *.md",
+    ".prototools": ".editorconfig, .gitattributes, .gitignore, .git-blame-ignore-revs, .env.example, lefthook.yml",
+    "design-system.css": "design-system.*.css, fonts.css",
+    "*.tokens.ts": "${capture}.tokens.test.ts"
+  },
+
+  // ── Spelling ────────────────────────────────────────────────────────
+  "cSpell.import": ["${workspaceFolder}/.config/cspell.json"],
+
+  // ── Misc ────────────────────────────────────────────────────────────
+  "git.ignoreLimitWarning": true,
+  "npm.packageManager": "bun",
+  "workbench.colorTheme": "Nord",
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
+    "https://json.schemastore.org/dependabot-2.0.json": ".github/dependabot.yml",
+    "https://json.schemastore.org/lefthook.json": "lefthook.yml"
+  }
+}

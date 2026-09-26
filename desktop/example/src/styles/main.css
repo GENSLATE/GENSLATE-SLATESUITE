@@ -1,0 +1,3 @@
+/* The example app's CSS entry: the design system + this app's sources for Tailwind to scan. */
+@import '@genslate/design-system/design-system.css';
+@source '../';

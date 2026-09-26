@@ -1,0 +1,34 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — Tauri 2 desktop app template (mirrors desktop/example)
+#  Usage: `bun run new-app <name>` (picks the next free port and copies icons),
+#  or directly: moon generate tauri-app --to desktop/<name> -- --name <name> --title "…" --identifier … --port 14xx
+#  https://moonrepo.dev/docs/config/template
+# ──────────────────────────────────────────────────────────────────────
+$schema: '../../cache/schemas/template.json'
+
+id: 'tauri-app'
+title: 'Tauri desktop app'
+description: 'A GENSLATE Tauri 2 app: React 19 + design system shell (titlebar · content · status bar), Rust shell with log/opener/os/window-state/single-instance.'
+destination: 'desktop/[name]'
+
+variables:
+  name:
+    type: 'string'
+    default: ''
+    required: true
+    prompt: 'App name (kebab-case, e.g. "notes")?'
+  title:
+    type: 'string'
+    default: ''
+    required: true
+    prompt: 'Product name (e.g. "GENSLATE Notes")?'
+  identifier:
+    type: 'string'
+    default: ''
+    required: true
+    prompt: 'Bundle identifier (e.g. "space.angeletti.genslate.notes")?'
+  port:
+    type: 'number'
+    default: 1422
+    required: true
+    prompt: 'Vite dev-server port (HMR uses port + 1)?'

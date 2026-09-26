@@ -1,0 +1,40 @@
+/* Keyframes exposed as `animate-*` utilities. Transform and opacity only. */
+
+@theme {
+  --animate-spin: gs-spin 0.8s linear infinite;
+  --animate-indeterminate: gs-indeterminate 1.4s var(--gs-ease-standard) infinite;
+  --animate-shimmer: gs-shimmer 1.6s linear infinite;
+  --animate-pulse-soft: gs-pulse-soft 2s var(--gs-ease-standard) infinite;
+
+  @keyframes gs-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes gs-indeterminate {
+    from {
+      transform: translateX(-100%) scaleX(0.4);
+    }
+
+    to {
+      transform: translateX(250%) scaleX(0.4);
+    }
+  }
+
+  @keyframes gs-shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes gs-pulse-soft {
+    50% {
+      opacity: 0.55;
+    }
+  }
+}

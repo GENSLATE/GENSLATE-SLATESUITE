@@ -1,0 +1,18 @@
+$schema: '../../.config/moon/cache/schemas/project.json'
+
+language: 'typescript'
+layer: 'library'
+stack: 'frontend'
+tags: ['bridge']
+
+project:
+  title: 'Tauri Bridge'
+  description: 'Typed window controls, platform detection, native theme sync and IPC for Tauri 2 apps.'
+
+dependsOn:
+  - id: 'config-typescript'
+    scope: 'development'
+
+tasks:
+  test:
+    args: ['--preload', './tests/setup/dom.preload.ts']

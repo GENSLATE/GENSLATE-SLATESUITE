@@ -1,0 +1,10 @@
+$schema: '../../.config/moon/cache/schemas/project.json'
+
+language: 'unknown'
+layer: 'configuration'
+stack: 'infrastructure'
+tags: ['config']
+
+project:
+  title: 'Config · TypeScript'
+  description: 'Shared, strict TypeScript 7 configurations (base, bun, react).'

@@ -1,0 +1,12 @@
+# Inherited by every project.
+$schema: '../cache/schemas/tasks.json'
+
+fileGroups:
+  sources:
+    - 'src/**/*'
+  tests:
+    - 'tests/**/*'
+  configs:
+    - 'package.json'
+    - 'tsconfig.json'
+    - 'moon.yml'

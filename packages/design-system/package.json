@@ -1,0 +1,61 @@
+{
+  "name": "@genslate/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GENSLATE design system: Nord, macOS-refined, VS Code-flat React components on Base UI and Tailwind CSS v4.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": "./src/index.ts",
+    "./window": "./src/components/window/index.ts",
+    "./layout": "./src/components/layout/index.ts",
+    "./actions": "./src/components/actions/index.ts",
+    "./inputs": "./src/components/inputs/index.ts",
+    "./navigation": "./src/components/navigation/index.ts",
+    "./overlays": "./src/components/overlays/index.ts",
+    "./feedback": "./src/components/feedback/index.ts",
+    "./display": "./src/components/display/index.ts",
+    "./providers": "./src/providers/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./theme-init": "./src/providers/theme/theme.script.ts",
+    "./design-system.css": {
+      "style": "./src/styles/design-system.css",
+      "default": "./src/styles/design-system.css"
+    },
+    "./fonts.css": {
+      "style": "./src/styles/fonts.css",
+      "default": "./src/styles/fonts.css"
+    }
+  },
+  "dependencies": {
+    "@base-ui/react": "catalog:",
+    "@fontsource-variable/inter": "catalog:",
+    "@fontsource-variable/jetbrains-mono": "catalog:",
+    "@genslate/tokens": "workspace:*",
+    "@vscode/codicons": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwind-variants": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@genslate/config-typescript": "workspace:*",
+    "@happy-dom/global-registrator": "catalog:",
+    "@testing-library/dom": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/bun": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  }
+}

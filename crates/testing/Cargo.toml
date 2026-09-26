@@ -1,0 +1,16 @@
+[package]
+name = "genslate-testing"
+description = "Shared test helpers for GENSLATE crates (temporary file trees, fake repo layouts)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true

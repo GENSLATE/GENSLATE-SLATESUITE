@@ -1,0 +1,64 @@
+name: Bug report
+description: Something is broken or looks wrong.
+title: 'bug: '
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! Please search existing issues first. **Security issues:** don't file them here — see [SECURITY.md](../blob/main/.github/SECURITY.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - desktop app (example)
+        - design system
+        - design tokens
+        - tauri-bridge
+        - Rust crates
+        - tooling / scripts / CI
+        - docs
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. `bun run dev`
+        2. Open the Inputs section
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options: [Polar Night (dark), Snow Storm (light), both, not UI-related]
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      multiple: true
+      options: [macOS (Apple Silicon), macOS (Intel), Windows 11, Windows 10, Linux]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: GENSLATE version / commit
+      placeholder: 'v0.1.0 or git SHA'
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: 'Dev logs: `other/logs/app-logs/<app>/`. Paste text or drag images here.'
+      render: shell

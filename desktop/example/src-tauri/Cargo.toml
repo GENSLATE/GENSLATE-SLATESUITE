@@ -1,0 +1,36 @@
+[package]
+name = "genslate-example"
+description = "GENSLATE Example: the Design Kit showcase desktop app (Tauri 2 shell)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+default-run = "genslate-example"
+
+[lib]
+# `_lib` suffix avoids a name clash with the bin target on Windows (cargo#8519).
+name = "genslate_example_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { workspace = true }
+
+[dependencies]
+genslate-core-example.workspace = true
+genslate-design-tokens.workspace = true
+genslate-paths.workspace = true
+log.workspace = true
+serde.workspace = true
+tauri = { workspace = true, features = ["common-controls-v6", "compression", "dbus", "dynamic-acl", "wry", "x11"] }
+tauri-plugin-log.workspace = true
+tauri-plugin-opener.workspace = true
+tauri-plugin-os.workspace = true
+tauri-plugin-single-instance.workspace = true
+tauri-plugin-window-state.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

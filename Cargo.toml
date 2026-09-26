@@ -1,0 +1,87 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — Cargo workspace
+#  Members are listed explicitly: `crates/*` would also match `crates/core`,
+#  which is a grouping folder without a manifest.
+# ──────────────────────────────────────────────────────────────────────
+[workspace]
+resolver = "3"
+members = [
+    "crates/design-tokens",
+    "crates/paths",
+    "crates/testing",
+    "crates/core/example",
+    "desktop/*/src-tauri",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+authors = ["GENSLATE"]
+license = "LicenseRef-Proprietary"
+publish = false
+repository = "https://github.com/ATOMANGELETTI/GENSLATE"
+
+[workspace.dependencies]
+# ── Internal crates ──────────────────────────────────────────────────
+genslate-design-tokens = { path = "crates/design-tokens" }
+genslate-paths = { path = "crates/paths" }
+genslate-testing = { path = "crates/testing" }
+genslate-core-example = { path = "crates/core/example" }
+
+# ── Tauri (stable 2.x only) ──────────────────────────────────────────
+tauri = { version = "2.11.6", default-features = false }
+tauri-build = "2.6.3"
+tauri-plugin-log = "2.9.2"
+tauri-plugin-opener = "2.5.5"
+tauri-plugin-os = "2.3.2"
+tauri-plugin-single-instance = "2.4.5"
+tauri-plugin-window-state = "2.4.1"
+
+# ── Core ─────────────────────────────────────────────────────────────
+dirs = "7.0.0"
+log = "0.4.34"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+thiserror = "2.0.21"
+tempfile = "3.27.0"
+toml = "1.1.6"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+missing_debug_implementations = "warn"
+rust_2018_idioms = { level = "warn", priority = -1 }
+unused_qualifications = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+expect_used = "deny"
+unwrap_used = "deny"
+todo = "warn"
+print_stdout = "warn"
+print_stderr = "warn"
+# Pedantic lints that fight idiomatic Tauri / library code:
+missing_errors_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+needless_pass_by_value = "allow" # #[tauri::command] arguments must be owned
+
+[workspace.metadata.cargo-machete]
+ignored = []
+
+# Profiles are only read from the workspace root.
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
+overflow-checks = true
+
+[profile.dev.package."*"]
+# Optimise dependencies (not our crates) so debug builds of Tauri apps stay snappy.
+opt-level = 1

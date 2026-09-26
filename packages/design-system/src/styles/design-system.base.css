@@ -1,0 +1,144 @@
+/* Base element styles: a native-feeling desktop document. */
+
+@layer base {
+  html {
+    height: 100%;
+    background-color: var(--gs-color-canvas);
+    color: var(--gs-color-fg);
+    font-family: var(--gs-font-sans);
+    /* The 13px base lives on body: html stays at the UA 16px so rem-based utilities keep the
+       4px spacing grid (p-2 = 8px) and respect the user's font-size preference. */
+    line-height: var(--gs-text-base-line-height);
+    letter-spacing: var(--gs-text-base-tracking);
+    font-feature-settings: var(--gs-font-features);
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+    accent-color: var(--gs-color-accent);
+    caret-color: var(--gs-color-accent);
+  }
+
+  body {
+    height: 100%;
+    margin: 0;
+    font-size: var(--gs-text-base);
+    overflow: hidden;
+    cursor: default;
+  }
+
+  #root {
+    height: 100%;
+    isolation: isolate;
+  }
+
+  /* Desktop apps are not documents: text selection is opt-in (`select-text`). */
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  input,
+  textarea,
+  [contenteditable='true'],
+  .select-text {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  ::selection {
+    background-color: var(--gs-color-selection);
+    color: var(--gs-color-fg-strong);
+  }
+
+  /* Focus is drawn by `focus-ring` utilities; the UA ring is removed only where they replace it. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  button,
+  [role='button'],
+  summary,
+  label {
+    cursor: default;
+  }
+
+  a {
+    color: var(--gs-color-accent-fg);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--gs-font-mono);
+    font-size: var(--gs-text-code);
+    font-feature-settings:
+      'calt' 1,
+      'liga' 0;
+  }
+
+  img,
+  svg {
+    -webkit-user-drag: none;
+  }
+
+  /* Global thin scrollbars (WebKit / Chromium WebViews). */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    background-color: var(--gs-scrollbar-thumb);
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--gs-scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--gs-scrollbar-thumb-active);
+  }
+
+  /* Theme switches repaint instantly instead of animating every surface. */
+  html[data-theme-switching] *,
+  html[data-theme-switching] *::before,
+  html[data-theme-switching] *::after {
+    transition: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Windows High Contrast / forced colours: let the system palette through. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid CanvasText !important;
+    }
+  }
+}
