@@ -73,6 +73,16 @@ jobs:
         with:
           auto-install: true
 
+      # moon's rust toolchain defers to rustup (`syncToolchainConfig: true`) rather than
+      # installing its own, and it probes `~/.rustup/toolchains/<channel>` directly instead of
+      # going through the `cargo`/`rustup` shims that auto-install a missing override toolchain.
+      # Installing it explicitly here (matching rust-toolchain.toml, which mirrors .prototools)
+      # means moon finds it already in place.
+      - name: Install pinned Rust toolchain
+        run: |
+          channel=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$channel" --profile minimal --component clippy --component rustfmt
+
       - name: Cache cargo registry + target
         uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
         with:

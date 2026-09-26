@@ -25,7 +25,14 @@ unmaintained = "workspace"
 unsound = "all"
 yanked = "deny"
 ignore = [
-    # { id = "RUSTSEC-0000-0000", reason = "why this is acceptable + tracking issue" },
+    # glib's `VariantStrIter` (GVariant string-array iterator) has unsound out-argument passing;
+    # fixed in glib >=0.20. It reaches us only transitively, through Tauri's Linux WebView stack
+    # (tao -> gtk/webkit2gtk-rs -> glib 0.18), which we do not control and which pins glib ^0.18.
+    # We never touch GVariant iteration ourselves. No compatible upgrade exists yet: `cargo update
+    # -p glib` cannot move past 0.18.x while tauri 2.11.6 (the latest 2.x release) depends on the
+    # 0.18-line gtk-rs crates. Re-check on every Tauri bump; drop this once wry/tao move to gtk-rs
+    # >=0.19 or a 0.18.x point release backports the fix.
+    { id = "RUSTSEC-2024-0429", reason = "unreachable from our code; no compatible fix in tauri 2.11.6's dependency tree" },
 ]
 
 # ── Licenses ─────────────────────────────────────────────────────────

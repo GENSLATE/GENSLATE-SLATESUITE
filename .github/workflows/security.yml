@@ -50,6 +50,11 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    # Requires the repository's Dependency graph (Settings → Security → Code security) to be
+    # enabled; on a repo where it hasn't finished indexing yet the action fails outright rather
+    # than finding no dependency changes. That's an account/repo setting, not something a commit
+    # here can fix, so it never blocks the PR — but it still reports honestly when it does run.
+    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

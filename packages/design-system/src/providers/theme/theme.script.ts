@@ -52,5 +52,15 @@ export function applyInitialTheme(
   return resolved;
 }
 
+/**
+ * JSON-encodes a value for embedding inside an inline `<script>` body. Plain `JSON.stringify`
+ * does not escape `<`, so a value containing `</script` (or `<!--`) would close the tag early
+ * and let anything after it run as unescaped HTML. Escaping `<` as `<` (a no-op outside a
+ * string literal) closes that off regardless of what the value ever turns out to contain.
+ */
+export function jsonForScriptTag(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, '\\u003C');
+}
+
 /** Inline `<script>` body with the same behaviour as `applyInitialTheme()`. */
-export const themeInitScript = `(function(){try{var k=${JSON.stringify(THEME_STORAGE_KEY)},p=localStorage.getItem(k);if(p!=="polar-night"&&p!=="snow-storm")p=matchMedia("(prefers-color-scheme: light)").matches?"snow-storm":"polar-night";document.documentElement.dataset.theme=p}catch(e){document.documentElement.dataset.theme="polar-night"}})();`;
+export const themeInitScript = `(function(){try{var k=${jsonForScriptTag(THEME_STORAGE_KEY)},p=localStorage.getItem(k);if(p!=="polar-night"&&p!=="snow-storm")p=matchMedia("(prefers-color-scheme: light)").matches?"snow-storm":"polar-night";document.documentElement.dataset.theme=p}catch(e){document.documentElement.dataset.theme="polar-night"}})();`;

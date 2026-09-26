@@ -6,6 +6,7 @@ import { useTheme } from '../../../src/hooks/use-theme.hook';
 import { useWindowState } from '../../../src/hooks/use-window-state.hook';
 import { DesignSystemProvider } from '../../../src/providers/design-system';
 import { applyInitialTheme, ThemeProvider, themeInitScript } from '../../../src/providers/theme';
+import { jsonForScriptTag } from '../../../src/providers/theme/theme.script';
 
 function ThemeProbe() {
   const { theme, resolvedTheme, scheme, toggleTheme, setTheme } = useTheme();
@@ -118,6 +119,15 @@ describe('theme init', () => {
     localStorage.setItem('genslate.theme', 'snow-storm');
     new Function(themeInitScript)();
     expect(root).toHaveAttribute('data-theme', 'snow-storm');
+  });
+
+  test('jsonForScriptTag escapes `<` so a `</script>`-bearing value cannot close the tag', () => {
+    const dangerous = '</script><script>window.pwned=true</script>';
+    const encoded = jsonForScriptTag(dangerous);
+    expect(encoded).not.toContain('</script');
+    expect(encoded).not.toContain('<script');
+    // Still a faithful, valid JSON encoding once parsed back.
+    expect(JSON.parse(encoded.replace(/\\u003C/g, '<'))).toBe(dangerous);
   });
 });
 
