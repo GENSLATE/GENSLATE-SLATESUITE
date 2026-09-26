@@ -79,15 +79,18 @@ jobs:
       # Installing it explicitly here (matching rust-toolchain.toml, which mirrors .prototools)
       # means moon finds it already in place.
       #
-      # `--force`: moonrepo/setup-toolchain's own toolchain cache can restore a Rust "install"
-      # that registered the toolchain but is missing pieces of it (seen in CI: rustup reported
-      # the toolchain present while `rustc -vV` failed with "'rustc' is not installed for the
-      # toolchain"). A plain `rustup toolchain install` treats an already-registered toolchain as
-      # done and won't repair that; `--force` reinstalls it regardless, then we verify it works.
+      # moonrepo/setup-toolchain's own toolchain cache restores a Rust "install" that registers
+      # the toolchain with rustup but is missing rustc itself (seen in CI: rustup reports the
+      # toolchain present and "unchanged" while `rustc -vV` fails with "'rustc' is not installed
+      # for the toolchain"). Neither a plain install nor `--force` gets past that "unchanged"
+      # shortcut — rustup skips re-verifying an already-recorded toolchain's files either way.
+      # Uninstalling first removes the directory outright, so the install that follows has
+      # nothing to shortcut and always downloads a complete toolchain.
       - name: Install pinned Rust toolchain
         run: |
           channel=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
-          rustup toolchain install "$channel" --profile minimal --component clippy --component rustfmt --force
+          rustup toolchain uninstall "$channel" || true
+          rustup toolchain install "$channel" --profile minimal --component clippy --component rustfmt
           rustup run "$channel" rustc -vV
           rustup run "$channel" cargo -V
 
