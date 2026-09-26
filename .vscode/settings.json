@@ -113,6 +113,9 @@
   "git.ignoreLimitWarning": true,
   "npm.packageManager": "bun",
   "workbench.colorTheme": "Nord",
+  "workbench.editor.pinnedTabsOnSeparateRow": true,
+  "workbench.editor.pinnedTabSizing": "compact",
+  "workbench.editor.tabSizing": "fit",
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
     "https://json.schemastore.org/dependabot-2.0.json": ".github/dependabot.yml",
