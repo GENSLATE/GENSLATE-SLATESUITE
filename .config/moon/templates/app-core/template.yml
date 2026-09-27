@@ -1,0 +1,24 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — per-app core crate template (mirrors crates/core/example)
+#  Rendered by `bun run new-app <name>` next to the tauri-app template, or directly:
+#  moon generate app-core --to crates/core/<name> -- --name <name> --title "GENSLATE …"
+#  https://moonrepo.dev/docs/config/template
+# ──────────────────────────────────────────────────────────────────────
+$schema: '../../cache/schemas/template.json'
+
+id: 'app-core'
+title: 'App core crate'
+description: 'crates/core/<name>: the Tauri-free business logic of a GENSLATE app (config on the shared genslate-app-common sections), unit-tested.'
+destination: 'crates/core/[name]'
+
+variables:
+  name:
+    type: 'string'
+    default: ''
+    required: true
+    prompt: 'App name (kebab-case, e.g. "notes")?'
+  title:
+    type: 'string'
+    default: ''
+    required: true
+    prompt: 'Product name (e.g. "GENSLATE Notes")?'
