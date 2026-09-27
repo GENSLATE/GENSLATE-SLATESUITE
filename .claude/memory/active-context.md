@@ -23,6 +23,10 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
 - New shared crate `crates/app-common` (config sections, loader, `AppInfo`); `useAppInfo()` in the bridge; new icon family for the 11 apps.
 - **Next:** build each app's real UI and core logic; run each natively once (`bun x moon run <app>:dev`) on Windows/macOS to QA chrome and icons.
 
+## Website (`webapp/github-page/genslate-page`)
+- **Done:** prerendered Vite + React site (41 pages): home, apps + 13 app pages with live mockups, Design Kit showcase, download, docs (12 wiki pages + `other/documents`), 404, sitemap, per-page CSP; Pages workflow `.github/workflows/pages.yml`; docs `other/documents/website.md`.
+- **Next:** enable Pages (Settings → Pages → Source: GitHub Actions); swap mockups for real screenshots as apps ship; a 1200×630 social image (currently the 1024 app icon).
+
 ## Open questions
 - Code signing / notarisation for macOS and Windows (secrets not configured yet; release workflow builds unsigned drafts).
 - Updater (tauri-plugin-updater) — not enabled; `uploadUpdaterJson` is off until signing keys exist.

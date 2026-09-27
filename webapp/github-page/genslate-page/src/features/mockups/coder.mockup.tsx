@@ -167,7 +167,6 @@ export function CoderMockup() {
           <div className="w-16 shrink-0 space-y-[3px] px-2 pt-2 opacity-70">
             {MINIMAP.map((width, index) => (
               <span
-                // biome-ignore lint/suspicious/noArrayIndexKey: fixed decorative bars
                 key={index}
                 className={cn(
                   'block h-[2px] rounded-full',

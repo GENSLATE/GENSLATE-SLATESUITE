@@ -36,6 +36,10 @@
     "desktop/*": {
       "entry": ["tests/**/*.{ts,tsx}", "tests/setup/*.ts"],
       "project": ["src/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}"]
+    },
+    "webapp/github-page/*": {
+      "entry": ["src/entry.server.tsx", "scripts/*.ts", "tests/**/*.test.ts"],
+      "project": ["src/**/*.{ts,tsx}", "plugins/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
     }
   }
 }

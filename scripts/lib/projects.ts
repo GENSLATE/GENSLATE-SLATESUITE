@@ -2,7 +2,7 @@ import { dirname, join } from 'node:path';
 
 import { ROOT } from './paths';
 
-/** A bun workspace package (`desktop/*`, `packages/*`, `webapp/*`). */
+/** A bun workspace package under desktop/, packages/ or webapp/ (one or two levels deep). */
 export interface WorkspaceProject {
   readonly name: string;
   readonly dir: string;
@@ -19,6 +19,8 @@ export async function discoverProjects(): Promise<WorkspaceProject[]> {
     'desktop/*/package.json',
     'packages/*/package.json',
     'webapp/*/package.json',
+    // Nested websites, e.g. webapp/github-page/genslate-page.
+    'webapp/*/*/package.json',
   ]) {
     for await (const relative of new Bun.Glob(pattern).scan({ cwd: ROOT })) {
       const dir = dirname(join(ROOT, relative));
@@ -26,7 +28,8 @@ export async function discoverProjects(): Promise<WorkspaceProject[]> {
       const testFiles = new Bun.Glob('{src,tests}/**/*.test.{ts,tsx}').scan({ cwd: dir });
       const first = await testFiles.next();
       projects.push({
-        name: relative.split('/')[1] ?? relative,
+        // The project folder: `desktop/example/package.json` → `example`.
+        name: relative.split('/').at(-2) ?? relative,
         dir,
         hasTsconfig: await Bun.file(join(dir, 'tsconfig.json')).exists(),
         hasTests: first.done !== true,

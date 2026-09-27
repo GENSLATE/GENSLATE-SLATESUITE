@@ -24,7 +24,13 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   const Heading = level === 1 ? 'h1' : 'h2';
   return (
-    <div className={cn('reveal max-w-3xl', align === 'center' && 'mx-auto text-center', className)}>
+    <div
+      className={cn(
+        'reveal max-w-3xl',
+        align === 'center' && 'mx-auto max-w-4xl text-center',
+        className,
+      )}
+    >
       {eyebrow ? (
         <p className="mb-4 font-semibold text-accent-fg text-sm uppercase tracking-[0.14em]">
           {eyebrow}

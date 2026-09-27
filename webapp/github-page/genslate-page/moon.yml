@@ -39,7 +39,13 @@ tasks:
   web-build:
     command: 'bun'
     args: ['run', 'build']
-    inputs: ['@group(sources)', '@group(web)', '@group(configs)']
+    # The base path and origin change every URL, so they are part of the cache key.
+    inputs:
+      - '@group(sources)'
+      - '@group(web)'
+      - '@group(configs)'
+      - '$GENSLATE_SITE_BASE'
+      - '$GENSLATE_SITE_ORIGIN'
     outputs: ['dist/site/**/*']
     toolchains: ['javascript', 'bun']
 

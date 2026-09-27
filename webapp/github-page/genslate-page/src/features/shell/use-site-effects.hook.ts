@@ -13,6 +13,7 @@ const supportsScrollReveal = () =>
  * - docs code frames copy their code.
  */
 export function useSiteEffects(pageKey: string): void {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: each page renders new elements to observe, so this re-runs per page on purpose
   useEffect(() => {
     const root = document.documentElement;
     const cleanups: (() => void)[] = [];

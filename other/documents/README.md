@@ -12,6 +12,7 @@
 | [Release](./release.md) | You're cutting a version or debugging the release workflow. |
 | [Security](./security.md) | You're touching capabilities, CSP, IPC, dependencies or CI. |
 | [Contributing](./contributing.md) | You're opening a PR: conventions, commits, review. |
+| [Website](./website.md) | You're working on the GitHub Pages site, its wiki or its app pages. |
 
 Other references:
 - [`CLAUDE.md`](../../CLAUDE.md) and [`.claude/rules/`](../../.claude/rules/) — the compact rulebook (also used by Claude Code).

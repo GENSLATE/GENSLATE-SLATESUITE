@@ -86,7 +86,6 @@ export function GalleryMockup() {
         </div>
         <div className="grid gap-2 px-5">
           {ROWS.map((row, rowIndex) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: fixed layout rows
             <div key={rowIndex} className="flex h-[176px] gap-2">
               {row.map((photo) => (
                 <div

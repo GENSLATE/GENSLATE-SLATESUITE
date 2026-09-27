@@ -84,6 +84,12 @@
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "--cwd=webapp/github-page/genslate-page", "dev"],
       "port": 1430
+    },
+    {
+      "name": "genslate-page-preview",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=webapp/github-page/genslate-page", "preview"],
+      "port": 1431
     }
   ]
 }

@@ -13,6 +13,8 @@
     overscroll-behavior: auto;
     scroll-padding-top: calc(var(--spacing-header) + 1.5rem);
     scrollbar-gutter: stable;
+    /* Decorative glows may bleed past the edge; clip (unlike hidden) keeps sticky headers working. */
+    overflow-x: clip;
     interpolate-size: allow-keywords;
   }
 

@@ -20,6 +20,10 @@ import { HEAD_SCRIPT } from '../plugins/theme-init.plugin';
 import { SITE_DEFAULTS } from '../src/app/site.defaults';
 import type { RenderedPage } from '../src/entry.server';
 
+// The repo imports without file extensions (TS convention); Vite 8 flags that as unsupported by its
+// future native config loader. The bundled loader it uses today handles it fine.
+process.env['VITE_CONFIG_NATIVE_IGNORE_WARNING'] ??= 'true';
+
 const siteRoot = fileURLToPath(new URL('..', import.meta.url));
 const configFile = join(siteRoot, 'vite.config.ts');
 const clientOut = join(siteRoot, 'dist', 'site');
@@ -33,6 +37,10 @@ const escapeAttr = (value: string) =>
 
 /** JSON for an inline <script> data block (`<` escaped so it can never close the tag). */
 const jsonLd = (value: unknown) => JSON.stringify(value).replace(/</g, '\\u003C');
+
+/** Executable inline scripts (no src, not a JSON data block). */
+const INLINE_SCRIPT =
+  /<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g;
 
 const sha256 = (text: string) => createHash('sha256').update(text).digest('base64');
 
@@ -60,19 +68,28 @@ async function main(): Promise<void> {
     staticPaths: () => string[];
   } = await import(pathToFileURL(join(serverOut, 'entry.server.js')).href);
 
-  const csp = [
-    "default-src 'self'",
-    `script-src 'self' 'sha256-${sha256(HEAD_SCRIPT)}'`,
-    // React style props and Shiki token colours are inline styles.
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data:",
-    "font-src 'self' data:",
-    "connect-src 'self'",
-    "object-src 'none'",
-    "base-uri 'self'",
-    "form-action 'none'",
-    'upgrade-insecure-requests',
-  ].join('; ');
+  /**
+   * A strict CSP per page: scripts only from this origin, plus the exact inline scripts the page
+   * contains — the theme bootstrap and any pre-hydration script a component renders (Base UI's
+   * Slider positions its thumbs before React loads) — allowed by hash.
+   */
+  const cspFor = (html: string) => {
+    const inline = [...html.matchAll(INLINE_SCRIPT)].map((match) => match[1] ?? '');
+    const hashes = [...new Set([HEAD_SCRIPT, ...inline])].map((code) => `'sha256-${sha256(code)}'`);
+    return [
+      "default-src 'self'",
+      `script-src 'self' ${hashes.join(' ')}`,
+      // React style props and Shiki token colours are inline styles.
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data:",
+      "font-src 'self' data:",
+      "connect-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'none'",
+      'upgrade-insecure-requests',
+    ].join('; ');
+  };
 
   const pages = [...server.staticPaths(), '/404/'];
   const sitemap: string[] = [];
@@ -107,7 +124,7 @@ async function main(): Promise<void> {
     const head = [
       `<title>${escapeAttr(route.meta.title)}</title>`,
       `<meta name="description" content="${escapeAttr(route.meta.description)}" />`,
-      `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
+      `<meta http-equiv="Content-Security-Policy" content="${cspFor(html)}" />`,
       `<meta name="referrer" content="strict-origin-when-cross-origin" />`,
       notFound
         ? '<meta name="robots" content="noindex" />'
@@ -144,15 +161,13 @@ async function main(): Promise<void> {
   await rm(serverOut, { recursive: true, force: true });
 
   const seconds = ((performance.now() - started) / 1000).toFixed(1);
-  console.log(
-    `✓ genslate-page: ${pages.length} pages prerendered into dist/site (base ${base}) in ${seconds}s`,
+  process.stdout.write(
+    `✓ genslate-page: ${pages.length} pages prerendered into dist/site (base ${base}) in ${seconds}s\n`,
   );
 }
 
 main().catch((error: unknown) => {
-  console.error(
-    `✗ genslate-page build failed: ${error instanceof Error ? error.message : String(error)}`,
-  );
-  if (error instanceof Error && error.stack) console.error(error.stack);
+  const detail = error instanceof Error ? (error.stack ?? error.message) : String(error);
+  process.stderr.write(`✗ genslate-page build failed: ${detail}\n`);
   process.exit(1);
 });

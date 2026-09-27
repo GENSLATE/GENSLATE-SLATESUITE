@@ -46,7 +46,7 @@ export function DocPage({ doc, html }: { readonly doc: DocEntry; readonly html: 
         aria-hidden="true"
         className="read-progress fixed inset-x-0 top-header z-sticky h-0.5 bg-accent"
       />
-      <article className="mx-auto max-w-prose xl:mx-0">
+      <article className="mx-auto max-w-[46rem] xl:mx-0">
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-fg-muted text-sm">
           <a href={href('/docs/')} className="text-fg-muted hover:text-fg-strong">
             Docs
@@ -74,11 +74,7 @@ export function DocPage({ doc, html }: { readonly doc: DocEntry; readonly html: 
           </p>
         </header>
 
-        <div
-          className="prose mt-8"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: build-time HTML rendered from this repository's own Markdown (plugins/markdown.ts), never user input
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
+        <div className="prose mt-8" dangerouslySetInnerHTML={{ __html: html }} />
 
         {previous || next ? (
           <nav aria-label="More docs" className="mt-16 grid gap-3 sm:grid-cols-2">
