@@ -2,7 +2,12 @@ import { describe, expect, test } from 'bun:test';
 import { checkContrast } from '../../scripts/emit/data.emitter';
 import {
   CHROME_COLOR_KEYS,
+  CURSOR_KEYS,
+  CURSORS,
   contrastRatio,
+  cursorCss,
+  cursorDataUri,
+  cursorSvg,
   DERIVED,
   mix,
   NORD,
@@ -70,5 +75,43 @@ describe('scales', () => {
     expect(stops[0]).toBe(0);
     expect(stops.at(-1)).toBe(1);
     expect(Math.max(...stops)).toBeGreaterThan(1);
+  });
+});
+
+describe('cursors', () => {
+  test('every theme paints every cursor as a themed image with a native fallback', () => {
+    for (const theme of Object.values(THEMES)) {
+      for (const key of CURSOR_KEYS) {
+        const css = cursorCss(key, theme);
+        expect(css, `${theme.id}/${key}`).toMatch(
+          /^url\("data:image\/svg\+xml,[^"]+"\) \d+ \d+, [a-z-]+$/,
+        );
+        expect(css.endsWith(`, ${CURSORS[key].fallback}`)).toBe(true);
+      }
+    }
+  });
+
+  test('the data URI escapes everything CSS and URLs need', () => {
+    const uri = cursorDataUri('default', THEMES['polar-night']);
+    expect(uri).not.toMatch(/[<>"#]/);
+    expect(decodeURIComponent(uri.replace('data:image/svg+xml,', ''))).toBe(
+      cursorSvg('default', THEMES['polar-night']).replaceAll('"', "'"),
+    );
+  });
+
+  test('glyphs follow the theme colours', () => {
+    expect(cursorSvg('default', THEMES['polar-night'])).toContain(NORD['nord-6'].hex);
+    expect(cursorSvg('default', THEMES['snow-storm'])).toContain(NORD['nord-0'].hex);
+    expect(cursorSvg('interactive', THEMES['polar-night'])).toContain(NORD['nord-8'].hex);
+  });
+
+  test('hotspots sit inside the 32px image', () => {
+    for (const { hotspot } of Object.values(CURSORS)) {
+      for (const n of hotspot) {
+        expect(Number.isInteger(n)).toBe(true);
+        expect(n).toBeGreaterThanOrEqual(0);
+        expect(n).toBeLessThan(32);
+      }
+    }
   });
 });

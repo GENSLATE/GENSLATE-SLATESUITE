@@ -22,7 +22,7 @@ export const statusBarVariants = tv({
     },
     interactive: {
       true: {
-        item: 'focus-ring-inset cursor-default hover:bg-statusbar-bg-hover active:bg-statusbar-bg-active',
+        item: 'focus-ring-inset cursor-interactive hover:bg-statusbar-bg-hover active:bg-statusbar-bg-active',
       },
     },
     accent: {

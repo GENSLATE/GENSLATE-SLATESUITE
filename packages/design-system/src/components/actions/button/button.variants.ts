@@ -7,7 +7,7 @@ import { tv } from '../../../utils/cn.util';
 export const buttonVariants = tv({
   slots: {
     root: [
-      'group/button relative inline-flex shrink-0 cursor-default select-none items-center justify-center whitespace-nowrap font-medium',
+      'group/button relative inline-flex shrink-0 cursor-interactive select-none items-center justify-center whitespace-nowrap font-medium',
       'focus-ring transition-[background-color,color,box-shadow,opacity] duration-fast ease-standard',
       'data-disabled:cursor-not-allowed data-disabled:opacity-45',
     ],
@@ -58,7 +58,7 @@ export const buttonVariants = tv({
       true: { root: 'w-full' },
     },
     loading: {
-      true: { root: 'cursor-progress', content: 'invisible' },
+      true: { root: 'cursor-progress data-disabled:cursor-progress', content: 'invisible' },
     },
     iconOnly: {
       true: {},
