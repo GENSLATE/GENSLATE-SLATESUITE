@@ -21,7 +21,7 @@ packages/
   config-typescript/  shared tsconfigs (TS 7 native compiler)
   config-vite/        shared Vite 8 preset (React Compiler, Tailwind, Tauri env)
 scripts/bun-commands/ one file per root `bun run <command>`
-webapp/             websites and servers: github-page/genslate-page (the GitHub Pages site, moon `genslate-page`), tauri-servers
+webapps/            websites and servers: genslate-page (the GitHub Pages site, moon `genslate-page`), tauri-servers
 tests/e2e/          end-to-end tests
 release/            packaged installers `release/<app>/<version>/` (git-ignored)
 other/              documents/, config/{genslate/<app>,appdata/metadata}/*.toml, licenses/, logs/, databases/, cache/, resources/ (ships verbatim in the launcher suite)

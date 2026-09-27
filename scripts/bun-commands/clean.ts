@@ -24,13 +24,13 @@ await defineCommand({
   },
   async run({ values }) {
     const patterns = [
-      '{desktop,packages,webapp}/*/dist',
-      '{desktop,packages,webapp}/*/coverage',
+      '{desktop,packages,webapps}/*/dist',
+      '{desktop,packages,webapps}/*/coverage',
       'coverage',
       '**/*.tsbuildinfo',
       'desktop/*/src-tauri/gen/schemas',
       '.config/moon/cache',
-      ...(values.all ? ['node_modules', '{desktop,packages,webapp}/*/node_modules'] : []),
+      ...(values.all ? ['node_modules', '{desktop,packages,webapps}/*/node_modules'] : []),
     ];
     const targets = new Set<string>();
     for (const pattern of patterns) {

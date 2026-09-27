@@ -54,7 +54,6 @@ export function ComponentPlayground() {
     <div className="overflow-hidden rounded-window border border-border-subtle bg-canvas shadow-dialog">
       <TitleBar
         platform="macos"
-        controls="traffic-lights"
         isFocused
         title="Design Kit — Playground"
         actions={

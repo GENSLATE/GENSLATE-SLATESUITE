@@ -12,7 +12,7 @@ const ctx: LinkContext = {
   source: 'other/documents/ipc.md',
   routes: new Map([
     ['other/documents/architecture.md', '/docs/developers/architecture/'],
-    ['webapp/github-page/genslate-page/content/wiki/launcher.md', '/docs/launcher/'],
+    ['webapps/genslate-page/content/wiki/launcher.md', '/docs/launcher/'],
   ]),
   base: '/GENSLATE/',
   repoUrl: 'https://github.com/genslate/GENSLATE',

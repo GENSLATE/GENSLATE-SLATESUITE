@@ -1,6 +1,6 @@
 # ──────────────────────────────────────────────────────────────────────
 #  GENSLATE — website (GitHub Pages)
-#  Builds webapp/github-page/genslate-page (every route prerendered) and deploys it.
+#  Builds webapps/genslate-page (every route prerendered) and deploys it.
 #  actions/configure-pages reports where Pages serves the site — a project site
 #  (https://<owner>.github.io/GENSLATE/) or a custom domain — and the build uses that base.
 #  One-time setup: Settings → Pages → Build and deployment → Source: "GitHub Actions".
@@ -11,7 +11,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'webapp/github-page/**'
+      - 'webapps/genslate-page/**'
       - 'packages/design-system/**'
       - 'packages/tokens/**'
       - 'other/documents/**'
@@ -66,7 +66,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: webapp/github-page/genslate-page/dist/site
+          path: webapps/genslate-page/dist/site
 
   deploy:
     name: Deploy to GitHub Pages

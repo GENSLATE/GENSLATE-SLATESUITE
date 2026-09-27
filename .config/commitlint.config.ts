@@ -26,7 +26,7 @@ const scopes = [
   'terminal',
   'theater',
   'toolbox',
-  // websites (moon projects under webapp/)
+  // websites (moon projects under webapps/)
   'genslate-page',
   // repo areas
   'crates',

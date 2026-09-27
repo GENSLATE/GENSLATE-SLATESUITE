@@ -32,4 +32,4 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
 - Updater (tauri-plugin-updater) — not enabled; `uploadUpdaterJson` is off until signing keys exist.
 
 ## Placeholders (reserved names, no code yet)
-`webapp/{github-page,tauri-servers}`.
+`webapps/tauri-servers`.

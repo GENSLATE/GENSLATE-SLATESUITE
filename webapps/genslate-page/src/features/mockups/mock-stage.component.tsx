@@ -64,7 +64,6 @@ export function MockWindow({
       {bare ? null : (
         <TitleBar
           platform="macos"
-          controls="traffic-lights"
           isFocused
           title={title}
           leading={leading}
