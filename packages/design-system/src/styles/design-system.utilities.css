@@ -78,7 +78,7 @@
 
 /* Window-chrome behaviour: default cursor, no text selection, no drag ghosts. */
 @utility chrome {
-  cursor: default;
+  cursor: var(--gs-cursor-default);
   user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;

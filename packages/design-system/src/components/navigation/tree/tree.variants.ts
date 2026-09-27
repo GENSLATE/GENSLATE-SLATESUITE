@@ -5,7 +5,7 @@ export const treeVariants = tv({
     root: 'group/tree m-0 select-none list-none p-0 py-0.5 text-base outline-none',
     item: 'm-0 list-none p-0 outline-none [&:focus-visible>[data-slot=tree-item-row]]:outline-focus',
     row: [
-      'relative flex h-row-sm cursor-default items-center gap-1.5 pr-2 text-fg',
+      'relative flex h-row-sm cursor-interactive items-center gap-1.5 pr-2 text-fg',
       'outline-2 outline-transparent -outline-offset-2',
       'hover:bg-fill-hover',
       'data-selected:bg-selection-inactive data-selected:text-fg-strong',

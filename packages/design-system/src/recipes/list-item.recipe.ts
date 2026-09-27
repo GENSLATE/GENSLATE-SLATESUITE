@@ -6,7 +6,7 @@ import { tv } from '../utils/cn.util';
  */
 export const listItem = tv({
   base: [
-    'group/item relative flex h-menu-item w-full cursor-default select-none items-center gap-2 rounded-menu-item px-2 text-base text-fg outline-none',
+    'group/item relative flex h-menu-item w-full cursor-interactive select-none items-center gap-2 rounded-menu-item px-2 text-base text-fg outline-none',
     'data-highlighted:bg-accent data-highlighted:text-on-accent',
     'data-disabled:pointer-events-none data-disabled:text-fg-disabled',
   ],

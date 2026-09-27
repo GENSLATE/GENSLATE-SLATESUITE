@@ -169,3 +169,47 @@ export const CHROME_COLOR_KEYS = [
 
 /** Elevation: control(1) · card(2) · popover(3) · dialog(4) · inset (fields). */
 export const SHADOW_KEYS = ['control', 'card', 'popover', 'dialog', 'inset'] as const;
+
+/**
+ * Themed cursors → `--gs-cursor-{key}` → Tailwind `cursor-{key}`. Every key but `interactive` is
+ * a CSS cursor keyword (and its fallback); `interactive` is the Frost arrow for controls.
+ */
+export const CURSOR_KEYS = [
+  'default',
+  'interactive',
+  'pointer',
+  'text',
+  'vertical-text',
+  'not-allowed',
+  'no-drop',
+  'progress',
+  'wait',
+  'help',
+  'copy',
+  'alias',
+  'context-menu',
+  'grab',
+  'grabbing',
+  'move',
+  'all-scroll',
+  'crosshair',
+  'col-resize',
+  'row-resize',
+  'ew-resize',
+  'ns-resize',
+  'nwse-resize',
+  'nesw-resize',
+  'zoom-in',
+  'zoom-out',
+] as const;
+
+/** The colours a theme paints its cursors with. */
+export const CURSOR_PAINT_KEYS = [
+  'glyph',
+  'rim',
+  'accent',
+  'on-accent',
+  'danger',
+  'success',
+  'info',
+] as const;

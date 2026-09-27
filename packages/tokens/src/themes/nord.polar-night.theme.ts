@@ -150,6 +150,20 @@ export const polarNight: ThemeDefinition = {
     inset: [shadow(0, 1, 2, 0, c('black', 0.22), true)],
   },
 
+  cursor: {
+    // Snow Storm glyphs with a receding Polar Night rim; Frost for the interactive arrow.
+    color: {
+      glyph: 'nord-6',
+      rim: 'nord-0-d03',
+      accent: 'nord-8',
+      'on-accent': 'nord-0-d03',
+      danger: 'nord-11',
+      success: 'nord-14',
+      info: 'nord-9',
+    },
+    shadow: 0.45,
+  },
+
   highContrast: {
     'border-subtle': c('nord-6', 0.2),
     border: c('nord-6', 0.32),

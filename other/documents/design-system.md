@@ -17,7 +17,7 @@ Single typed source → many outputs (`bun run tokens`):
 
 | Source (`packages/tokens/src`) | Generated |
 |---|---|
-| `tokens/color.tokens.ts`, `layout.tokens.ts`, `typography.tokens.ts`, `motion.tokens.ts` | `generated/css/*.css` (`--gs-*` variables) |
+| `tokens/color.tokens.ts`, `layout.tokens.ts`, `typography.tokens.ts`, `motion.tokens.ts`, `cursor.tokens.ts` | `generated/css/*.css` (`--gs-*` variables) |
 | `themes/nord.polar-night.theme.ts`, `nord.snow-storm.theme.ts` | `generated/css/tailwind.theme.css` (Tailwind v4 `@theme inline`) |
 | `themes/theme.contrast.ts` | `generated/json/contrast-report.json` (WCAG) |
 | | `generated/ts/tokens.generated.ts`, `tw-merge.config.ts` |
@@ -37,6 +37,21 @@ Never edit generated files. CI (`tokens:check`) fails on drift.
 | Icons | Codicons 16px (14px dense); Lucide at stroke 1.5 where no codicon fits |
 
 Flat at rest (hairline borders), depth only for floating layers (menus, popovers, dialogs, toasts). Motion animates transform/opacity only and respects `prefers-reduced-motion`.
+
+## Cursors
+
+Every app wears a themed cursor family (`cursor.tokens.ts`): 32px SVG glyphs painted with the theme's `cursor` colours (Snow Storm glyphs on a dark rim in Polar Night, the reverse in Snow Storm) and emitted as `--gs-cursor-*`, each ending in its native keyword as the fallback. Tailwind's `cursor-*` utilities are redefined on those variables, and base styles cover plain elements:
+
+| Where | Cursor |
+|---|---|
+| Chrome, canvas, labels, selectable page text | `cursor-default` (arrow) |
+| Buttons, tabs, menu items, tree rows, switches, status-bar buttons | `cursor-interactive` (Frost arrow) |
+| Links (`a[href]`) | `cursor-pointer` (hand) |
+| Inputs, textareas, contenteditable | `cursor-text` (I-beam) |
+| Disabled controls · loading buttons | `cursor-not-allowed` · `cursor-progress` |
+| Sashes, draggables, pickers | `cursor-col-resize`, `cursor-grab`/`cursor-grabbing`, `cursor-crosshair`, … |
+
+The cursors never animate. `useCursorStyle()` (persisted as `genslate.cursor`) switches to `system`, which sets `<html data-cursor="system">` and hands every cursor back to the OS so an enlarged or high-contrast OS pointer is kept; forced-colours mode does the same automatically. The Design Kit shows the family under Foundations › Cursors and the switch in the Appearance inspector.
 
 ## Components
 

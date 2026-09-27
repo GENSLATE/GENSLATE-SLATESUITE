@@ -1,5 +1,6 @@
 import {
   Badge,
+  type CursorStyle,
   IconButton,
   Kbd,
   Panel,
@@ -9,6 +10,7 @@ import {
   SegmentedControlItem,
   Separator,
   type ThemePreference,
+  useCursorStyle,
   usePlatform,
   useTheme,
 } from '@genslate/design-system';
@@ -27,6 +29,7 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 /** The right-hand inspector: appearance settings, shortcuts and about. */
 export function SettingsInspector({ onClose }: { onClose: () => void }) {
   const { theme, setTheme } = useTheme();
+  const { cursorStyle, setCursorStyle } = useCursorStyle();
   const platform = usePlatform();
 
   return (
@@ -55,6 +58,20 @@ export function SettingsInspector({ onClose }: { onClose: () => void }) {
           <p className="text-fg-muted text-xs">
             Official Nord: Polar Night (dark) and Snow Storm (light).
           </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="font-medium text-fg text-sm">Cursor</span>
+          <SegmentedControl<CursorStyle>
+            aria-label="Cursor"
+            size="sm"
+            fullWidth
+            value={cursorStyle}
+            onValueChange={setCursorStyle}
+          >
+            <SegmentedControlItem value="themed">GENSLATE</SegmentedControlItem>
+            <SegmentedControlItem value="system">System</SegmentedControlItem>
+          </SegmentedControl>
+          <p className="text-fg-muted text-xs">System keeps your OS pointer size and colours.</p>
         </div>
         <Separator />
         <div className="flex flex-col gap-2.5">

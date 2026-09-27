@@ -2,7 +2,7 @@ import { tv } from '../../../utils/cn.util';
 
 export const toggleButtonVariants = tv({
   base: [
-    'relative inline-flex shrink-0 cursor-default select-none items-center justify-center gap-1.5 whitespace-nowrap font-medium text-fg-secondary',
+    'relative inline-flex shrink-0 cursor-interactive select-none items-center justify-center gap-1.5 whitespace-nowrap font-medium text-fg-secondary',
     'focus-ring transition-[background-color,color,opacity] duration-fast ease-standard',
     'not-data-disabled:hover:text-fg-strong',
     'data-pressed:inset-ring data-pressed:inset-ring-accent-border data-pressed:bg-accent-subtle data-pressed:text-accent-fg',

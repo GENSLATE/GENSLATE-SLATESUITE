@@ -2,6 +2,7 @@ export {
   type UseControllableStateOptions,
   useControllableState,
 } from './use-controllable-state.hook';
+export { useCursorStyle } from './use-cursor-style.hook';
 export { matchesHotkey, parseHotkey, type UseHotkeyOptions, useHotkey } from './use-hotkey.hook';
 export { useMediaQuery } from './use-media-query.hook';
 export { usePlatform } from './use-platform.hook';

@@ -25,7 +25,7 @@ export const cardVariants = tv({
     },
     interactive: {
       true: {
-        root: 'focus-ring cursor-default transition-colors duration-fast ease-standard hover:bg-fill-hover active:bg-fill-pressed',
+        root: 'focus-ring cursor-interactive transition-colors duration-fast ease-standard hover:bg-fill-hover active:bg-fill-pressed',
       },
     },
   },
