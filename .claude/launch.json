@@ -78,6 +78,18 @@
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "--cwd=desktop/toolbox", "vite:dev"],
       "port": 1444
+    },
+    {
+      "name": "genslate-page",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=webapp/github-page/genslate-page", "dev"],
+      "port": 1430
+    },
+    {
+      "name": "genslate-page-preview",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=webapp/github-page/genslate-page", "preview"],
+      "port": 1431
     }
   ]
 }

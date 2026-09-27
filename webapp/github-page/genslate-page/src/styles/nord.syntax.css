@@ -1,0 +1,45 @@
+/*
+ * Nord syntax colours for Shiki's CSS-variables theme (see plugins/highlight.ts).
+ * Polar Night follows the official Nord editor mapping; Snow Storm darkens each hue until it
+ * clears WCAG AA (4.5:1) on the light code surface.
+ */
+
+:root,
+[data-theme='polar-night'] {
+  --shiki-foreground: var(--gs-nord-4);
+  --shiki-background: transparent;
+  --shiki-token-keyword: var(--gs-nord-9);
+  --shiki-token-constant: var(--gs-nord-15);
+  --shiki-token-string: var(--gs-nord-14);
+  --shiki-token-string-expression: var(--gs-nord-14);
+  --shiki-token-comment: var(--gs-nord-3-bright);
+  --shiki-token-function: var(--gs-nord-8);
+  --shiki-token-parameter: var(--gs-nord-6);
+  --shiki-token-punctuation: var(--gs-nord-6);
+  --shiki-token-link: var(--gs-nord-8);
+  --shiki-token-inserted: var(--gs-nord-14);
+  --shiki-token-deleted: var(--gs-nord-11);
+  --shiki-token-changed: var(--gs-nord-13);
+}
+
+[data-theme='snow-storm'] {
+  --shiki-foreground: var(--gs-nord-1);
+  --shiki-background: transparent;
+  --shiki-token-keyword: var(--gs-nord-10-d12);
+  --shiki-token-constant: color-mix(in oklab, var(--gs-nord-15) 62%, black);
+  --shiki-token-string: var(--gs-nord-14-d28);
+  --shiki-token-string-expression: var(--gs-nord-14-d28);
+  --shiki-token-comment: var(--gs-nord-3);
+  --shiki-token-function: color-mix(in oklab, var(--gs-nord-8) 52%, black);
+  --shiki-token-parameter: var(--gs-nord-0);
+  --shiki-token-punctuation: var(--gs-nord-3);
+  --shiki-token-link: var(--gs-nord-10-d12);
+  --shiki-token-inserted: var(--gs-nord-14-d28);
+  --shiki-token-deleted: var(--gs-nord-11-d10);
+  --shiki-token-changed: var(--gs-nord-13-d36);
+}
+
+/* Comments read as asides. */
+.shiki span[style*='--shiki-token-comment'] {
+  font-style: italic;
+}

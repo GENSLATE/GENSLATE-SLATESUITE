@@ -1,0 +1,44 @@
+/*
+ * The GENSLATE website's CSS entry: the design system (tokens, both Nord themes, components)
+ * plus a thin website layer. Components still style only through token utilities; the files
+ * below add what a *document* needs and an app does not: display type, prose, syntax colours,
+ * scroll-driven motion and the scaled app mockups.
+ */
+@import '@genslate/design-system/design-system.css';
+
+@import './site.base.css';
+@import './nord.syntax.css';
+@import './docs.prose.css';
+@import './site.motion.css';
+@import './mockup.stage.css';
+
+/* This site's sources. */
+@source '../';
+
+@theme {
+  /* Display type for marketing pages (the app scale tops out at 30px). */
+  --text-hero: clamp(2.6rem, 1.2rem + 4.6vw, 5.25rem);
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.042em;
+  --text-display: clamp(2rem, 1.25rem + 2.4vw, 3.25rem);
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.034em;
+  --text-title: clamp(1.5rem, 1.2rem + 0.9vw, 2rem);
+  --text-title--line-height: 1.2;
+  --text-title--letter-spacing: -0.024em;
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+  --text-lead--letter-spacing: -0.011em;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.65;
+  --text-body--letter-spacing: -0.006em;
+
+  --container-site: 76rem;
+
+  --spacing-header: 3.5rem;
+
+  /* Video and photo overlays are white on black in both themes. */
+  --color-white: white;
+  --color-black: black;
+  --color-film: color-mix(in oklab, var(--gs-nord-0) 55%, black);
+}

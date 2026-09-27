@@ -1,0 +1,269 @@
+/*
+ * A document, not an app window: the design system's base makes <body> a fixed, unselectable
+ * desktop surface. The website scrolls, selects text and uses the pointer cursor on links.
+ *
+ * The brand layer below is the only place the site reaches for Nord primitives: app tiles are
+ * *defined* by a Nord colour (`color = "nord14"` in each app's metadata), and the hero glow and
+ * gradient type are Frost/Aurora by design.
+ */
+
+@layer base {
+  html {
+    height: auto;
+    overscroll-behavior: auto;
+    scroll-padding-top: calc(var(--spacing-header) + 1.5rem);
+    scrollbar-gutter: stable;
+    /* Decorative glows may bleed past the edge; clip (unlike hidden) keeps sticky headers working. */
+    overflow-x: clip;
+    interpolate-size: allow-keywords;
+  }
+
+  body {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+    overflow-x: clip;
+    cursor: auto;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  #root {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  a,
+  button:not(:disabled),
+  summary,
+  [role='button']:not([aria-disabled='true']),
+  label[for] {
+    cursor: pointer;
+  }
+
+  /* Chrome-like pieces (headers, tabs, mockups) stay unselectable. */
+  [data-chrome] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  :where(h1, h2, h3, h4) {
+    color: var(--gs-color-fg-strong);
+    text-wrap: balance;
+  }
+
+  :where(p) {
+    text-wrap: pretty;
+  }
+
+  :target {
+    scroll-margin-top: calc(var(--spacing-header) + 1.5rem);
+  }
+}
+
+/* ── Brand layer ──────────────────────────────────────────────────────── */
+:root,
+[data-theme='polar-night'] {
+  --site-glow-a: color-mix(in oklab, var(--gs-nord-8) 34%, transparent);
+  --site-glow-b: color-mix(in oklab, var(--gs-nord-10) 40%, transparent);
+  --site-glow-c: color-mix(in oklab, var(--gs-nord-15) 22%, transparent);
+  --site-grid-dot: color-mix(in oklab, var(--gs-nord-4) 9%, transparent);
+  --site-ink-gradient: linear-gradient(
+    100deg,
+    var(--gs-nord-7) 0%,
+    var(--gs-nord-8) 32%,
+    var(--gs-nord-9) 64%,
+    var(--gs-nord-15) 100%
+  );
+  --site-card-shine: color-mix(in oklab, var(--gs-nord-8) 14%, transparent);
+  --site-show-dark: block;
+  --site-show-light: none;
+  --site-wallpaper:
+    radial-gradient(
+      90% 80% at 12% 0%,
+      color-mix(in oklab, var(--gs-nord-10) 70%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      70% 60% at 92% 12%,
+      color-mix(in oklab, var(--gs-nord-15) 38%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      80% 60% at 60% 110%,
+      color-mix(in oklab, var(--gs-nord-7) 40%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, var(--gs-nord-1), var(--gs-nord-0));
+}
+
+[data-theme='snow-storm'] {
+  --site-glow-a: color-mix(in oklab, var(--gs-nord-8) 38%, transparent);
+  --site-glow-b: color-mix(in oklab, var(--gs-nord-9) 34%, transparent);
+  --site-glow-c: color-mix(in oklab, var(--gs-nord-15) 18%, transparent);
+  --site-grid-dot: color-mix(in oklab, var(--gs-nord-3) 14%, transparent);
+  --site-ink-gradient: linear-gradient(
+    100deg,
+    var(--gs-nord-10-d12) 0%,
+    var(--gs-nord-10-d08) 38%,
+    var(--gs-nord-9-d20) 70%,
+    color-mix(in oklab, var(--gs-nord-15) 72%, black) 100%
+  );
+  --site-card-shine: color-mix(in oklab, var(--gs-nord-10) 10%, transparent);
+  --site-show-dark: none;
+  --site-show-light: block;
+  --site-wallpaper:
+    radial-gradient(
+      90% 80% at 12% 0%,
+      color-mix(in oklab, var(--gs-nord-8) 55%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      70% 60% at 92% 12%,
+      color-mix(in oklab, var(--gs-nord-15) 26%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      80% 60% at 60% 110%,
+      color-mix(in oklab, var(--gs-nord-9) 45%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, var(--gs-nord-6), var(--gs-nord-4));
+}
+
+/* Nord tile colours, set per element with data-nord="nord14". */
+[data-nord='nord0'] {
+  --app-color: var(--gs-nord-1);
+}
+[data-nord='nord1'] {
+  --app-color: var(--gs-nord-1);
+}
+[data-nord='nord2'] {
+  --app-color: var(--gs-nord-2);
+}
+[data-nord='nord3'] {
+  --app-color: var(--gs-nord-3);
+}
+[data-nord='nord4'] {
+  --app-color: var(--gs-nord-4);
+}
+[data-nord='nord5'] {
+  --app-color: var(--gs-nord-5);
+}
+[data-nord='nord6'] {
+  --app-color: var(--gs-nord-6);
+}
+[data-nord='nord7'] {
+  --app-color: var(--gs-nord-7);
+}
+[data-nord='nord8'] {
+  --app-color: var(--gs-nord-8);
+}
+[data-nord='nord9'] {
+  --app-color: var(--gs-nord-9);
+}
+[data-nord='nord10'] {
+  --app-color: var(--gs-nord-10);
+}
+[data-nord='nord11'] {
+  --app-color: var(--gs-nord-11);
+}
+[data-nord='nord12'] {
+  --app-color: var(--gs-nord-12);
+}
+[data-nord='nord13'] {
+  --app-color: var(--gs-nord-13);
+}
+[data-nord='nord14'] {
+  --app-color: var(--gs-nord-14);
+}
+[data-nord='nord15'] {
+  --app-color: var(--gs-nord-15);
+}
+
+@utility text-ink {
+  background: var(--site-ink-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+
+  @media (forced-colors: active) {
+    background: none;
+    color: CanvasText;
+  }
+}
+
+/* A faint dot grid that fades out from the top. */
+@utility bg-dots {
+  background-image: radial-gradient(var(--site-grid-dot) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+/* A glow in the app's colour (set --app-color, e.g. with data-nord). */
+@utility bg-app-glow {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--app-color, var(--gs-nord-8)) 42%, transparent),
+    transparent
+  );
+}
+
+/* Card sheen that follows the pointer (--mx / --my are set by the spotlight effect). */
+@utility spotlight {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      360px circle at var(--mx, 50%) var(--my, -40%),
+      var(--site-card-shine),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity var(--gs-duration-moderate) var(--gs-ease-standard);
+    pointer-events: none;
+  }
+
+  &:hover::before,
+  &:focus-within::before {
+    opacity: 1;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  translate: 0 -200%;
+  border-radius: var(--gs-radius-md);
+  background: var(--gs-color-accent);
+  padding: 0.5rem 0.875rem;
+  color: var(--gs-color-on-accent);
+  font-weight: 600;
+  transition: translate var(--gs-duration-base) var(--gs-ease-enter);
+
+  &:focus-visible {
+    translate: 0 0;
+  }
+}
