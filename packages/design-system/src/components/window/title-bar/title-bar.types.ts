@@ -2,21 +2,17 @@ import type { ComponentPropsWithRef, ReactNode } from 'react';
 import type { Platform } from '../../../utils/platform.util';
 import type { TrafficLightsLabels } from '../traffic-lights/traffic-lights.types';
 
-export type TitleBarControls = 'traffic-lights' | 'windows' | 'none';
-
 export interface TitleBarProps extends Omit<ComponentPropsWithRef<'header'>, 'title'> {
   /** Window title — centred when there is no command center, else the command center's text. */
   title?: ReactNode | undefined;
-  /** Defaults to the `PlatformProvider` platform. */
-  platform?: Platform | undefined;
   /**
-   * Window buttons. Defaults by platform: macOS → `none` (native lights via the overlay titlebar,
-   * with a spacer), Windows → `windows`, Linux / web → `traffic-lights`.
+   * Defaults to the `PlatformProvider` platform. Only affects children (shortcut glyphs such as
+   * ⌘K vs Ctrl+K) — the chrome itself, traffic lights included, is identical on every OS.
    */
-  controls?: TitleBarControls | undefined;
-  /** Defaults to the `WindowStateProvider` state. */
+  platform?: Platform | undefined;
+  /** Defaults to the `WindowStateProvider` state. Background windows show grey lights. */
   isFocused?: boolean | undefined;
-  isMaximized?: boolean | undefined;
+  /** Defaults to the `WindowStateProvider` state. Flips the green light's glyph inwards. */
   isFullscreen?: boolean | undefined;
   onMinimize?: (() => void) | undefined;
   onToggleMaximize?: (() => void) | undefined;
@@ -24,17 +20,17 @@ export interface TitleBarProps extends Omit<ComponentPropsWithRef<'header'>, 'ti
   /**
    * Double-clicking empty titlebar space calls `onToggleMaximize`. Off by default because Tauri's
    * `data-tauri-drag-region` already maximizes on double-click natively (enabling both would
-   * toggle twice); turn it on for hosts without a native drag region. Never applies on macOS.
+   * toggle twice); turn it on for hosts without a native drag region.
    * @default false
    */
   doubleClickToMaximize?: boolean | undefined;
-  /** After the window controls (sidebar toggle, app icon…). */
+  /** After the traffic lights (sidebar toggle, app icon…). */
   leading?: ReactNode | undefined;
   /** The centre: usually a `TitleBarCommandCenter`. */
   center?: ReactNode | undefined;
   /** Right-aligned actions (icon buttons). */
   actions?: ReactNode | undefined;
-  labels?: (TrafficLightsLabels & { restore?: string }) | undefined;
+  labels?: TrafficLightsLabels | undefined;
 }
 
 export interface TitleBarCommandCenterProps

@@ -38,7 +38,7 @@
 - **100% Portable by Design** — Zero host pollution. All configurations, databases, logs, webview profiles, and caches live strictly inside the portable suite tree (`other/` and `storage/`).
 - **Native Core & Minimal Footprint** — Built with Tauri 2 and Rust 2024 edition. Lightweight binaries, instant boot times, and tiny installers across macOS, Windows, and Linux.
 - **Unified Nord Design Language** — Official Arctic Ice Studio Nord palettes (**Polar Night** dark, **Snow Storm** light), crafted to pixel-perfection with **VS Code density** and **macOS refinement**.
-- **First-Class Custom Window Chrome** — Custom titlebars, integrated menu bars, and status bars everywhere. Native traffic lights on macOS; pixel-matched custom traffic lights on Windows and Linux with zero white-flash on launch.
+- **First-Class Custom Window Chrome** — Custom titlebars, integrated menu bars, and status bars everywhere. One macOS-style titlebar with pixel-matched custom traffic lights on macOS, Windows and Linux alike, with zero white-flash on launch.
 - **End-to-End Type Safety** — TypeScript 7 in strict mode, typed IPC via `@genslate/tauri-bridge`, and strict Rust compiler checks (`forbid(unsafe_code)`).
 - **Tokens as Single Source of Truth** — Unified token definitions compile automatically into CSS variables, Tailwind themes, TypeScript types, Rust constants, JSON schemas, and WCAG contrast audit reports.
 - **Monorepo Velocity** — Monorepo orchestration by **moon** with hash-based caching and affected-only task execution; lightning-fast package management, tests, and scripts powered by **bun**.
@@ -146,7 +146,7 @@ other/cache/genslate/<app>/
 `@genslate/design-system` provides high-density, accessible UI components built on **Base UI 1.8** and styled with **Tailwind CSS v4** token utilities:
 
 - **Strict Density:** 13px Inter typography, 28px control heights, 22px navigation tree rows, 16px Codicons.
-- **Flawless Chrome:** Native macOS overlay titlebar with native traffic lights; pixel-exact custom titlebars on Windows and Linux matching OS conventions.
+- **Flawless Chrome:** One pixel-exact custom titlebar with macOS-style traffic lights on every OS — no native or Windows-style window buttons.
 - **Accessibility:** Full keyboard navigation, ARIA standards compliant, and verified against WCAG 2.2 AA contrast standards.
 - **Dynamic Theming:** Seamless switching between Polar Night, Snow Storm, or automatically syncing with the host operating system.
 

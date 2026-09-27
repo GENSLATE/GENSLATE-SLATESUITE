@@ -9,7 +9,6 @@ import {
 } from '../../../src/components/window/status-bar';
 import { TitleBar, TitleBarCommandCenter } from '../../../src/components/window/title-bar';
 import { TrafficLights } from '../../../src/components/window/traffic-lights';
-import { WindowControls } from '../../../src/components/window/window-controls';
 
 describe('TrafficLights', () => {
   test('three labelled buttons that call their handlers', async () => {
@@ -46,32 +45,46 @@ describe('TrafficLights', () => {
   });
 });
 
-describe('WindowControls', () => {
-  test('shows restore when maximized', async () => {
-    const user = userEvent.setup();
-    const onToggleMaximize = mock();
-    render(<WindowControls isMaximized onToggleMaximize={onToggleMaximize} />);
-    await user.click(screen.getByRole('button', { name: 'Restore' }));
-    expect(onToggleMaximize).toHaveBeenCalledTimes(1);
-  });
-});
-
 describe('TitleBar', () => {
-  test('is a banner with drag regions; macOS reserves space for native lights', () => {
-    const { container } = render(<TitleBar title="Doc" platform="macos" />);
+  test('is a banner with drag regions and a title', () => {
+    render(<TitleBar title="Doc" platform="macos" />);
     const header = screen.getByRole('banner');
     expect(header).toHaveAttribute('data-tauri-drag-region');
-    expect(screen.queryByRole('group', { name: 'Window controls' })).toBeNull();
-    expect(container.querySelector('.w-traffic-spacer')).toBeInTheDocument();
     expect(screen.getByText('Doc')).toBeInTheDocument();
   });
 
-  test('controls default by platform', () => {
-    const { rerender } = render(<TitleBar platform="linux" />);
-    expect(screen.getByRole('button', { name: 'Zoom' })).toBeInTheDocument();
-    rerender(<TitleBar platform="windows" />);
-    expect(screen.getByRole('button', { name: 'Maximize' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Zoom' })).toBeNull();
+  test('traffic lights are the only window controls on every platform', async () => {
+    const user = userEvent.setup();
+    const onClose = mock();
+    const onMinimize = mock();
+    const onToggleMaximize = mock();
+    for (const platform of ['macos', 'windows', 'linux', 'web'] as const) {
+      const { unmount } = render(
+        <TitleBar
+          platform={platform}
+          onClose={onClose}
+          onMinimize={onMinimize}
+          onToggleMaximize={onToggleMaximize}
+        />,
+      );
+      const lights = screen.getByRole('group', { name: 'Window controls' });
+      expect(lights).toHaveAttribute('data-slot', 'traffic-lights');
+      expect(
+        screen.getAllByRole('button').map((button) => button.getAttribute('aria-label')),
+      ).toEqual(['Close', 'Minimize', 'Zoom']);
+      await user.click(screen.getByRole('button', { name: 'Close' }));
+      await user.click(screen.getByRole('button', { name: 'Minimize' }));
+      await user.click(screen.getByRole('button', { name: 'Zoom' }));
+      unmount();
+    }
+    expect(onClose).toHaveBeenCalledTimes(4);
+    expect(onMinimize).toHaveBeenCalledTimes(4);
+    expect(onToggleMaximize).toHaveBeenCalledTimes(4);
+  });
+
+  test('full screen flips the green light to exit full screen', () => {
+    render(<TitleBar platform="windows" isFullscreen />);
+    expect(screen.getByRole('button', { name: 'Exit Full Screen' })).toBeInTheDocument();
   });
 
   test('double-click leaves maximize to the native drag region by default', () => {
@@ -81,7 +94,7 @@ describe('TitleBar', () => {
     expect(onToggleMaximize).not.toHaveBeenCalled();
   });
 
-  test('opt-in double-click toggles maximize (not on macOS, not on controls)', () => {
+  test('opt-in double-click toggles maximize on empty space only', () => {
     const onToggleMaximize = mock();
     const { rerender } = render(
       <TitleBar
@@ -94,12 +107,13 @@ describe('TitleBar', () => {
     fireEvent.doubleClick(screen.getByRole('banner'));
     expect(onToggleMaximize).toHaveBeenCalledTimes(1);
     fireEvent.doubleClick(screen.getByRole('button', { name: 'A' }));
+    fireEvent.doubleClick(screen.getByRole('button', { name: 'Zoom' }));
     expect(onToggleMaximize).toHaveBeenCalledTimes(1);
     rerender(
       <TitleBar platform="macos" doubleClickToMaximize onToggleMaximize={onToggleMaximize} />,
     );
     fireEvent.doubleClick(screen.getByRole('banner'));
-    expect(onToggleMaximize).toHaveBeenCalledTimes(1);
+    expect(onToggleMaximize).toHaveBeenCalledTimes(2);
   });
 
   test('command center is a button with a shortcut hint', async () => {

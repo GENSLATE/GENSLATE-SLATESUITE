@@ -201,7 +201,6 @@ export type LayoutSizeKey =
   | 'traffic-light'
   | 'traffic-gap'
   | 'traffic-inset-x'
-  | 'traffic-spacer'
   | 'command-center-max'
   | 'palette'
   | 'dialog-sm'

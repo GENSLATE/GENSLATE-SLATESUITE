@@ -20,8 +20,8 @@ export function TitleBarSection() {
   return (
     <>
       <Specimen
-        title="Platforms"
-        description="Controls default by platform. The empty areas carry data-tauri-drag-region."
+        title="Every platform"
+        description="One titlebar on macOS, Windows and Linux: traffic lights on the left, drag regions in the empty areas. The platform only changes shortcut glyphs."
         stageClassName="flex-col items-stretch gap-6 bg-surface-sunken p-8"
       >
         <DemoWindow label="macOS titlebar">
@@ -33,16 +33,7 @@ export function TitleBarSection() {
           />
           <Body />
         </DemoWindow>
-        <DemoWindow label="Linux titlebar">
-          <TitleBar
-            platform="linux"
-            leading={leading}
-            center={<TitleBarCommandCenter>Search components…</TitleBarCommandCenter>}
-            actions={actions}
-          />
-          <Body />
-        </DemoWindow>
-        <DemoWindow label="Windows titlebar">
+        <DemoWindow label="Windows and Linux titlebar">
           <TitleBar
             platform="windows"
             leading={leading}
@@ -80,13 +71,7 @@ export function TitleBarSection() {
             name: 'platform',
             type: "'macos' | 'windows' | 'linux' | 'web'",
             default: 'context',
-            description: 'Chooses the default controls and shortcut glyphs.',
-          },
-          {
-            name: 'controls',
-            type: "'traffic-lights' | 'windows' | 'none'",
-            default: 'by platform',
-            description: 'macOS → none (native lights + 78px spacer).',
+            description: 'Shortcut glyphs of children (⌘K vs Ctrl+K); the chrome is identical.',
           },
           {
             name: 'leading / center / actions',
@@ -99,16 +84,17 @@ export function TitleBarSection() {
             description: 'Wire to useWindowControls() from the bridge.',
           },
           {
-            name: 'isFocused · isMaximized · isFullscreen',
+            name: 'isFocused · isFullscreen',
             type: 'boolean',
             default: 'context',
-            description: 'Window state; inactive windows dim the chrome.',
+            description: 'Window state; inactive windows dim the chrome and grey the lights.',
           },
           {
             name: 'doubleClickToMaximize',
             type: 'boolean',
-            default: 'not macOS',
-            description: 'Double-click on empty titlebar space.',
+            default: 'false',
+            description:
+              'Double-click on empty titlebar space (hosts without a native drag region).',
           },
         ]}
       />
