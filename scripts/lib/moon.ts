@@ -11,7 +11,7 @@ let available: Promise<boolean> | undefined;
 export function moonAvailable(): Promise<boolean> {
   available ??= (async () => {
     if (process.env['GENSLATE_NO_MOON'] === '1') return false;
-    const result = await capture(['bunx', 'moon', 'query', 'projects', '--json']);
+    const result = await capture(['bunx', 'moon', 'query', 'projects']);
     if (result.code !== 0) {
       log.warn('moon cannot load the workspace here (offline?); running tools directly.');
     }

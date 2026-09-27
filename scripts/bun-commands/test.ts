@@ -1,6 +1,7 @@
 /**
  * `bun run test [--ts] [--rust]` — every unit test (bun + cargo).
  */
+import { availableParallelism } from 'node:os';
 import { relative } from 'node:path';
 
 import { defineCommand } from '../lib/args';
@@ -50,7 +51,9 @@ await defineCommand({
     }
     if (both || values.rust) {
       log.title('Rust tests');
-      if ((await run(['cargo', 'test', '--workspace'])) !== 0) failures.push('cargo test');
+      const jobs = String(Math.max(1, Math.min(availableParallelism(), 8)));
+      if ((await run(['cargo', 'test', '--workspace', '-j', jobs])) !== 0)
+        failures.push('cargo test');
     }
 
     if (failures.length > 0) {
