@@ -26,10 +26,10 @@ export function ThemeCompare({ app }: { readonly app: string }) {
           <Icon name="codicon:arrow-both" size={16} />
         </span>
       </div>
-      <span className="pointer-events-none absolute bottom-4 left-4 rounded-full bg-surface-popover/90 px-3 py-1 font-medium text-fg-strong text-sm shadow-card backdrop-blur">
+      <span className="pointer-events-none absolute -top-11 left-0 rounded-full bg-surface-popover/90 px-3 py-1 font-medium text-fg-strong text-sm shadow-card backdrop-blur">
         Polar Night
       </span>
-      <span className="pointer-events-none absolute right-4 bottom-4 rounded-full bg-surface-popover/90 px-3 py-1 font-medium text-fg-strong text-sm shadow-card backdrop-blur">
+      <span className="pointer-events-none absolute -top-11 right-0 rounded-full bg-surface-popover/90 px-3 py-1 font-medium text-fg-strong text-sm shadow-card backdrop-blur">
         Snow Storm
       </span>
 

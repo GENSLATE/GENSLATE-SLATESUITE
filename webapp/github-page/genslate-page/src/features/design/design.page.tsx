@@ -169,7 +169,7 @@ export function DesignPage() {
           title="Every component. Every state. Both themes."
           lead="The Design Kit is a desktop app of its own — the living catalogue every GENSLATE app is built from. These are real screenshots."
         />
-        <div className="reveal mx-auto mt-12 max-w-5xl">
+        <div className="reveal mx-auto mt-20 max-w-5xl">
           <ThemeCompare app="example" />
         </div>
       </Section>
