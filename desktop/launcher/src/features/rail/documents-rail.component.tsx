@@ -30,6 +30,7 @@ export function DocumentsRail({ profile, suiteName, onOpenFolder }: DocumentsRai
     <nav
       aria-label="Your folders"
       data-slot="documents-rail"
+      data-context-zone="rail"
       className="flex h-full flex-col px-2 pt-1.5"
     >
       <ProfileCard
@@ -49,6 +50,7 @@ export function DocumentsRail({ profile, suiteName, onOpenFolder }: DocumentsRai
           >
             <button
               type="button"
+              data-folder={folder}
               onClick={() => onOpenFolder(folder)}
               className={cn(
                 'group/folder flex h-7 w-full cursor-default items-center gap-2 rounded-md px-2 text-fg-secondary text-sm',
@@ -82,6 +84,7 @@ function ProfileCard({
     <Tooltip content="Open your storage folder" side="left">
       <button
         type="button"
+        data-folder="storage"
         onClick={onOpenStorage}
         className={cn(
           'group/profile flex cursor-default flex-col items-center gap-1.5 rounded-lg px-2 pt-3 pb-2.5',

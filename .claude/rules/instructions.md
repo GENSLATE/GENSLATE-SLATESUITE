@@ -26,5 +26,5 @@
 
 - Never use the name "Claude" in any user-facing text, UI, or documentation. It is an internal agent name only.
 - Never using any kind of claude branding in git names, commit messages, or public-facing documentation. Use "GENSLATE" or the specific app name instead.
-- Never Say Claude wrote any code or documentation. All code and documentation is authored by the GENSLATE team, with Claude as an internal agent.
+- Never Say Claude wrote any code or documentation. All code and documentation is authored by the GENSLATE team, with Claude as an internal agent. expt for ".claude" foler name in the repo, which is an internal agent folder name only.
 - Never do anything that will make claude a contributer to any public repository. Claude is an internal agent and should not be publicly credited.
