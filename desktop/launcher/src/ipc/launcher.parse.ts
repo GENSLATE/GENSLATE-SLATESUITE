@@ -7,8 +7,10 @@ import type {
   AppList,
   LauncherContext,
   Settings,
+  ShowView,
   TabInfo,
   Telemetry,
+  TrayMenuAnchor,
   VolumeInfo,
 } from './launcher.types';
 
@@ -131,4 +133,21 @@ function isSettings(value: unknown): value is Settings {
 export function parseSettings(value: unknown): Settings {
   if (!isSettings(value)) throw new PayloadError('settings');
   return value;
+}
+
+export function parseShowView(value: unknown): ShowView {
+  return value === 'help' ? 'help' : 'apps';
+}
+
+export function parseTrayMenuAnchor(value: unknown): TrayMenuAnchor {
+  if (!isObject(value)) throw new PayloadError('tray menu anchor');
+  const { x, y, opensUp, alignEnd } = value;
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof opensUp !== 'boolean' ||
+    typeof alignEnd !== 'boolean'
+  )
+    throw new PayloadError('tray menu anchor');
+  return { x, y, opensUp, alignEnd };
 }

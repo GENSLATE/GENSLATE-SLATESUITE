@@ -23,7 +23,7 @@ const LAUNCH_POP_MS = 420;
 
 /** All launcher UI state and behaviour; components stay presentational. */
 export function useLauncherController() {
-  const { backend, context, settings, list, pinned, showCount } = useLauncher();
+  const { backend, context, settings, list, pinned, showCount, showView } = useLauncher();
   const toast = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,14 +49,15 @@ export function useLauncherController() {
   const activeApp = slash.active ? undefined : navigable[index];
   const expanded = view.kind === 'tools';
 
-  // Every show: fresh search, apps view, focus in the bar.
+  // Every show: fresh search, the requested view (apps unless the tray asked for help), focus
+  // in the bar.
   useEffect(() => {
     if (showCount === 0) return;
     setQuery('');
     setActiveIndex(0);
-    setView(APPS);
+    setView(showView === 'help' ? { kind: 'help' } : APPS);
     requestAnimationFrame(() => inputRef.current?.focus());
-  }, [showCount]);
+  }, [showCount, showView]);
 
   // Widen the shell's hit area at once; shrink it after the collapse animation.
   useEffect(() => {

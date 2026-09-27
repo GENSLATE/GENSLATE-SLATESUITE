@@ -26,7 +26,7 @@ The design system stays Tauri-free: apps pass bridge callbacks/state into window
    ```
    Register it in `lib.rs` with `tauri::generate_handler![commands::<name>::<fn>]` (full module path).
 3. **Errors**: return `Result<T, AppError>`. `AppError` (`thiserror`) serialises as `{ kind, message }` with a stable `kind` (`missing-config`, `paths`, …) — never leak secrets or absolute paths in `message`.
-4. **Permissions**: app commands are allowed by default for the app's windows; plugin APIs need explicit entries in `src-tauri/capabilities/*.json` (least privilege — e.g. `opener:allow-open-url` scoped to `https://*`).
+4. **Permissions**: app commands are allowed by default for the app's windows; plugin APIs need explicit entries in `src-tauri/capabilities/*.json` (least privilege — e.g. `opener:allow-open-url` scoped to `https://*`). An app with several windows can restrict its own commands per window instead: list them in `build.rs` with `tauri_build::AppManifest::new().commands(&[…])`, then grant `allow-<command>` in each window's capability. The launcher does this so its tray menu window gets only the commands its rows need.
 5. **Typed wrapper** in `packages/tauri-bridge/src/ipc/commands.ts`, with a browser fallback (`null` or a web equivalent), and its result type in `src/ipc/*.types.ts`.
 6. **Tests**: Rust unit tests for the core; bun tests for the wrapper's browser fallback.
 

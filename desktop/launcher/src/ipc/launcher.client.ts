@@ -9,7 +9,9 @@ import {
   parseAppList,
   parseContext,
   parseSettings,
+  parseShowView,
   parseTelemetry,
+  parseTrayMenuAnchor,
   parseVolume,
 } from './launcher.parse';
 import type {
@@ -21,6 +23,7 @@ import type {
   OverridePatch,
   SettingKey,
   SharedFolder,
+  ShowView,
   VolumeInfo,
 } from './launcher.types';
 
@@ -41,6 +44,10 @@ export interface LauncherBackend {
   setExpanded(expanded: boolean): Promise<void>;
   setPopupOpen(open: boolean): Promise<void>;
   hide(): Promise<void>;
+  /** Shows the launcher window on `view` (from the tray menu). */
+  show(view?: ShowView): Promise<void>;
+  /** Hides the tray menu window (after its exit animation). */
+  hideTrayMenu(): Promise<void>;
   quit(): Promise<void>;
   runAction(id: string, params: Readonly<Record<string, string>>): Promise<ActionOutcome>;
   on<E extends keyof LauncherEvents>(
@@ -57,17 +64,21 @@ const EVENT_NAMES: { readonly [E in keyof LauncherEvents]: string } = {
   settings: 'launcher://settings',
   catalog: 'launcher://catalog',
   telemetry: 'launcher://telemetry',
+  trayMenuOpen: 'tray-menu://open',
+  trayMenuClose: 'tray-menu://close',
 };
 
 /** Payload parsers per event (events with no payload pass `undefined`). */
 const EVENT_PARSERS: { readonly [E in keyof LauncherEvents]: (raw: unknown) => LauncherEvents[E] } =
   {
-    shown: () => undefined,
+    shown: parseShowView,
     willHide: () => undefined,
     pinned: (raw) => raw === true,
     settings: parseSettings,
     catalog: () => undefined,
     telemetry: parseTelemetry,
+    trayMenuOpen: parseTrayMenuAnchor,
+    trayMenuClose: () => undefined,
   };
 
 const tauriBackend: LauncherBackend = {
@@ -86,6 +97,8 @@ const tauriBackend: LauncherBackend = {
   setExpanded: (expanded) => invokeCommand('window_set_expanded', { expanded }),
   setPopupOpen: (open) => invokeCommand('window_set_popup_open', { open }),
   hide: () => invokeCommand('window_hide'),
+  show: (view) => invokeCommand('window_show', { view: view ?? 'apps' }),
+  hideTrayMenu: () => invokeCommand('tray_menu_hide'),
   quit: () => invokeCommand('quit'),
   runAction: (id, params) => invokeCommand<ActionOutcome>('run_action', { id, params }),
   on: (event, handler) =>

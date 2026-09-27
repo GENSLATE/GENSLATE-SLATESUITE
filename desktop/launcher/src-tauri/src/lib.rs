@@ -1,8 +1,9 @@
 //! GENSLATE Launcher: the Tauri 2 shell around the launcher UI.
 //!
 //! Startup: resolve portable paths (`genslate-paths`) → read `config.toml`/`keybindings.toml`
-//! → scan the catalog → create the transparent window, tray and global shortcut → start hot
-//! reload, click-through and status sampling → show (unless started with the OS).
+//! → scan the catalog → create the transparent window, tray (+ its menu window) and global
+//! shortcut → start hot reload, click-through and status sampling → show (unless started with
+//! the OS).
 //! Business logic lives in `genslate-core-launcher`; this crate wires it to Tauri.
 
 mod actions;
@@ -17,6 +18,7 @@ mod monitor;
 mod reload;
 mod state;
 mod tray;
+mod tray_menu;
 mod window;
 
 use genslate_core_launcher::config::LogLevel;
@@ -78,6 +80,9 @@ fn try_run() -> Result<(), AppError> {
             app.manage(Launcher::new(paths, settings));
             let handle = app.handle();
             window::create(handle, &handle.state::<Launcher>())?;
+            // Linux trays report no clicks: the tray keeps a native menu there instead.
+            #[cfg(not(target_os = "linux"))]
+            tray_menu::create(handle, &handle.state::<Launcher>())?;
             tray::create(handle)?;
             hotkey::register(handle, &toggle);
             autostart::apply(handle, autostart_enabled);
@@ -91,7 +96,11 @@ fn try_run() -> Result<(), AppError> {
         })
         .on_window_event(|window, event| {
             if let WindowEvent::Focused(false) = event {
-                window::on_blur(window.app_handle());
+                match window.label() {
+                    window::MAIN => window::on_blur(window.app_handle()),
+                    tray_menu::TRAY_MENU => tray_menu::on_blur(window.app_handle()),
+                    _ => {}
+                }
             }
         })
         .invoke_handler(tauri::generate_handler![
@@ -111,6 +120,8 @@ fn try_run() -> Result<(), AppError> {
             commands::window_set_expanded,
             commands::window_set_popup_open,
             commands::window_hide,
+            commands::window_show,
+            commands::tray_menu_hide,
             commands::quit,
         ])
         .build(context)?;

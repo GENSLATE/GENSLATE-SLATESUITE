@@ -64,7 +64,7 @@ Base UI 1.8 primitives styled with Tailwind v4 + tailwind-variants.
 | `actions` | Button, IconButton, ToggleButton/ToggleGroup, SegmentedControl, Toolbar |
 | `inputs` | text field, checkbox, switch, radio, select, slider |
 | `navigation` | Tabs, Tree, sidebar/source list |
-| `overlays` | Menu, Popover, Dialog, Tooltip, Toast |
+| `overlays` | Menu (+ MenuHeader, app icons in rows via `media`), Popover, Dialog, Tooltip, Toast |
 | `feedback` | Badge, Banner, ProgressBar, Spinner, Skeleton, EmptyState |
 | `display` | Icon, Kbd, avatars, lists |
 

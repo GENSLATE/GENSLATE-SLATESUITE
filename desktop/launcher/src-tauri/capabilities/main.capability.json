@@ -3,5 +3,27 @@
   "identifier": "main",
   "description": "Least privilege for the launcher window: its own typed commands (app ids and folder names only — no paths), events, dragging the custom titlebar, OS info and logging. No shell, fs or opener access from the webview.",
   "windows": ["main"],
-  "permissions": ["core:default", "core:window:allow-start-dragging", "os:default", "log:default"]
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "os:default",
+    "log:default",
+    "allow-run-action",
+    "allow-get-context",
+    "allow-list-apps",
+    "allow-rescan",
+    "allow-launch-app",
+    "allow-open-app-folder",
+    "allow-set-app-override",
+    "allow-open-folder",
+    "allow-open-config-file",
+    "allow-set-setting",
+    "allow-get-volume-info",
+    "allow-set-telemetry-active",
+    "allow-window-set-pinned",
+    "allow-window-set-expanded",
+    "allow-window-set-popup-open",
+    "allow-window-hide",
+    "allow-quit"
+  ]
 }
