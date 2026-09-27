@@ -17,7 +17,8 @@ use tauri::{AppHandle, Manager, State};
 use crate::files::{self, ConfigFile, SharedFolder};
 use crate::reload::emit;
 use crate::state::{Launcher, Settings, recent_file};
-use crate::{AppError, events, window};
+use crate::window::ShowView;
+use crate::{AppError, events, tray_menu, window};
 
 /// Everything the UI needs at start.
 #[derive(Debug, Serialize)]
@@ -167,6 +168,8 @@ pub enum SettingKey {
     Theme,
     Size,
     StatusMode,
+    /// `true` / `false`: start with the OS.
+    Autostart,
 }
 
 #[tauri::command]
@@ -188,6 +191,7 @@ pub fn write_setting(launcher: &Launcher, key: SettingKey, value: &str) -> Resul
         ),
         SettingKey::Size => ("appearance", "size", &["s", "m", "l"]),
         SettingKey::StatusMode => ("status", "mode", &["temps", "usage"]),
+        SettingKey::Autostart => ("behavior", "autostart", &["true", "false"]),
     };
     if !allowed.contains(&value) {
         return Err(AppError::InvalidArgument(format!(
@@ -195,7 +199,15 @@ pub fn write_setting(launcher: &Launcher, key: SettingKey, value: &str) -> Resul
             allowed.join(", ")
         )));
     }
-    metadata::write_value(&launcher.paths.config_file, table, name, value.into())?;
+    let path = &launcher.paths.config_file;
+    match key {
+        SettingKey::Autostart => {
+            metadata::write_value(path, table, name, (value == "true").into())?
+        }
+        SettingKey::Theme | SettingKey::Size | SettingKey::StatusMode => {
+            metadata::write_value(path, table, name, value.into())?
+        }
+    };
     Ok(())
 }
 
@@ -227,6 +239,16 @@ pub fn window_set_popup_open(app: AppHandle, open: bool) {
 #[tauri::command]
 pub fn window_hide(app: AppHandle) -> Result<(), AppError> {
     window::hide(&app)
+}
+
+#[tauri::command]
+pub fn window_show(app: AppHandle, view: Option<ShowView>) -> Result<(), AppError> {
+    window::show_view(&app, view.unwrap_or_default())
+}
+
+#[tauri::command]
+pub fn tray_menu_hide(app: AppHandle) -> Result<(), AppError> {
+    tray_menu::hide(&app)
 }
 
 #[tauri::command]

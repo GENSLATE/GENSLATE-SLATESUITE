@@ -1,0 +1,22 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "tray-menu",
+  "description": "The tray icon's menu window: reads the context and app list, and runs only the rows it shows (launch, open a folder or config file, theme/size/autostart, pin, show, rescan, quit). No app overrides, actions, telemetry or dragging.",
+  "windows": ["tray-menu"],
+  "permissions": [
+    "core:default",
+    "os:default",
+    "log:default",
+    "allow-get-context",
+    "allow-list-apps",
+    "allow-rescan",
+    "allow-launch-app",
+    "allow-open-folder",
+    "allow-open-config-file",
+    "allow-set-setting",
+    "allow-window-set-pinned",
+    "allow-window-show",
+    "allow-tray-menu-hide",
+    "allow-quit"
+  ]
+}
