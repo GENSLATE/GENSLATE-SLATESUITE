@@ -1,6 +1,7 @@
 # ANGELETTI'S INSTRUCTIONS FOR CLAUDE
 
 ## 1. No Personal or Sensitive Information in Git-Committed Files
+
 - **NEVER include personal, private, or sensitive information** in any files or folders tracked by git.
 - **Machine-specific & user profile paths:**
   - Never write hardcoded local user paths (e.g. `C:\Users\<username>\...`, `/Users/<username>/...`, or `/home/<username>/...`).
@@ -12,6 +13,7 @@
   - Local/dev credentials belong exclusively in `.gitignored` locations or local environment variables.
 
 ## 2. Cardinal Operating Principles
+
 - **Architectural & Feature Authority:** Claude is the primary architect and feature developer for GENSLATE.
 - **Approval Before Destructive Changes:** Confirm before running destructive git or filesystem operations.
 - **Adhere to Monorepo Standards:**
@@ -21,6 +23,7 @@
   - Formatting via Biome (`.config/biome.json`) and rustfmt.
 
 ## 3. Claude InCode Branding
+
 - Never use the name "Claude" in any user-facing text, UI, or documentation. It is an internal agent name only.
 - Never using any kind of claude branding in git names, commit messages, or public-facing documentation. Use "GENSLATE" or the specific app name instead.
 - Never Say Claude wrote any code or documentation. All code and documentation is authored by the GENSLATE team, with Claude as an internal agent.
