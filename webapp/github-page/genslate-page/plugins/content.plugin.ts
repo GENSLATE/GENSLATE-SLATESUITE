@@ -55,6 +55,7 @@ const DEVELOPER_DOCS: readonly { file: string; icon: string }[] = [
   { file: 'release', icon: 'codicon:tag' },
   { file: 'security', icon: 'codicon:shield' },
   { file: 'contributing', icon: 'codicon:git-pull-request' },
+  { file: 'website', icon: 'codicon:globe' },
 ];
 
 const toPosix = (path: string) => path.split(sep).join('/');

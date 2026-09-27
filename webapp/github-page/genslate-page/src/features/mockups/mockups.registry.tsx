@@ -40,12 +40,6 @@ const MOCKUPS: Readonly<Record<string, MockupEntry>> = {
   example: { width: 1280, height: 800, Component: DesignKitMockup },
 };
 
-/** Logical size of an app's window picture. */
-export function mockupSize(id: string): { width: number; height: number } {
-  const entry = MOCKUPS[id];
-  return entry ? { width: entry.width, height: entry.height } : WINDOW;
-}
-
 /** An app's live window picture, scaled to its container. */
 export function AppMockup({
   id,

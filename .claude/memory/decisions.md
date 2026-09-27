@@ -49,3 +49,13 @@ Short ADR log. Newest last. Format: **Decision** — context → consequence. Ad
 21. **`useAppInfo()` lives in `@genslate/tauri-bridge`.** Fetching `get_app_info` once is identical in every app, so it's a bridge hook (null in a browser; callers fall back to `package.json`).
 
 22. **GENSLATE icon family = dark plate + one accent.** Every app icon (`other/resources/icons/genslate/<app>.svg`) is a flat nord1 plate with a nord2 rim on the Big Sur grid, Snow Storm line work (secondary layer at 40 %) and one signature Nord accent — the icon-sized version of the design kit's "Polar Night surfaces, one accent" rule, matching the launcher mark and the Design Kit icon. The accent is the app's `color` in its launcher metadata. Bundle icons (`src-tauri/icons`) are generated from the SVG with `bun run tauri icon` (desktop sizes only).
+
+## 2026-09 · Website
+
+23. **The website is Vite + React, prerendered — not a docs framework.** `webapp/github-page/genslate-page` renders the real design system, so every route is prerendered with `renderToString` (`scripts/build-site.ts`) and hydrated, with a tiny base-path-aware router and one chunk per page. No Astro/Next/React Router → no new framework, SEO-friendly static HTML on GitHub Pages, and the site looks exactly like the apps.
+
+24. **App pictures are live mockups, not screenshots.** Planned apps have no UI yet, so each app page shows an `inert` mockup built from design-system components at a fixed window size and scaled with pure CSS (`scale: tan(atan2(100cqw, W))` — no JS measuring, no hydration shift). Real screenshots replace a mockup once the app ships (the Design Kit already uses them).
+
+25. **Docs are rendered from the repo at build time.** `other/documents/*.md` is the single source for developer docs; the user wiki lives in `content/wiki/`. `Bun.markdown` + Shiki's CSS-variables theme (mapped to Nord per theme in `nord.syntax.css`) produce one highlighted HTML for both themes with zero client JS. The site's app catalogue is tested against `other/config/appdata/metadata/*.toml` so it can't drift from the launcher.
+
+26. **GitHub Pages base path is configurable.** A repo named `GENSLATE` publishes as a project site (`/GENSLATE/`); the Pages workflow feeds `actions/configure-pages`' `base_path`/`origin` into `GENSLATE_SITE_BASE`/`GENSLATE_SITE_ORIGIN`, so renaming the repo to `<owner>.github.io` or adding a custom domain needs no code change. Each page gets a CSP that hashes its exact inline scripts (theme bootstrap, Base UI's pre-hydration Slider script).

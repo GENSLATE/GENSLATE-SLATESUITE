@@ -21,7 +21,6 @@ export function CodeLines({
       {lines.map((tokens, index) => {
         const line = index + 1;
         return (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static snippet lines never reorder
           <div
             key={index}
             className={cn(
@@ -42,7 +41,6 @@ export function CodeLines({
             <span style={{ color: 'var(--shiki-foreground)' }}>
               {tokens.map((token, tokenIndex) => (
                 <span
-                  // biome-ignore lint/suspicious/noArrayIndexKey: static snippet tokens never reorder
                   key={tokenIndex}
                   style={{
                     ...(token.color ? { color: token.color } : {}),

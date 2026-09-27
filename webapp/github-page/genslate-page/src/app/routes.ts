@@ -1,6 +1,7 @@
 import { APPS, findApp, type SuiteApp } from '../content/apps.content';
 import type { DocEntry } from '../content/content.types';
 import { DOCS, findDoc, loadDocHtml } from '../content/docs.content';
+import { loadPage, type PageComponent } from './pages.registry';
 import { normalizePath } from './router/router.util';
 
 /** What a route renders, with its data already loaded. */
@@ -24,6 +25,8 @@ export interface ResolvedRoute {
   readonly path: string;
   readonly view: RouteView;
   readonly meta: PageMeta;
+  /** The page component (its chunk is loaded before the route commits). */
+  readonly page: PageComponent;
 }
 
 const SUITE_DESCRIPTION =
@@ -37,7 +40,12 @@ export async function resolveRoute(rawPath: string): Promise<ResolvedRoute> {
   const segments = path.split('/').filter(Boolean);
   const [first, ...rest] = segments;
 
-  const done = (view: RouteView, meta: PageMeta): ResolvedRoute => ({ path, view, meta });
+  const done = async (view: RouteView, meta: PageMeta): Promise<ResolvedRoute> => ({
+    path,
+    view,
+    meta,
+    page: await loadPage(view.kind),
+  });
 
   if (first === undefined) {
     return done(

@@ -6,9 +6,9 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "bun --bun vite",
+    "dev": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true bun --bun vite",
     "build": "bun scripts/build-site.ts",
-    "preview": "bun --bun vite preview --outDir dist/site"
+    "preview": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true bun --bun vite preview --outDir dist/site"
   },
   "dependencies": {
     "@genslate/design-system": "workspace:*",
