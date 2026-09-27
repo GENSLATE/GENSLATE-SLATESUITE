@@ -11,6 +11,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 use genslate_core_launcher::geometry::{self, EDGE_MARGIN, Rect};
+use serde::{Deserialize, Serialize};
 use tauri::window::Color;
 use tauri::{
     AppHandle, Emitter, Manager, PhysicalPosition, PhysicalSize, Runtime, WebviewUrl,
@@ -59,9 +60,25 @@ pub fn main_window<R: Runtime>(app: &AppHandle<R>) -> Result<WebviewWindow<R>, A
         .ok_or(AppError::MissingWindow(MAIN))
 }
 
+/// The view the UI opens on when the window shows.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum ShowView {
+    /// The apps list (every regular show).
+    #[default]
+    Apps,
+    /// Shortcuts and commands (the tray menu's Help).
+    Help,
+}
+
 /// Places the window on the monitor under the cursor, shows and focuses it, then tells the UI
-/// to play its entrance.
+/// to play its entrance on the apps list.
 pub fn show<R: Runtime>(app: &AppHandle<R>) -> Result<(), AppError> {
+    show_view(app, ShowView::Apps)
+}
+
+/// Like [`show`], opening on `view`.
+pub fn show_view<R: Runtime>(app: &AppHandle<R>, view: ShowView) -> Result<(), AppError> {
     let window = main_window(app)?;
     let launcher = app.state::<Launcher>();
     let size = launcher.settings().config.appearance.size;
@@ -75,7 +92,7 @@ pub fn show<R: Runtime>(app: &AppHandle<R>) -> Result<(), AppError> {
     window.show()?;
     window.set_focus()?;
     launcher.window().visible = true;
-    app.emit(events::SHOWN, ())?;
+    app.emit(events::SHOWN, view)?;
     Ok(())
 }
 

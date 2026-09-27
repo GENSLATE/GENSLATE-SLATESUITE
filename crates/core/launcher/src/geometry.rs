@@ -131,6 +131,76 @@ pub fn anchor_bottom_right(work_area: Rect, scale: f64, logical: (f64, f64), mar
     }
 }
 
+/// Logical size of the tray menu window: room for the menu (272 px) plus one submenu beside it,
+/// and a transparent margin for the popups' shadows. The UI draws the menu in one corner.
+pub const TRAY_MENU_SIZE: (f64, f64) = (560.0, 440.0);
+
+/// Where the tray menu window goes and where, inside it, the menu is anchored.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct TrayMenuPlacement {
+    /// The window (physical px), inside the work area.
+    pub window: Rect,
+    /// The menu's anchor point relative to the window (logical px).
+    pub anchor: (f64, f64),
+    /// The menu opens upwards (tray at the bottom of the screen).
+    pub opens_up: bool,
+    /// The menu's right edge sits on the anchor (tray on the right of the screen).
+    pub align_end: bool,
+}
+
+/// Places the tray menu next to the cursor that right-clicked the tray icon.
+///
+/// The menu opens away from the screen edge the tray is on: up from a bottom taskbar, down from
+/// a top menu bar, and towards the screen's centre horizontally. The anchor is clamped into the
+/// work area, so a cursor on the taskbar anchors the menu to the taskbar's edge.
+pub fn tray_menu_placement(
+    cursor: (f64, f64),
+    monitor: Rect,
+    work_area: Rect,
+    scale: f64,
+    logical: (f64, f64),
+) -> TrayMenuPlacement {
+    let scale = if scale.is_finite() && scale > 0.0 {
+        scale
+    } else {
+        1.0
+    };
+    let width = to_px(logical.0 * scale).clamp(1, work_area.width.max(1));
+    let height = to_px(logical.1 * scale).clamp(1, work_area.height.max(1));
+    let opens_up = cursor.1 >= f64::from(monitor.y) + f64::from(monitor.height) / 2.0;
+    let align_end = cursor.0 >= f64::from(monitor.x) + f64::from(monitor.width) / 2.0;
+
+    let left = f64::from(work_area.x);
+    let top = f64::from(work_area.y);
+    let right = left + f64::from(work_area.width);
+    let bottom = top + f64::from(work_area.height);
+    let point = (cursor.0.clamp(left, right), cursor.1.clamp(top, bottom));
+
+    let x = if align_end {
+        point.0 - f64::from(width)
+    } else {
+        point.0
+    };
+    let y = if opens_up {
+        point.1 - f64::from(height)
+    } else {
+        point.1
+    };
+    let x = x.clamp(left, (right - f64::from(width)).max(left)).round();
+    let y = y.clamp(top, (bottom - f64::from(height)).max(top)).round();
+    TrayMenuPlacement {
+        window: Rect {
+            x: saturate_f64(x),
+            y: saturate_f64(y),
+            width,
+            height,
+        },
+        anchor: ((point.0 - x) / scale, (point.1 - y) / scale),
+        opens_up,
+        align_end,
+    }
+}
+
 #[allow(
     clippy::cast_possible_truncation,
     clippy::cast_sign_loss,
@@ -138,6 +208,16 @@ pub fn anchor_bottom_right(work_area: Rect, scale: f64, logical: (f64, f64), mar
 )]
 fn to_px(value: f64) -> u32 {
     value.round().clamp(0.0, f64::from(u32::MAX)) as u32
+}
+
+#[allow(
+    clippy::cast_possible_truncation,
+    reason = "screen coordinates are rounded and clamped to the i32 range first"
+)]
+fn saturate_f64(value: f64) -> i32 {
+    value
+        .round()
+        .clamp(f64::from(i32::MIN), f64::from(i32::MAX)) as i32
 }
 
 fn saturate(value: i64) -> i32 {
@@ -270,5 +350,81 @@ mod tests {
             false,
         );
         assert_eq!((hidpi.x, hidpi.width), (1428 - 24 - 690, 690));
+    }
+    #[test]
+    fn tray_menu_opens_up_and_left_from_a_bottom_right_taskbar() {
+        let monitor = Rect {
+            x: 0,
+            y: 0,
+            width: 1920,
+            height: 1080,
+        };
+        // Cursor on the taskbar, below the work area.
+        let placement =
+            tray_menu_placement((1800.0, 1060.0), monitor, FULL_HD, 1.0, TRAY_MENU_SIZE);
+        assert!(placement.opens_up && placement.align_end);
+        assert_eq!(
+            placement.window,
+            Rect {
+                x: 1800 - 560,
+                y: 1040 - 440,
+                width: 560,
+                height: 440
+            }
+        );
+        assert_eq!(placement.anchor, (560.0, 440.0));
+    }
+
+    #[test]
+    fn tray_menu_opens_down_from_a_top_menu_bar() {
+        let monitor = Rect {
+            x: 0,
+            y: 0,
+            width: 2880,
+            height: 1800,
+        };
+        let work = Rect {
+            x: 0,
+            y: 50,
+            width: 2880,
+            height: 1750,
+        };
+        let placement = tray_menu_placement((2500.0, 20.0), monitor, work, 2.0, TRAY_MENU_SIZE);
+        assert!(!placement.opens_up && placement.align_end);
+        assert_eq!(
+            placement.window,
+            Rect {
+                x: 2500 - 1120,
+                y: 50,
+                width: 1120,
+                height: 880
+            }
+        );
+        assert_eq!(placement.anchor, (560.0, 0.0));
+    }
+
+    #[test]
+    fn tray_menu_stays_inside_the_work_area_near_a_corner() {
+        let monitor = Rect {
+            x: 0,
+            y: 0,
+            width: 1920,
+            height: 1080,
+        };
+        // A left-hand taskbar: the menu opens to the right, clamped to the work area's left edge.
+        let work = Rect {
+            x: 60,
+            y: 0,
+            width: 1860,
+            height: 1080,
+        };
+        let placement = tray_menu_placement((30.0, 1000.0), monitor, work, 1.0, TRAY_MENU_SIZE);
+        assert!(placement.opens_up && !placement.align_end);
+        assert_eq!((placement.window.x, placement.window.y), (60, 1000 - 440));
+        assert_eq!(placement.anchor, (0.0, 440.0));
+        // Near the top-left corner, the window can't go above the work area.
+        let high = tray_menu_placement((100.0, 700.0), monitor, work, 1.0, (560.0, 900.0));
+        assert_eq!(high.window.y, 0);
+        assert_eq!(high.anchor, (0.0, 700.0));
     }
 }
