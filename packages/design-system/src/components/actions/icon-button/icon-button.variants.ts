@@ -3,7 +3,7 @@ import { tv } from '../../../utils/cn.util';
 /** Square icon buttons (VS Code action bar): quiet at rest, a soft fill on hover. */
 export const iconButtonVariants = tv({
   base: [
-    'relative inline-flex shrink-0 cursor-default select-none items-center justify-center text-fg-secondary',
+    'relative inline-flex shrink-0 cursor-interactive select-none items-center justify-center text-fg-secondary',
     'focus-ring transition-[background-color,color,opacity] duration-fast ease-standard',
     'not-data-disabled:hover:text-fg-strong',
     'data-disabled:cursor-not-allowed data-disabled:opacity-40',

@@ -6,7 +6,12 @@
  * token-backed utilities exist — `bg-gray-800` simply does not compile.
  */
 
-import { CHROME_COLOR_KEYS, SEMANTIC_COLOR_KEYS, SHADOW_KEYS } from '../../src/token.keys';
+import {
+  CHROME_COLOR_KEYS,
+  CURSOR_KEYS,
+  SEMANTIC_COLOR_KEYS,
+  SHADOW_KEYS,
+} from '../../src/token.keys';
 import { LAYOUT_SIZE, RADIUS, Z_INDEX } from '../../src/tokens/layout.tokens';
 import { MOTION } from '../../src/tokens/motion.tokens';
 import { TYPOGRAPHY } from '../../src/tokens/typography.tokens';
@@ -81,7 +86,13 @@ export function emitTailwindThemeCss(): string {
   for (const k of Object.keys(LAYOUT_SIZE)) add(`--spacing-${k}`, `var(--gs-size-${k})`);
   for (const k of CONTAINER_SIZES) add(`--container-${k}`, `var(--gs-size-${k})`);
 
-  return `${cssBanner()}\n/* Tailwind CSS v4 theme for GENSLATE. Import after \`@import "tailwindcss"\`. */\n@theme inline {${lines.join('\n')}\n}\n`;
+  // Tailwind's `cursor-*` utilities are static keywords, so each one is redefined on top of the
+  // themed `--gs-cursor-*` variable (the keyword stays first as the fallback declaration).
+  const cursors = CURSOR_KEYS.map(
+    (k) => `@utility cursor-${k} {\n  cursor: var(--gs-cursor-${k});\n}\n`,
+  ).join('\n');
+
+  return `${cssBanner()}\n/* Tailwind CSS v4 theme for GENSLATE. Import after \`@import "tailwindcss"\`. */\n@theme inline {${lines.join('\n')}\n}\n\n/* Themed cursors (cursor-default, cursor-interactive, cursor-text, …). */\n${cursors}`;
 }
 
 export function emitTwMergeConfig(): string {
@@ -101,6 +112,7 @@ export function emitTwMergeConfig(): string {
       classGroups: {
         z: [{ z: Object.keys(Z_INDEX) }],
         duration: [{ duration: Object.keys(MOTION.duration) }],
+        cursor: [{ cursor: ['interactive'] }],
       },
     },
   };

@@ -19,7 +19,7 @@ The UI must look **beautiful, clean and professional**: a **modern flat UI with 
    - Radii: control 6, popover/card 8, dialog 12.
    - Source-list sidebar with pill selection.
    - Spring easing for toggles and thumbs. Animate transform and opacity only.
-   - Default cursor. No text selection on chrome.
+   - Themed cursors: arrow on chrome, the Frost arrow (`cursor-interactive`) on controls, the hand on links only, the I-beam on editable text only. No text selection on chrome.
    - The inactive window dims the chrome.
 5. **VS Code density.** Tree rows 22, sidebar rows 28, menu items 24, controls 28 (md), tabs 36, status bar 24, titlebar 38. Codicons at 16px (14px in dense spots).
 6. **Every state, every theme.** Each component handles: rest, hover, pressed, focus-visible, selected/checked, disabled, invalid, loading (where relevant), and inactive-window. Each works in both themes, at 100/125/150% scaling, under `prefers-reduced-motion`, `prefers-contrast: more` and `forced-colors`.
@@ -37,6 +37,7 @@ Components style **only** through these utilities. Never use raw hex, `--gs-nord
 | Shadow | `shadow-control` `shadow-card` `shadow-popover` `shadow-dialog` `shadow-inset` |
 | Motion | `duration-{instant,fast,base,moderate,slow}` · `ease-{standard,enter,exit,spring}` |
 | Z-index | `z-{base,raised,sticky,chrome,sash,popover,scrim,dialog,toast,tooltip,max}` |
+| Cursor (themed, `--gs-cursor-*`) | `cursor-default` `cursor-interactive` (controls) `cursor-pointer` (links) `cursor-text` `cursor-not-allowed` `cursor-progress` `cursor-grab` `cursor-grabbing` `cursor-move` `cursor-crosshair` `cursor-{col,row,ew,ns,nwse,nesw}-resize` `cursor-zoom-{in,out}` `cursor-help` `cursor-copy` `cursor-alias` `cursor-context-menu` `cursor-wait` |
 | Layout sizes (spacing namespace) | `h-titlebar` `h-statusbar` `h-tabbar` `h-toolbar` `h-panel-header` `w-sidebar` · `h-control-{xs,sm,md,lg,xl}` / `size-control-*` · `h-row-sm` `h-row-md` `h-menu-item` · `size-icon-{sm,md,lg}` · `size-traffic-light` `gap-traffic-gap` `px-traffic-inset-x` · `max-w-command-center-max` `w-palette` `max-w-dialog-{sm,md,lg}` `max-w-content-max` |
 | Spacing | Tailwind's 4px grid: `p-2` = 8px, and so on |
 

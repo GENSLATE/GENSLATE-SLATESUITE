@@ -28,7 +28,7 @@ export const sidebarVariants = tv({
       'flex items-center gap-0.5 opacity-0 transition-opacity duration-fast group-focus-within/section:opacity-100 group-hover/section:opacity-100',
     sectionPanel: 'flex flex-col gap-px data-closed:hidden',
     item: [
-      'group/item no-underline! relative mx-2 flex h-row-md min-w-0 shrink-0 cursor-default items-center gap-2 rounded-control px-2 text-left text-base text-fg',
+      'group/item no-underline! relative mx-2 flex h-row-md min-w-0 shrink-0 cursor-interactive items-center gap-2 rounded-control px-2 text-left text-base text-fg',
       'focus-ring-inset transition-colors duration-fast ease-standard',
       'hover:bg-fill-hover active:bg-fill-pressed',
       'aria-[current]:bg-selection aria-[current]:text-fg-strong',
