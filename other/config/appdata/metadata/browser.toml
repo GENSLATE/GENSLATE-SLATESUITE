@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Browser. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Browser"
+description = "A private, portable web browser"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Internet"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord7"
+keywords = ["web", "internet", "www"]
+
+[build]
+guid = "56b1c642-c64d-4aca-8bcc-af9f476a78aa"

@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Launcher. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Launcher"
+description = "Your portable GENSLATE apps, files and tools in one menu"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "System"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord8"
+keywords = ["menu", "start", "apps"]
+
+[build]
+guid = "56a21be1-dd3a-4459-90cc-3aae68e95f60"

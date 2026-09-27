@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Terminal. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Terminal"
+description = "A fast, modern terminal with tabs and splits"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Development"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord14"
+keywords = ["shell", "console", "command line", "cli"]
+
+[build]
+guid = "8ee136f9-b8d7-41b7-a479-a48549f0c273"

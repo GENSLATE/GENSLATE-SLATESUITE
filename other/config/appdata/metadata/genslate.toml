@@ -1,0 +1,15 @@
+# Launcher tab: GENSLATE apps (programs/genslate/).
+# The launcher updates this file when you favorite, hide or rename an app. Comments are kept.
+
+# Show this tab (third-party tabs only appear while their folder has apps).
+enabled = true
+# Tab position: lower comes first.
+order = 1
+
+# Per-app overrides, keyed by the app's folder name. Every key is optional:
+# [apps.example]
+# favorite = true              # pin to Favorites
+# hidden = false               # hide from the list
+# name = "My Name"             # show a different name
+# category = "Development"     # group under a different category
+# args = ["--flag"]            # launch arguments

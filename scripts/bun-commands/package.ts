@@ -1,14 +1,26 @@
 /**
- * `bun run package [app|--all] [--debug] [--skip-build]` — build installers and collect them
- * into `release/<app>/<version>/` with `checksums.sha256` and `manifest.json`.
+ * `bun run package [app...|--all] [--target <id>] [--debug] [--skip-build] [--installers]` —
+ * build GENSLATE apps and package them as portable, standalone archives in `release/<app>/`
+ * (the previous build is archived to `release/.archive/<app>/<YYYY-MM-DD_HH-MM>/`).
  */
-import { cp, mkdir, readdir, rm, stat } from 'node:fs/promises';
+import { cp, readdir, rm, stat } from 'node:fs/promises';
 import { basename, join, relative } from 'node:path';
 import { type DesktopApp, selectApps } from '../lib/apps';
+import { archiveExtension, createArchive } from '../lib/archive';
 import { defineCommand } from '../lib/args';
 import { color, log } from '../lib/log';
-import { RELEASE_DIR, ROOT, TARGET_DIR } from '../lib/paths';
+import { ROOT, TARGET_DIR } from '../lib/paths';
+import { prepareReleaseDir } from '../lib/release';
 import { capture, runOrThrow } from '../lib/run';
+import {
+  type BuildContext,
+  copyProgram,
+  metadataStamp,
+  writeAppOther,
+  writeOtherSkeleton,
+  writeStorageSkeleton,
+} from '../lib/stage';
+import { outputDir, selectTarget, type Target } from '../lib/targets';
 
 /** Installer / archive formats produced by the Tauri bundler. */
 const ARTIFACT = /\.(deb|rpm|AppImage|dmg|app|msi|exe|app\.tar\.gz|AppImage\.tar\.gz|sig|zip)$/;
@@ -23,40 +35,51 @@ interface Artifact {
 await defineCommand({
   name: 'package',
   summary:
-    'Build release installers with `tauri build` and collect them into release/<app>/<version>/.',
-  usage: '[app...] [--all] [--debug] [--skip-build]',
+    'Build apps and package portable archives (plus optional installers) into release/<app>/.',
+  usage: '[app...] [--all] [--target <id>] [--debug] [--skip-build] [--installers]',
   options: {
     all: { type: 'boolean', short: 'a', description: 'Package every app under desktop/.' },
-    debug: { type: 'boolean', short: 'd', description: 'Debug build (target/debug/bundle).' },
-    'skip-build': { type: 'boolean', description: 'Only collect bundles that already exist.' },
+    target: {
+      type: 'string',
+      short: 't',
+      description:
+        'windows-x64 | windows-arm64 | macos-universal | linux-x64 (default: this machine).',
+    },
+    debug: { type: 'boolean', short: 'd', description: 'Debug build.' },
+    'skip-build': { type: 'boolean', description: 'Package what is already built.' },
+    installers: {
+      type: 'boolean',
+      description: 'Also build and collect the Tauri installers (msi/nsis/dmg/deb/…).',
+    },
   },
   details: `
 Output
-  release/<app>/<version>/<installers>
-  release/<app>/<version>/checksums.sha256   (sha256sum -c compatible)
-  release/<app>/<version>/manifest.json      (app, version, identifier, target, files)`,
+  release/<app>/genslate-<app>-<version>-<target>.zip   portable app (.tar.gz on Linux)
+  release/<app>/checksums.sha256                        (sha256sum -c compatible)
+  release/<app>/manifest.json                           (app, version, target, files)
+  release/.archive/<app>/<YYYY-MM-DD_HH-MM>/            the previous build`,
   async run({ values, positionals }) {
     const apps = await selectApps(positionals, values.all);
+    const target = selectTarget(values.target);
     const profile = values.debug ? 'debug' : 'release';
+    const installers = values.installers === true;
     for (const app of apps) {
-      log.title(`Packaging ${app.productName} ${app.version} (${profile})`);
+      const ctx: BuildContext = { app, target, profile };
+      log.title(`Packaging ${app.productName} ${app.version} (${target.id}, ${profile})`);
       const startedAt = Date.now();
-      if (!values['skip-build']) {
-        await runOrThrow(['bun', 'run', 'tauri', 'build', ...(values.debug ? ['--debug'] : [])], {
-          cwd: app.dir,
-        });
+      if (!values['skip-build']) await build(ctx, installers);
+
+      const outDir = await prepareReleaseDir(app.name);
+      const artifacts = [await packagePortable(ctx, outDir)];
+      if (installers) {
+        const bundleDir = join(outputDir(TARGET_DIR, target, profile), 'bundle');
+        const since = values['skip-build'] ? 0 : startedAt;
+        for (const source of await findBundles(bundleDir, app, since)) {
+          artifacts.push(await collect(source, bundleDir, outDir));
+        }
       }
-      const bundleDir = join(TARGET_DIR, profile, 'bundle');
-      const sources = await findBundles(bundleDir, app, values['skip-build'] ? 0 : startedAt);
-      if (sources.length === 0)
-        throw new Error(`no bundles for ${app.name} in ${relative(ROOT, bundleDir)}`);
-      const outDir = join(RELEASE_DIR, app.name, app.version);
-      await rm(outDir, { recursive: true, force: true });
-      await mkdir(outDir, { recursive: true });
-      const artifacts: Artifact[] = [];
-      for (const source of sources) artifacts.push(await collect(source, bundleDir, outDir));
       await writeChecksums(outDir, artifacts);
-      await writeManifest(outDir, app, profile, artifacts);
+      await writeManifest(outDir, app, target, profile, artifacts);
       for (const artifact of artifacts)
         log.info(
           `${artifact.kind.padEnd(9)} ${artifact.file} ${color.dim(formatBytes(artifact.bytes))}`,
@@ -65,6 +88,52 @@ Output
     }
   },
 });
+
+/** `tauri build` for the target: just the program unless installers are wanted. */
+async function build(ctx: BuildContext, installers: boolean): Promise<void> {
+  const bundles = installers
+    ? []
+    : // macOS needs the .app bundle to be a real app; elsewhere the bare executable is portable.
+      ctx.target.os === 'macos'
+      ? ['--bundles', 'app']
+      : ['--no-bundle'];
+  await runOrThrow(
+    [
+      'bun',
+      'run',
+      'tauri',
+      'build',
+      ...(ctx.profile === 'debug' ? ['--debug'] : []),
+      ...(ctx.target.triple === undefined ? [] : ['--target', ctx.target.triple]),
+      ...bundles,
+    ],
+    { cwd: ctx.app.dir },
+  );
+}
+
+/**
+ * Stages `genslate-<app>/` (program, `other/` and `storage/`) and archives it into `outDir`.
+ * Extracted anywhere, the app runs in standalone mode with everything beside it.
+ */
+async function packagePortable(ctx: BuildContext, outDir: string): Promise<Artifact> {
+  const folder = `genslate-${ctx.app.name}`;
+  const staging = join(TARGET_DIR, 'package', ctx.target.id, folder);
+  await rm(staging, { recursive: true, force: true });
+  await copyProgram(ctx, staging);
+  await writeOtherSkeleton(join(staging, 'other'));
+  await writeAppOther(ctx.app, join(staging, 'other'), await metadataStamp(ctx.app));
+  await writeStorageSkeleton(join(staging, 'storage'));
+
+  const file = `${folder}-${ctx.app.version}-${ctx.target.id}${archiveExtension(ctx.target.os)}`;
+  const archive = join(outDir, file);
+  await createArchive(staging, archive, ctx.target.os);
+  return {
+    file,
+    kind: 'portable',
+    bytes: (await stat(archive)).size,
+    sha256: await sha256(archive),
+  };
+}
 
 /** Top-level installers in `bundle/<kind>/` belonging to `app` (by name, and by mtime after a build). */
 async function findBundles(
@@ -109,9 +178,13 @@ async function collect(source: string, bundleDir: string, outDir: string): Promi
       sha256: undefined,
     };
   }
+  return { file: basename(target), kind, bytes: info.size, sha256: await sha256(target) };
+}
+
+async function sha256(file: string): Promise<string> {
   const hasher = new Bun.CryptoHasher('sha256');
-  hasher.update(await Bun.file(target).arrayBuffer());
-  return { file: basename(target), kind, bytes: info.size, sha256: hasher.digest('hex') };
+  hasher.update(await Bun.file(file).arrayBuffer());
+  return hasher.digest('hex');
 }
 
 async function writeChecksums(outDir: string, artifacts: readonly Artifact[]): Promise<void> {
@@ -124,6 +197,7 @@ async function writeChecksums(outDir: string, artifacts: readonly Artifact[]): P
 async function writeManifest(
   outDir: string,
   app: DesktopApp,
+  target: Target,
   profile: string,
   artifacts: readonly Artifact[],
 ): Promise<void> {
@@ -134,7 +208,7 @@ async function writeManifest(
     identifier: app.identifier,
     version: app.version,
     profile,
-    target: { os: process.platform, arch: process.arch },
+    target: target.id,
     commit: commit.code === 0 ? commit.stdout.trim() : null,
     createdAt: new Date().toISOString(),
     files: artifacts,

@@ -45,10 +45,37 @@
     "**/*.svg",
     "**/*.{png,jpg,jpeg,gif,ico,icns,webp,woff,woff2,ttf,otf}"
   ],
+  "patterns": [
+    {
+      "name": "windows-paths",
+      "pattern": "/[a-zA-Z]:[\\\\/][^\\s`\"'\\<\\>\\(\\)\\[\\]\\{\\}]+/g"
+    },
+    {
+      "name": "relative-paths",
+      "pattern": "/(?:^|[^\\w])(?:~|\\.{1,2}|\\/)[\\\\/][^\\s`\"'\\<\\>\\(\\)\\[\\]\\{\\}]+/g"
+    },
+    {
+      "name": "multi-segment-paths",
+      "pattern": "/(?:^|[^\\w])[a-zA-Z0-9_.-]+(?:[\\\\/][a-zA-Z0-9_.-]+){2,}/g"
+    },
+    {
+      "name": "file-paths-with-ext",
+      "pattern": "/(?:^|[^\\w])[a-zA-Z0-9_.-]+(?:[\\\\/][a-zA-Z0-9_.-]+)+\\.[a-zA-Z0-9_-]+/g"
+    },
+    {
+      "name": "uri-schemes",
+      "pattern": "/[a-zA-Z][-a-zA-Z0-9+.]*:\\/\\/[^\\s`\"'\\<\\>\\(\\)\\[\\]\\{\\}]+/g"
+    }
+  ],
   "ignoreRegExpList": [
     "/#[0-9a-fA-F]{3,8}\\b/g",
     "/\\b[0-9a-f]{40}\\b/g",
-    "/sha(256|384|512)-[A-Za-z0-9+/=]+/g"
+    "/sha(256|384|512)-[A-Za-z0-9+/=]+/g",
+    "windows-paths",
+    "relative-paths",
+    "multi-segment-paths",
+    "file-paths-with-ext",
+    "uri-schemes"
   ],
   "overrides": [
     {

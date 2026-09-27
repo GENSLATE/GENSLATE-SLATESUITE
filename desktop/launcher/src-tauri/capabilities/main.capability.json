@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "Least privilege for the launcher window: its own typed commands (app ids and folder names only — no paths), events, dragging the custom titlebar, OS info and logging. No shell, fs or opener access from the webview.",
+  "windows": ["main"],
+  "permissions": ["core:default", "core:window:allow-start-dragging", "os:default", "log:default"]
+}

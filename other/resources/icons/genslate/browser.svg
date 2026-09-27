@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>GENSLATE Browser</title>
+  <!--
+    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
+    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
+    no gradients. Plate nord7, glyph nord0.
+    The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
+  -->
+  <defs>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#8fbcbb" filter="url(#drop)"/>
+  <circle cx="512" cy="512" r="210" stroke="#2e3440" fill="none" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="512" cy="512" rx="88" ry="210" stroke="#2e3440" fill="none" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M302 512h420M330 420h364M330 604h364" stroke="#2e3440" fill="none" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

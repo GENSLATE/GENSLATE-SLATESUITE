@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "GENSLATE Launcher",
+  "mainBinaryName": "genslate-launcher",
+  "version": "../package.json",
+  "identifier": "space.angeletti.genslate.launcher",
+  "build": {
+    "beforeDevCommand": "bun run vite:dev",
+    "beforeBuildCommand": "bun run vite:build",
+    "devUrl": "http://localhost:1422",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "macOSPrivateApi": true,
+    "windows": [],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: launcher-icon: http://launcher-icon.localhost; font-src 'self' data:; connect-src ipc: http://ipc.localhost",
+      "devCsp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: launcher-icon: http://launcher-icon.localhost; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost ws://localhost:1423",
+      "freezePrototype": true,
+      "capabilities": ["main"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Utility",
+    "shortDescription": "The portable app menu of the GENSLATE suite.",
+    "longDescription": "GENSLATE Launcher is a portable, AI-ready app menu: GENSLATE apps, PortableApps.com and portapps.io apps and your portable documents, one keystroke away in the corner of your screen.",
+    "publisher": "GENSLATE",
+    "copyright": "© GENSLATE. All rights reserved.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

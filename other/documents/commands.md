@@ -9,7 +9,7 @@ Every root command is `bun run <name>` → `bun scripts/bun-commands/<name>.ts`.
 | `bun run setup` | First-time/after-pull setup: `bun install`, lefthook git hooks, moon config schemas, Rust components. |
 | `bun run dev` | Launches the example Tauri app (native window + Vite HMR). |
 | `bun run build` | Builds every project (frontends and Rust). |
-| `bun run package` | Builds release installers and copies them into `release/<app>/<version>/`. |
+| `bun run package` | Builds portable app archives into `release/<app>/` (previous build → `release/.archive/<app>/<YYYY-MM-DD_HH-MM>/`). `--installers` adds the Tauri installers. |
 | `bun run test` | Runs the TypeScript (bun test) and Rust (`cargo test`) suites. |
 | `bun run check` | All quality gates: Biome, TypeScript, cspell, knip, clippy, rustfmt, token drift. |
 | `bun run format` | Biome `check --write` + `cargo fmt`. |

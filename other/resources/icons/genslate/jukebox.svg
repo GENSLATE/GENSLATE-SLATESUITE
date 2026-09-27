@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>GENSLATE Jukebox</title>
+  <!--
+    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
+    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
+    no gradients. Plate nord11, glyph nord6.
+    The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
+  -->
+  <defs>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#bf616a" filter="url(#drop)"/>
+  <path d="M452 648V366l246-46v290" stroke="#eceff4" fill="none" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M452 366l246-46v76l-246 46Z" fill="#eceff4" stroke="#eceff4" stroke-width="20" stroke-linejoin="round"/>
+  <ellipse cx="386" cy="652" rx="74" ry="60" fill="#eceff4"/>
+  <ellipse cx="632" cy="612" rx="74" ry="60" fill="#eceff4"/>
+</svg>

@@ -1,7 +1,6 @@
-# GENSLATE Example — development config.
-# Read by `genslate-core-example` (debug builds running from the repo). Installed builds read
-# `<OS config dir>/space.angeletti.genslate.example/example.toml`; portable builds read
-# `<exe dir>/example-data/config/example.toml`. Every key is optional.
+# GENSLATE Example — config. Every key is optional; delete a key to get its default.
+# Location: <installDir>/other/config/genslate/example/config.toml (suite), the same path beside
+# the app when run from its own zip, or the repo's other/config in dev. See other/documents/portability.md.
 
 [appearance]
 # "system" | "polar-night" | "snow-storm"

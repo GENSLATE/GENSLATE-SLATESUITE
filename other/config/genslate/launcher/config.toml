@@ -1,0 +1,27 @@
+# GENSLATE Launcher — settings.
+# Edit and save: the launcher picks up changes immediately. Every key is optional; delete a key
+# (or the whole file) to get its default. Keyboard shortcuts live in keybindings.toml.
+
+[appearance]
+# "system" follows the OS · "polar-night" (dark) · "snow-storm" (light)
+theme = "system"
+# Window height: "s" (580 px) · "m" (660 px) · "l" (760 px)
+size = "m"
+
+[behavior]
+# Hide the launcher when you click another window (never while pinned).
+hide-on-blur = true
+# Hide the launcher after it starts an app (never while pinned).
+hide-on-launch = true
+# Start pinned: always on top and never hides by itself. Toggle with the pin button.
+pinned = false
+# Start the launcher when you sign in to your computer.
+autostart = false
+
+[status]
+# What the right side of the status bar shows first: "temps" (CPU/GPU °C) · "usage" (CPU/GPU %, network)
+mode = "temps"
+
+[logging]
+# "off" · "error" · "warn" · "info" · "debug" · "trace"
+level = "info"

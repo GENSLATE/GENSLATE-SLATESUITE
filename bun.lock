@@ -44,6 +44,31 @@
         "vite": "catalog:",
       },
     },
+    "desktop/launcher": {
+      "name": "@genslate/launcher",
+      "version": "0.1.0",
+      "dependencies": {
+        "@genslate/design-system": "workspace:*",
+        "@genslate/tauri-bridge": "workspace:*",
+        "react": "catalog:",
+        "react-dom": "catalog:",
+      },
+      "devDependencies": {
+        "@genslate/config-typescript": "workspace:*",
+        "@genslate/config-vite": "workspace:*",
+        "@happy-dom/global-registrator": "catalog:",
+        "@tauri-apps/cli": "catalog:",
+        "@testing-library/dom": "catalog:",
+        "@testing-library/jest-dom": "catalog:",
+        "@testing-library/react": "catalog:",
+        "@types/bun": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "tailwindcss": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:",
+      },
+    },
     "packages/config-typescript": {
       "name": "@genslate/config-typescript",
       "version": "0.1.0",
@@ -437,6 +462,8 @@
     "@genslate/design-system": ["@genslate/design-system@workspace:packages/design-system"],
 
     "@genslate/example": ["@genslate/example@workspace:desktop/example"],
+
+    "@genslate/launcher": ["@genslate/launcher@workspace:desktop/launcher"],
 
     "@genslate/tauri-bridge": ["@genslate/tauri-bridge@workspace:packages/tauri-bridge"],
 

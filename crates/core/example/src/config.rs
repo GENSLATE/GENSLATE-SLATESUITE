@@ -185,8 +185,8 @@ mod tests {
 
     #[test]
     fn repo_example_config_parses() -> Result<(), Box<dyn std::error::Error>> {
-        let path =
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../other/config/apps/example.toml");
+        let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../../other/config/genslate/example/config.toml");
         Config::load(&path)?;
         Ok(())
     }

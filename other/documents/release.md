@@ -7,15 +7,33 @@ SemVer, one version for the whole repo (`package.json` files, `Cargo.toml` `[wor
 ## Local packaging
 
 ```sh
-bun run package
+bun run package [app...|--all] [--target <id>] [--debug] [--skip-build] [--installers]
 ```
-Builds release installers with the Tauri CLI and copies them to `release/<app>/<version>/` (git-ignored):
+Every GENSLATE app ships as a **portable standalone archive**: extract it anywhere and it keeps
+its config, logs and files beside itself (see [portability](portability.md)).
 
-| OS | Artifacts |
-|---|---|
-| macOS | `.dmg`, `.app` |
-| Windows | `.msi` (WiX), `-setup.exe` (NSIS) |
-| Linux | `.deb`, `.rpm`, `.AppImage` |
+```
+release/                                   (git-ignored)
+├─ <app>/                                  always the newest build
+│  ├─ genslate-<app>-<version>-<target>.zip   (.tar.gz on Linux, keeps the executable bit)
+│  ├─ checksums.sha256                       (sha256sum -c compatible)
+│  └─ manifest.json                          (app, version, target, commit, files)
+└─ .archive/<app>/<YYYY-MM-DD_HH-MM>/      previous builds, moved here automatically
+```
+
+The archive contains `genslate-<app>/` with the program (`.exe`, the `.app` bundle on macOS, or
+the Linux binary), `other/` (the app's config defaults, its launcher metadata with `version`,
+`build`, `identifier` and `exe` stamped in, licences, empty log/database/cache folders) and
+`storage/users/shared/`. The repo's own metadata files are never modified.
+
+| Target (`--target`) | Built on | Notes |
+|---|---|---|
+| `windows-x64`, `windows-arm64` | Windows | WebView2 runtime required (preinstalled on Windows 10/11) |
+| `macos-universal` | macOS | `.app` inside the zip; unsigned until notarisation is set up |
+| `linux-x64` | Linux | needs `webkit2gtk-4.1` from the system |
+
+Default target: this machine. `--installers` additionally builds the Tauri installers
+(`.msi`/`-setup.exe`, `.dmg`, `.deb`/`.rpm`/`.AppImage`) and collects them into the same folder.
 
 Release profile: LTO, `codegen-units = 1`, `opt-level = "s"`, `panic = "abort"`, stripped.
 

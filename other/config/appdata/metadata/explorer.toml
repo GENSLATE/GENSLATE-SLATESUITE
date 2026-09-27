@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Explorer. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Explorer"
+description = "Browse, search and manage your files"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "System"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord8"
+keywords = ["files", "folders", "file manager"]
+
+[build]
+guid = "d0265c02-483f-4477-97c1-1f024ad6b644"

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>GENSLATE Toolbox</title>
+  <!--
+    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
+    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
+    no gradients. Plate nord13, glyph nord0.
+    The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
+  -->
+  <defs>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#ebcb8b" filter="url(#drop)"/>
+  <path d="M430 440v-56a32 32 0 0 1 32-32h100a32 32 0 0 1 32 32v56" stroke="#2e3440" fill="none" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="296" y="432" width="432" height="264" rx="40" fill="#2e3440"/>
+  <path d="M296 532h432" stroke="#ebcb8b" stroke-width="24"/>
+  <rect x="478" y="502" width="68" height="64" rx="16" fill="#ebcb8b"/>
+</svg>

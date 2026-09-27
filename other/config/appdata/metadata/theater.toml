@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Theater. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Theater"
+description = "Watch videos and movies"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Media"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord12"
+keywords = ["video", "movies", "player"]
+
+[build]
+guid = "d4c339e7-aeaf-4a17-960d-b1bc67eb4ae5"

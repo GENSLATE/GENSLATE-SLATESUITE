@@ -18,5 +18,5 @@
 mod repo;
 mod tree;
 
-pub use repo::{REPO_MARKERS, fake_repo};
+pub use repo::{REPO_MARKERS, fake_repo, fake_suite};
 pub use tree::TempTree;

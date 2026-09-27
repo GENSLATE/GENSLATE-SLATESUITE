@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows the Example app. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Example"
+description = "Design Kit showcase: every component in both Nord themes"
+# Development · Media · Office · Internet · Graphics · Utilities · System
+category = "Development"
+# Nord colour of the icon tile: nord7 … nord15
+color = "nord9"
+keywords = ["design", "components", "showcase", "kit"]
+
+[build]
+guid = "507eedf8-1221-4cd9-8a92-b80c686b8076"

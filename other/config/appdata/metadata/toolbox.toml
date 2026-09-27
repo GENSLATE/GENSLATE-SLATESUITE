@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Toolbox. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Toolbox"
+description = "Handy utilities for everyday tasks"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Utilities"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord13"
+keywords = ["tools", "utilities", "converter"]
+
+[build]
+guid = "94de24b6-a894-464c-816e-1d07f9af757b"

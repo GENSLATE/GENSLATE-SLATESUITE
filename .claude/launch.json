@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "launcher-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/launcher", "vite:dev"],
+      "port": 1422
+    },
+    {
+      "name": "example-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/example", "vite:dev"],
+      "port": 1420
+    }
+  ]
+}

@@ -17,7 +17,7 @@ UI goal: modern flat UI with VS Code density, refined like macOS; Polar Night (d
 | `bun run setup` | Install deps, git hooks (lefthook), moon schemas, Rust toolchain |
 | `bun run dev` | Launch the example Tauri app (native window + Vite HMR) |
 | `bun run build` | Build all projects |
-| `bun run package` | Build installers → `release/<app>/<version>/` |
+| `bun run package` | Portable app zips → `release/<app>/` (old builds → `release/.archive/`) |
 | `bun run test` | bun tests + `cargo test` |
 | `bun run check` | Biome, tsc, cspell, knip, clippy, rustfmt, token drift |
 | `bun run format` | Biome `--write` + `cargo fmt` |
@@ -51,7 +51,7 @@ Details: `.claude/rules/monorepo-structure.md` · docs: `other/documents/README.
 
 ## Rules, skills, agents
 Rules in `.claude/rules/` load automatically (path-scoped ones when you touch matching files):
-`code-standards`, `code-quality`, `monorepo-structure`, `typescript-standards`, `rust-standards`, `design-system` (the UI contract — read before any UI work).
+`instructions` (Angeletti's instructions & privacy), `code-standards`, `code-quality`, `monorepo-structure`, `typescript-standards`, `rust-standards`, `design-system` (the UI contract — read before any UI work).
 
 - Skills: `design-system-component`, `tauri-app`, `design-tokens`.
 - Commands: `/check`, `/audit`, `/new-component`, `/new-app`, `/tokens`, `/release`.

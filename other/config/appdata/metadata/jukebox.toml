@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Jukebox. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Jukebox"
+description = "Play your music library and playlists"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Media"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord11"
+keywords = ["music", "audio", "player", "mp3"]
+
+[build]
+guid = "0a6497b7-6199-458b-b435-d6c37d970b3f"
