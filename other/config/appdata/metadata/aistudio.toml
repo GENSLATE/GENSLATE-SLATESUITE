@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows AI Studio. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "AI Studio"
+description = "Chat, create and automate with AI models"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "AI"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord0"
+keywords = ["ai", "chat", "assistant", "llm"]
+
+[build]
+guid = "ae771990-4ec8-4535-ad14-146822c0d983"

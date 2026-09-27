@@ -37,6 +37,21 @@ CLAUDE.local.md
 other/logs/**/*.log
 other/logs/**/*.log.*
 
+# ─── App runtime data (dev) — regenerated, never committed ────────────
+other/cache/*
+!other/cache/.gitkeep
+other/databases/**/*
+!other/databases/**/
+!other/databases/**/.gitkeep
+
+# ─── Launcher dev installDir: keep the template, ignore what you drop in
+desktop/launcher/installDir/programs/**/*
+!desktop/launcher/installDir/programs/**/
+!desktop/launcher/installDir/programs/**/.gitkeep
+desktop/launcher/installDir/storage/**/*
+!desktop/launcher/installDir/storage/**/
+!desktop/launcher/installDir/storage/**/.gitkeep
+
 # ─── OS / editor noise ────────────────────────────────────────────────
 .DS_Store
 Thumbs.db

@@ -1,16 +1,15 @@
 # other/config
 
-Development configuration for GENSLATE apps. Debug builds running from the repo read
-`apps/<app>.toml`, or `apps/<group>/<app>.toml` for grouped apps such as `slate/`. Their logs
-go to `other/logs/app-logs/<app>/`.
+Configuration for GENSLATE apps. These files ship with the launcher suite
+(`<installDir>/other/config/`) and are meant to be edited by hand. Apps pick up changes when you
+save.
 
-Other builds keep their config elsewhere. `crates/paths` (`genslate-paths`) decides where:
+| Path | What |
+|---|---|
+| `genslate/<app>/config.toml` | The app's settings. Every key is optional; delete a key to get its default. |
+| `genslate/<app>/keybindings.toml` | The app's keyboard shortcuts. |
+| `appdata/metadata/<app>.toml` | How the launcher shows a GENSLATE app (name, description, category, colour). Version and build fields are filled in when the app is packaged. |
+| `appdata/metadata/genslate.toml`, `portableapps.toml`, `portapps.toml` | Launcher tab settings and your per-app overrides (favorites, hidden apps, custom names, launch arguments). |
 
-| Mode | Config file | Logs |
-|---|---|---|
-| dev (debug build inside the repo) | `other/config/apps/[<group>/]<app>.toml` | `other/logs/app-logs/<app>/` |
-| installed | `<OS config dir>/<identifier>/<app>.toml` | the OS log dir, the same one Tauri uses |
-| portable (`GENSLATE_PORTABLE=1`) | `<exe dir>/<app>-data/config/<app>.toml` | `<exe dir>/<app>-data/logs/` |
-
-Every key is optional. A missing file means defaults. If a file is invalid, the app logs a
-warning and starts with defaults.
+An invalid file logs a warning and the app starts with defaults. Where the whole `other/` folder
+lives depends on how the app runs — see [portability](../documents/portability.md).

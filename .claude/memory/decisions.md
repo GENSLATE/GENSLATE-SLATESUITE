@@ -22,8 +22,20 @@ Short ADR log. Newest last. Format: **Decision** — context → consequence. Ad
 
 9. **Design system is Tauri-free.** Window chrome components take props/callbacks; only apps talk to `@genslate/tauri-bridge`, which no-ops in a plain browser → components are testable in happy-dom and the showcase runs with `web-dev`.
 
-10. **Pure core, thin shell (Rust).** Per-app logic in `crates/core/<app>`, path resolution (dev / portable / installed) in `genslate-paths`; `src-tauri` is glue. Strict workspace lints (`unsafe_code`, `unwrap_used`, `expect_used` denied).
+10. **Pure core, thin shell (Rust).** Per-app logic in `crates/core/<app>`, portable path resolution (suite / dev / standalone / fallback) in `genslate-paths`; `src-tauri` is glue. Strict workspace lints (`unsafe_code`, `unwrap_used`, `expect_used` denied).
 
 11. **Supply chain.** Exact pins + committed lockfiles + frozen installs; Dependabot with `cooldown`; dependency-review on PRs; cargo-deny (licences, advisories, sources = crates.io only); GitHub Actions pinned by commit SHA.
 
 12. **Biome over ESLint + Prettier.** One fast tool for lint + format of TS/JSON/CSS, with `useSortedClasses` for Tailwind classes in `cn()`/`tv()`.
+
+13. **Portable-only apps.** `genslate-paths` modes are Suite (`<installDir>/programs/genslate/<app>/` + `other/config/` → installDir, any name), Dev, Standalone (beside the exe) and Fallback (OS data dir, only when read-only/translocated). The old Installed mode and `GENSLATE_PORTABLE` are gone. Webview data goes to `other/cache/genslate/<app>/webview` (windows created in code, `"create": false`).
+
+14. **Releases.** `bun run package` writes portable archives to `release/<app>/`; the previous build moves to `release/.archive/<app>/YYYY-MM-DD_HH-MM/`. Metadata `[build]`/`[exe]` are stamped into the *packaged copy* only. Archives use OS tools (tar.exe zip / ditto / tar.gz) because `Bun.Archive` can't set file modes.
+
+15. **Launcher window = fixed-size transparent window + click-through.** Tauri 2.11 has no atomic move+resize, so instead of resizing, the window is always expanded-width; the UI animates the frame with `clip-path` reveals + transforms, and `src-tauri/src/window.rs` polls the cursor (~60 Hz, only while visible) to toggle `set_ignore_cursor_events` outside the frame (whole window while a popup is open). Frame shadow = CSS `drop-shadow` on the stage (follows the clip). Frame inset 16 px so the shadow is never cut.
+
+16. **Launcher IPC takes ids, never paths.** Apps are launched by `AppId` (`<source>/<key>`) resolved through the catalog, canonicalised with `dunce` and required to be inside `programs/` (or `target/debug` in dev). Icons are served by id via `launcher-icon://`. Webview capability: `core:default`, window dragging, os, log — no shell/fs/opener.
+
+17. **Launcher DTO types are hand-written** (`desktop/launcher/src/ipc/launcher.types.ts`) with boundary type guards (`launcher.parse.ts`) instead of ts-rs codegen — one less build step; keep them in step with the Rust structs.
+
+18. **AI-ready command registry.** Every launcher action is an `ActionSpec` (id, params, `Effect`) in `genslate-core-launcher::actions`; the slash bar lists them and `run_action` executes them — the same entry point a future agent/MCP server will use, gated by `Effect`.

@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Editor. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Editor"
+description = "Write and edit notes, text and Markdown"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Office"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord9"
+keywords = ["text", "notes", "markdown", "writer"]
+
+[build]
+guid = "3d8b6794-76ec-493e-b937-70eead79620c"

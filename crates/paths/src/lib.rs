@@ -1,21 +1,32 @@
-//! Resolves GENSLATE config, data and log directories.
+//! Resolves where a GENSLATE app keeps its config, data, logs and user files.
 //!
-//! | Mode        | When                                              | Config file                                    | Logs                               |
-//! |-------------|---------------------------------------------------|------------------------------------------------|------------------------------------|
-//! | `Dev`       | debug build running inside a GENSLATE checkout    | `<repo>/other/config/apps/[<group>/]<app>.toml` | `<repo>/other/logs/app-logs/<app>` |
-//! | `Portable`  | `GENSLATE_PORTABLE=1`                             | `<exe dir>/<app>-data/config/<app>.toml`        | `<exe dir>/<app>-data/logs`        |
-//! | `Installed` | otherwise                                         | `<OS config dir>/<identifier>/<app>.toml`       | OS log dir (same as Tauri's)       |
+//! GENSLATE apps are portable: they never write to OS user folders unless they must.
 //!
-//! [`resolve`] reads the real environment; [`resolve_with`] takes an explicit
-//! [`Environment`] so every mode is unit-testable.
+//! | Mode         | When                                                   | Root (`<root>/other`, `<root>/storage`) |
+//! |--------------|--------------------------------------------------------|-----------------------------------------|
+//! | `Suite`      | exe in `<installDir>/programs/genslate/<app>/`         | `installDir`                            |
+//! | `Dev`        | debug build inside a GENSLATE checkout                 | the repo (+ `desktop/launcher/installDir`) |
+//! | `Standalone` | extracted from its own zip                             | the app's folder                        |
+//! | `Fallback`   | app folder read-only or macOS-translocated             | `<OS data dir>/GENSLATE`                |
+//!
+//! Inside `other/`: `config/genslate/<app>/{config,keybindings}.toml`,
+//! `config/appdata/metadata/`, `logs/app-logs/<app>/`, `databases/genslate/<app>/`,
+//! `cache/genslate/<app>/`.
+//!
+//! [`resolve`] reads the real environment; [`resolve_with`] / [`detect_layout`] take an
+//! explicit [`Environment`] so every mode is unit-testable.
 #![forbid(unsafe_code)]
 
 mod environment;
 mod error;
+mod layout;
 mod repo;
 mod resolve;
 
-pub use environment::{Environment, OsDirs, PORTABLE_ENV, REPO_ROOT_ENV};
+pub use environment::{Environment, INSTALL_DIR_ENV, OsDirs, REPO_ROOT_ENV};
 pub use error::PathsError;
+pub use layout::{
+    Layout, Mode, SHARED_PROFILE, bundle_dir, detect_layout, fallback_layout, find_install_dir,
+};
 pub use repo::find_repo_root;
-pub use resolve::{AppPaths, Mode, resolve, resolve_with};
+pub use resolve::{AppPaths, resolve, resolve_with};

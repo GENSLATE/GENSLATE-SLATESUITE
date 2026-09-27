@@ -1,7 +1,7 @@
 //! {{ title }}: Tauri 2 shell.
 //!
-//! Startup: resolve paths (`genslate-paths`) → register plugins → paint the window with the
-//! Nord canvas colour before the `WebView` renders (no white flash).
+//! Startup: resolve portable paths (`genslate-paths`) → register plugins → create the window
+//! (webview profile in the app cache folder) → paint it with the Nord canvas colour.
 
 mod commands;
 mod error;
@@ -27,8 +27,7 @@ pub fn run() {
 
 fn try_run() -> Result<(), AppError> {
     let context = tauri::generate_context!();
-    let paths = genslate_paths::resolve(APP_NAME, &context.config().identifier)?;
-    paths.create_dirs()?;
+    let paths = genslate_paths::resolve(APP_NAME)?;
 
     tauri::Builder::default()
         // Must be registered first so a second launch focuses the running window.
@@ -46,15 +45,19 @@ fn try_run() -> Result<(), AppError> {
                         | StateFlags::MAXIMIZED
                         | StateFlags::FULLSCREEN,
                 )
+                // An absolute file name replaces the OS config dir, keeping the state portable.
+                .with_filename(paths.data_dir.join("window-state.json").to_string_lossy())
                 .build(),
         )
         .setup(move |app| {
             log::info!(
-                "{} {} ({:?} mode)",
+                "{} {} ({:?} mode, root {})",
                 app.package_info().name,
                 app.package_info().version,
-                paths.mode
+                paths.mode(),
+                paths.layout.root.display()
             );
+            window::create_main_window(app.handle(), paths.cache_dir.join("webview"))?;
             window::prepare_main_window(app.handle())?;
             Ok(())
         })

@@ -97,3 +97,23 @@ describe('in a plain browser', () => {
     expect(result.current).toBe(expected);
   });
 });
+
+describe('generic IPC in a plain browser', () => {
+  test('invokeCommand() rejects as unavailable', async () => {
+    const { invokeCommand, UNAVAILABLE } = await import('../../src');
+    expect(invokeCommand('list_apps')).rejects.toEqual(UNAVAILABLE);
+  });
+
+  test('listenEvent() resolves to a harmless unsubscribe', async () => {
+    const { listenEvent } = await import('../../src');
+    const unlisten = await listenEvent('launcher://shown', () => {});
+    expect(() => unlisten()).not.toThrow();
+  });
+
+  test('customSchemeUrl() encodes every segment (WebKit form outside Windows)', async () => {
+    const { customSchemeUrl } = await import('../../src');
+    expect(customSchemeUrl('launcher-icon', ['portableapps', 'Libre Office#2'])).toBe(
+      'launcher-icon://localhost/portableapps/Libre%20Office%232',
+    );
+  });
+});

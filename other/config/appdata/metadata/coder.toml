@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Coder. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Coder"
+description = "A focused code editor for your projects"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Development"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord10"
+keywords = ["code", "ide", "programming"]
+
+[build]
+guid = "d9e817b8-e3b0-4955-80ae-4ef351ab79f0"

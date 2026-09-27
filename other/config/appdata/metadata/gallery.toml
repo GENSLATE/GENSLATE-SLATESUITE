@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Gallery. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Gallery"
+description = "View and organise your photos and images"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Media"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord15"
+keywords = ["photos", "images", "pictures", "viewer"]
+
+[build]
+guid = "72c24b6d-8e1b-4fa4-8e0b-81d277117b56"

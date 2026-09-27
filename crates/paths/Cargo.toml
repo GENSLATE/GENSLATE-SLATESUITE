@@ -1,6 +1,6 @@
 [package]
 name = "genslate-paths"
-description = "Resolves GENSLATE config, data and log directories (dev, installed and portable modes)."
+description = "Resolves portable GENSLATE config, data, log and storage directories (suite, dev, standalone, fallback)."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

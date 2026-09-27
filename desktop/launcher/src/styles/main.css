@@ -1,0 +1,173 @@
+/* Tailwind v4 + GENSLATE tokens and components (design-system.css imports tailwindcss). */
+@import '@genslate/design-system/design-system.css';
+
+/* This app's own sources. */
+@source '../';
+
+/*
+ * Launcher geometry. The window is transparent and always as wide as the expanded (tools)
+ * layout; the frame is drawn at its right edge. `--launcher-reveal` is how much of the frame is
+ * clipped away on the left while the apps list shows — animating it to 0 "widens" the frame
+ * and the well with compositor-friendly clip-paths (see launcher-frame.component.tsx).
+ * `src-tauri` hit-tests the same numbers (get_context → layout), set on :root at boot.
+ */
+@theme {
+  --spacing-launcher-rail: 9.5rem; /* 152px documents rail */
+  --spacing-launcher-titlebar: 2.5rem; /* 40px */
+  --spacing-launcher-band: 3rem; /* 48px search / tools row */
+  --spacing-launcher-status: 1.625rem; /* 26px */
+  --spacing-launcher-row: 2.75rem; /* 44px two-line app row */
+  --spacing-launcher-tile: 1.75rem; /* 28px icon tile */
+}
+
+:root {
+  --launcher-inset: 16px;
+  --launcher-normal: 460px;
+  --launcher-expanded: 920px;
+  --launcher-reveal: calc(var(--launcher-expanded) - var(--launcher-normal));
+  --launcher-radius: var(--gs-radius-window);
+  --launcher-well-radius: var(--gs-radius-lg);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+  /* The OS window is transparent: only the frame paints. */
+  background: transparent !important;
+}
+
+/* ── Stage: show / hide ─────────────────────────────────────────────────── */
+.launcher-stage {
+  transform-origin: 100% 100%;
+  transition:
+    opacity var(--gs-duration-moderate) var(--gs-ease-enter),
+    transform var(--gs-duration-moderate) var(--gs-ease-spring);
+}
+
+.launcher-stage[data-state='closed'] {
+  opacity: 0;
+  transform: translateY(10px) scale(0.985);
+  transition-duration: var(--gs-duration-fast);
+  transition-timing-function: var(--gs-ease-exit);
+}
+
+/* ── Frame: clip-path reveal ────────────────────────────────────────────── */
+.launcher-clip {
+  clip-path: inset(0 0 0 var(--launcher-reveal) round var(--launcher-radius));
+  transition: clip-path var(--gs-duration-slow) var(--gs-ease-spring);
+}
+
+.launcher-well-clip {
+  /* The well starts a frame-gutter (8px) inside the visible frame. */
+  clip-path: inset(0 0 0 calc(var(--launcher-reveal) + 0.5rem) round var(--launcher-well-radius));
+  transition: clip-path var(--gs-duration-slow) var(--gs-ease-spring);
+}
+
+[data-expanded] .launcher-clip {
+  clip-path: inset(0 0 0 0 round var(--launcher-radius));
+}
+
+[data-expanded] .launcher-well-clip {
+  clip-path: inset(0 0 0 0.5rem round var(--launcher-well-radius));
+}
+
+/* Things pinned to the visible left edge glide with the reveal. */
+.launcher-follow-edge {
+  transform: translateX(var(--launcher-reveal));
+  transition: transform var(--gs-duration-slow) var(--gs-ease-spring);
+}
+
+[data-expanded] .launcher-follow-edge {
+  transform: translateX(0);
+}
+
+/*
+ * Shadow + hairline ring as drop-shadows on the stage: they follow the *clipped* frame at every
+ * animation frame (box-shadows would be cut by the clip-path). Colours derive from the theme's
+ * scrim and border tokens; the reach (≤ 16px) fits inside --launcher-inset.
+ */
+.launcher-shadow {
+  filter: drop-shadow(0 0 0.5px color-mix(in srgb, var(--gs-color-scrim) 90%, transparent))
+    drop-shadow(0 1px 2px color-mix(in srgb, var(--gs-color-scrim) 55%, transparent))
+    drop-shadow(0 6px 10px color-mix(in srgb, var(--gs-color-scrim) 45%, transparent));
+}
+
+/* ── Motion details ─────────────────────────────────────────────────────── */
+@keyframes launcher-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes launcher-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--launcher-slide-from, 12px));
+  }
+}
+
+@keyframes launcher-pop {
+  40% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes launcher-ping {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes launcher-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+.launcher-row-in {
+  animation: launcher-row-in var(--gs-duration-moderate) var(--gs-ease-enter) backwards;
+  animation-delay: calc(var(--launcher-row-index, 0) * 14ms);
+}
+
+.launcher-slide-in {
+  animation: launcher-slide-in var(--gs-duration-moderate) var(--gs-ease-enter) backwards;
+}
+
+.launcher-pop {
+  animation: launcher-pop var(--gs-duration-moderate) var(--gs-ease-spring);
+}
+
+.launcher-ping {
+  animation: launcher-ping 1.8s var(--gs-ease-exit) infinite;
+}
+
+.launcher-fade-up {
+  animation: launcher-fade-up var(--gs-duration-moderate) var(--gs-ease-enter) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launcher-stage,
+  .launcher-clip,
+  .launcher-well-clip,
+  .launcher-follow-edge {
+    transition-duration: 0ms !important;
+  }
+
+  .launcher-row-in,
+  .launcher-slide-in,
+  .launcher-pop,
+  .launcher-ping,
+  .launcher-fade-up {
+    animation: none !important;
+  }
+}

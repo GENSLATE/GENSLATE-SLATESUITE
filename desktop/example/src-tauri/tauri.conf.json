@@ -15,6 +15,7 @@
     "windows": [
       {
         "label": "main",
+        "create": false,
         "title": "GENSLATE Example",
         "width": 1280,
         "height": 800,

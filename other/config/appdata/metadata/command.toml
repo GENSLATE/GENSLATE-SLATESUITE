@@ -1,0 +1,13 @@
+# How the GENSLATE launcher shows Command. The [app] table is yours to edit;
+# [build] (version, build, identifier) and [exe] are filled in when the app is packaged.
+[app]
+name = "Command"
+description = "Run commands and automations from one bar"
+# Development · Office · Internet · Media · Utilities · System · AI
+category = "Utilities"
+# Nord colour of the icon tile: nord0 … nord15
+color = "nord3"
+keywords = ["commands", "palette", "automation", "run"]
+
+[build]
+guid = "e47b080a-11ae-41c1-9b30-e1019ae36e53"

@@ -31,7 +31,7 @@ desktop/<name>/
 1. `bun install` (links the workspace package).
 2. Make sure the Cargo workspace includes it (root `Cargo.toml` `members` covers `desktop/*/src-tauri`).
 3. Business logic: create `crates/core/<name>` (crate `genslate-core-<name>`), add it to `[workspace.dependencies]`, unit-test it there.
-4. Config example: `other/config/apps/<name>.toml` (read in dev mode via `genslate-paths`); logs go to `other/logs/app-logs/<name>/` in dev.
+4. Config: `other/config/genslate/<name>/{config,keybindings}.toml` plus launcher metadata `other/config/appdata/metadata/<name>.toml` (portable paths via `genslate-paths`: suite, dev, standalone — see `other/documents/portability.md`); logs go to `other/logs/app-logs/<name>/`. The main window is created in code (`"create": false`) so the webview profile stays in `other/cache/genslate/<name>/webview`.
 5. Packaging: add `scripts/bun-commands/package/<name>.ts` if the app needs custom packaging; installers land in `release/<name>/<version>/`.
 6. Commit scopes: add `<name>` to `.config/commitlint.config.ts`.
 

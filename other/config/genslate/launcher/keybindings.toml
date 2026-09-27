@@ -1,0 +1,15 @@
+# GENSLATE Launcher — keyboard shortcuts. Save to apply. An empty string ("") turns a shortcut off.
+
+[global]
+# Works anywhere, even when the launcher is hidden. Use Ctrl, Alt, Shift, Super plus a key.
+toggle = "Ctrl+Alt+Space"
+
+[launcher]
+# While the launcher is open. "mod" is Ctrl on Windows/Linux and ⌘ on macOS.
+focus-search = "mod+k"
+toggle-tools = "mod+t"
+toggle-pin = "mod+p"
+toggle-favorite = "mod+d"
+tab-genslate = "mod+1"
+tab-portableapps = "mod+2"
+tab-portapps = "mod+3"

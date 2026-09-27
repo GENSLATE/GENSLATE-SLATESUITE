@@ -8,7 +8,7 @@ moon 2.5 orchestrates tasks (`.config/moon/`); bun workspaces cover `desktop/*`,
 .github/            CI, release, security workflows · dependabot · templates · Copilot instructions
 crates/             shared Rust crates
   design-tokens/      generated token constants (window background, …)
-  paths/              config/data/log dirs: dev · portable · installed
+  paths/              portable config/data/log dirs: suite · dev · standalone · fallback
   testing/            test helpers
   core/<app>/         per-app business logic (plain Rust, unit-tested)
 desktop/<app>/      Tauri 2 apps (moon tag `desktop-app`); `example` is live, others are reserved placeholders
@@ -22,7 +22,7 @@ scripts/bun-commands/ one file per root `bun run <command>`
 webapp/             websites (github-page) and servers (tauri-servers)
 tests/e2e/          end-to-end tests
 release/            packaged installers `release/<app>/<version>/` (git-ignored)
-other/              documents/, config/apps/*.toml examples, licenses/, logs/, resources/
+other/              documents/, config/{genslate/<app>,appdata/metadata}/*.toml, licenses/, logs/, databases/, cache/, resources/ (ships verbatim in the launcher suite)
 ```
 
 ## Dependency rules (moon `tagRelationships`, enforced)

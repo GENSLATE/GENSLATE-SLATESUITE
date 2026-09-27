@@ -1,8 +1,8 @@
 //! GENSLATE Example: the Tauri 2 shell around the Design Kit showcase UI.
 //!
-//! Startup order: resolve paths (`genslate-paths`) → load the TOML config
-//! (`genslate-core-example`) → register plugins → paint the window with the Nord canvas
-//! colour before the `WebView` renders (no white flash).
+//! Startup order: resolve portable paths (`genslate-paths`) → load the TOML config
+//! (`genslate-core-example`) → register plugins → create the window (webview profile in the
+//! app's cache folder) → paint it with the Nord canvas colour (no white flash).
 
 mod commands;
 mod error;
@@ -29,8 +29,7 @@ pub fn run() {
 
 fn try_run() -> Result<(), AppError> {
     let context = tauri::generate_context!();
-    let paths = genslate_paths::resolve(APP_NAME, &context.config().identifier)?;
-    paths.create_dirs()?;
+    let paths = genslate_paths::resolve(APP_NAME)?;
     // A broken config must not stop the app: fall back to defaults and log why once the
     // logger is up.
     let (config, config_error) = match Config::load(&paths.config_file) {
@@ -49,6 +48,9 @@ fn try_run() -> Result<(), AppError> {
             tauri_plugin_window_state::Builder::default()
                 // Decorations and visibility are owned by tauri.conf.json, not the saved state.
                 .with_state_flags(StateFlags::SIZE | StateFlags::POSITION | StateFlags::MAXIMIZED | StateFlags::FULLSCREEN)
+                // The plugin joins this onto the OS config dir; an absolute path replaces it,
+                // which keeps the state file portable.
+                .with_filename(window_state_file(&paths))
                 .build(),
         );
     }
@@ -56,10 +58,11 @@ fn try_run() -> Result<(), AppError> {
     builder
         .setup(move |app| {
             log::info!(
-                "{} {} ({:?} mode)",
+                "{} {} ({:?} mode, root {})",
                 app.package_info().name,
                 app.package_info().version,
-                paths.mode
+                paths.mode(),
+                paths.layout.root.display()
             );
             log::debug!(
                 "config: {}, logs: {}",
@@ -69,12 +72,22 @@ fn try_run() -> Result<(), AppError> {
             if let Some(error) = &config_error {
                 log::warn!("using default config: {error}");
             }
+            window::create_main_window(app.handle(), paths.cache_dir.join("webview"))?;
             window::prepare_main_window(app.handle(), config.appearance.theme)?;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![commands::app_info::get_app_info])
         .run(context)?;
     Ok(())
+}
+
+/// `<data dir>/window-state.json`, as the string the window-state plugin expects.
+fn window_state_file(paths: &AppPaths) -> String {
+    paths
+        .data_dir
+        .join("window-state.json")
+        .to_string_lossy()
+        .into_owned()
 }
 
 /// Logs to stdout and to `<log dir>/example.log` (see `genslate-paths` for the folder).
