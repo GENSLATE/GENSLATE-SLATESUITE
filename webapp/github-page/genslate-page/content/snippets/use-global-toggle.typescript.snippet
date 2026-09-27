@@ -1,0 +1,18 @@
+import { useHotkey } from '@genslate/design-system';
+import { useLauncher } from './launcher.context';
+
+/** Opens the launcher from anywhere and focuses search. */
+export function useGlobalToggle(shortcut = 'ctrl+alt+space') {
+  const { backend, inputRef, settings } = useLauncher();
+
+  useHotkey(shortcut, async () => {
+    const visible = await backend.toggle();
+    if (visible) inputRef.current?.focus();
+  });
+
+  // Pinned launchers stay on top and never hide on blur.
+  const pinned = settings.behavior.pinned;
+  return { shortcut, pinned } as const;
+}
+
+export type GlobalToggle = ReturnType<typeof useGlobalToggle>;
