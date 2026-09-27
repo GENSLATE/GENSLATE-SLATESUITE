@@ -10,6 +10,8 @@ import { APPS, type AppCategory, CATEGORY_ORDER } from '../../content/apps.conte
 
 type Filter = 'all' | AppCategory;
 
+const NUMBER_WORDS = ['None', 'One', 'Two', 'Three', 'Four', 'Five', 'Six'] as const;
+
 const CATEGORIES = CATEGORY_ORDER.filter((category) =>
   APPS.some((app) => app.category === category),
 );
@@ -19,6 +21,7 @@ export function AppsPage() {
   const [filter, setFilter] = useState<Filter>('all');
   const visible = filter === 'all' ? APPS : APPS.filter((app) => app.category === filter);
   const available = APPS.filter((app) => app.status === 'preview').length;
+  const count = NUMBER_WORDS[available] ?? String(available);
 
   const change = (next: string) =>
     runViewTransition('layout', () => flushSync(() => setFilter(next as Filter)));
@@ -32,7 +35,7 @@ export function AppsPage() {
             level={1}
             eyebrow="The GENSLATE suite"
             title="Thirteen apps. One family."
-            lead={`${available} are in preview today and build from source; the rest are designed and on the way. Every window you see here is a live preview built with the GENSLATE design kit.`}
+            lead={`${count} are in preview today and build from source; the rest are designed and on the way. Open any app to see its window — a live preview built with the GENSLATE design kit.`}
           />
           <div className="reveal mt-10 overflow-x-auto pb-1 [scrollbar-width:none]">
             <SegmentedControl

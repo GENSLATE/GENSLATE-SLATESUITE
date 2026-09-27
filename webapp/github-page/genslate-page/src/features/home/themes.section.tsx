@@ -27,7 +27,7 @@ export function ThemesSection() {
         title="Polar Night. Snow Storm. Both first-class."
         lead="Every component is designed, contrast-checked and screenshot-reviewed in both themes. Drag the divider to compare — or follow your system and let GENSLATE switch for you."
       />
-      <div className="reveal mx-auto mt-14 max-w-5xl">
+      <div className="reveal mx-auto mt-20 max-w-5xl">
         <ThemeCompare app="coder" />
       </div>
       <div className="mx-auto mt-14 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
