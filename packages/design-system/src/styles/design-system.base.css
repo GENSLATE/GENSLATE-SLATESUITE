@@ -27,7 +27,7 @@
     margin: 0;
     font-size: var(--gs-text-base);
     overflow: hidden;
-    cursor: default;
+    cursor: var(--gs-cursor-default);
   }
 
   #root {
@@ -59,11 +59,64 @@
     outline: none;
   }
 
-  button,
-  [role='button'],
-  summary,
+  /*
+   * Themed cursors (`--gs-cursor-*`, generated per theme). Controls show the Frost arrow, links the
+   * hand, editable text the I-beam. Components set theirs with `cursor-*` utilities,
+   * which win over these element defaults.
+   */
   label {
-    cursor: default;
+    cursor: var(--gs-cursor-default);
+  }
+
+  button,
+  select,
+  summary,
+  input:is(
+    [type='button'],
+    [type='checkbox'],
+    [type='color'],
+    [type='file'],
+    [type='radio'],
+    [type='range'],
+    [type='reset'],
+    [type='submit']
+  ),
+  :is(
+    [role='button'],
+    [role='checkbox'],
+    [role='menuitem'],
+    [role='menuitemcheckbox'],
+    [role='menuitemradio'],
+    [role='option'],
+    [role='radio'],
+    [role='slider'],
+    [role='switch'],
+    [role='tab'],
+    [role='treeitem']
+  ):not(input, textarea) {
+    cursor: var(--gs-cursor-interactive);
+  }
+
+  /* Only editable text gets the I-beam: `.select-text` regions (whole pages, often) keep the arrow. */
+  input,
+  textarea,
+  [contenteditable]:not([contenteditable='false']) {
+    cursor: var(--gs-cursor-text);
+  }
+
+  a[href] {
+    cursor: var(--gs-cursor-pointer);
+  }
+
+  :is(button, select, input, textarea):disabled,
+  :is(
+    [role='button'],
+    [role='checkbox'],
+    [role='radio'],
+    [role='switch'],
+    [role='slider']
+  )[aria-disabled='true'] {
+    cursor: var(--gs-cursor-not-allowed);
   }
 
   a {

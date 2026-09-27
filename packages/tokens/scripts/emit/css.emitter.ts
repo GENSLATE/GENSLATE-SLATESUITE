@@ -2,13 +2,16 @@
  * CSS custom properties:
  *  - nord.primitives.css  — `--gs-nord-*` palette + derived shades
  *  - tokens.scales.css    — typography, radius, spacing, z-index, motion, layout sizes
- *  - nord.<theme>.css     — per-theme semantic + chrome roles and shadows
+ *  - nord.<theme>.css     — per-theme semantic + chrome roles, shadows and cursors
+ *  - tokens.cursors.css   — hands cursors back to the OS (`[data-cursor="system"]`, forced colours)
  *  - tokens.css           — imports all of the above
  */
 
 import { colorToCss, shadowToCss } from '../../src/lib/theme.resolve';
+import { CURSOR_KEYS } from '../../src/token.keys';
 import type { ThemeDefinition } from '../../src/token.types';
 import { DERIVED, NORD } from '../../src/tokens/color.tokens';
+import { CURSORS, cursorCss } from '../../src/tokens/cursor.tokens';
 import { LAYOUT_SIZE, RADIUS, SPACE, Z_INDEX } from '../../src/tokens/layout.tokens';
 import { MOTION } from '../../src/tokens/motion.tokens';
 import { TYPOGRAPHY } from '../../src/tokens/typography.tokens';
@@ -84,6 +87,7 @@ function themeDeclarations(theme: ThemeDefinition): Array<[string, string]> {
     ...entries(theme.shadow).map(
       ([k, v]) => [`--gs-shadow-${k}`, shadowToCss(v)] as [string, string],
     ),
+    ...CURSOR_KEYS.map((k) => [`--gs-cursor-${k}`, cursorCss(k, theme)] as [string, string]),
   ];
 }
 
@@ -111,9 +115,29 @@ export function emitThemeCss(theme: ThemeDefinition, isDefault: boolean): string
   return parts.join('\n');
 }
 
-export function emitIndexCss(themeFiles: readonly string[]): string {
-  const imports = ['nord.primitives.css', 'tokens.scales.css', ...themeFiles].map(
-    (f) => `@import './${f}';`,
+/**
+ * Native cursors for people who need them: an explicit `[data-cursor="system"]` (e.g. an enlarged
+ * OS pointer, which custom images ignore) and forced-colours mode. Imported after the themes so it
+ * also wins over a nested `[data-theme]`.
+ */
+export function emitCursorsCss(): string {
+  const system = CURSOR_KEYS.map(
+    (k) => [`--gs-cursor-${k}`, CURSORS[k].fallback] as [string, string],
   );
+  return [
+    cssBanner(),
+    '/* Themed cursors off: every `--gs-cursor-*` falls back to its native keyword. */',
+    block(':root[data-cursor="system"],\n:root[data-cursor="system"] [data-theme]', system),
+    `@media (forced-colors: active) {\n${block(':root:root,\n:root [data-theme]', system, '  ')}}\n`,
+  ].join('\n');
+}
+
+export function emitIndexCss(themeFiles: readonly string[]): string {
+  const imports = [
+    'nord.primitives.css',
+    'tokens.scales.css',
+    ...themeFiles,
+    'tokens.cursors.css',
+  ].map((f) => `@import './${f}';`);
   return `${cssBanner()}\n${imports.join('\n')}\n`;
 }

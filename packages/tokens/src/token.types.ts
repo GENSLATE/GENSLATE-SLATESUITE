@@ -13,6 +13,8 @@
 
 import type {
   CHROME_COLOR_KEYS,
+  CURSOR_KEYS,
+  CURSOR_PAINT_KEYS,
   DERIVED_COLOR_KEYS,
   NORD_COLOR_KEYS,
   SEMANTIC_COLOR_KEYS,
@@ -33,6 +35,10 @@ export type SemanticColorKey = (typeof SEMANTIC_COLOR_KEYS)[number];
 export type ChromeColorKey = (typeof CHROME_COLOR_KEYS)[number];
 /** Elevation levels. */
 export type ShadowKey = (typeof SHADOW_KEYS)[number];
+/** Themed cursors (`default`, `interactive`, `text`, …). */
+export type CursorKey = (typeof CURSOR_KEYS)[number];
+/** Colours a theme paints its cursors with. */
+export type CursorPaintKey = (typeof CURSOR_PAINT_KEYS)[number];
 
 /** Lower-case `#rrggbb`. */
 export type HexColor = `#${string}`;
@@ -89,6 +95,13 @@ export interface ContrastRequirement {
 
 export type ThemeId = 'polar-night' | 'snow-storm';
 
+/** How a theme paints the cursor family: opaque primitives plus the drop-shadow strength. */
+export interface CursorPaint {
+  readonly color: Readonly<Record<CursorPaintKey, PrimitiveColorKey>>;
+  /** Opacity (0–1) of the soft shadow under every glyph. */
+  readonly shadow: number;
+}
+
 export interface ThemeDefinition {
   readonly id: ThemeId;
   readonly name: string; // "Nord · Polar Night"
@@ -96,6 +109,8 @@ export interface ThemeDefinition {
   readonly color: Readonly<Record<SemanticColorKey, ColorValue>>;
   readonly component: Readonly<Record<ChromeColorKey, ColorValue>>;
   readonly shadow: Readonly<Record<ShadowKey, readonly ShadowLayer[]>>;
+  /** Cursor colours: glyph, rim and the accent / status badges. */
+  readonly cursor: CursorPaint;
   /** Overrides applied under `@media (prefers-contrast: more)`. */
   readonly highContrast?: Readonly<Partial<Record<SemanticColorKey, ColorValue>>>;
   readonly contrast: readonly ContrastRequirement[];

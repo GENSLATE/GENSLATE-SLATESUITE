@@ -16,7 +16,7 @@ export const segmentedControlVariants = tv({
       'transition-transform duration-moderate ease-spring motion-reduce:transition-none',
     ],
     item: [
-      'relative inline-flex min-w-0 cursor-default select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-[5px] px-3 font-medium text-fg-secondary',
+      'relative inline-flex min-w-0 cursor-interactive select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-[5px] px-3 font-medium text-fg-secondary',
       'focus-ring-inset transition-colors duration-fast ease-standard',
       'not-data-disabled:hover:text-fg-strong data-pressed:text-fg-strong',
       'data-disabled:cursor-not-allowed data-disabled:text-fg-disabled',

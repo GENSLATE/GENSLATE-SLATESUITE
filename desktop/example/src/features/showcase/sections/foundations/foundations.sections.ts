@@ -1,5 +1,6 @@
 import type { ShowcaseSection } from '../../showcase.types';
 import { ColorsSection } from './colors.section';
+import { CursorsSection } from './cursors.section';
 import { IconsSection } from './icons.section';
 import { MotionSection } from './motion.section';
 import { SpacingSection } from './spacing.section';
@@ -39,6 +40,15 @@ export const foundationsSections: readonly ShowcaseSection[] = [
     category: 'foundations',
     icon: 'codicon:pulse',
     component: MotionSection,
+  },
+  {
+    id: 'cursors',
+    title: 'Cursors',
+    description:
+      'A Nord cursor family that follows the theme and changes with what is under the pointer.',
+    category: 'foundations',
+    icon: 'codicon:inspect',
+    component: CursorsSection,
   },
   {
     id: 'icons',

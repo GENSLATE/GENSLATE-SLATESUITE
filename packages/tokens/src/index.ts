@@ -13,6 +13,7 @@ export * from './lib/theme.resolve';
 export * from './token.keys';
 export type * from './token.types';
 export { DERIVED, NORD, PRIMITIVE_HEX } from './tokens/color.tokens';
+export { CURSORS, cursorCss, cursorDataUri, cursorSvg } from './tokens/cursor.tokens';
 export { LAYOUT_SIZE, RADIUS, SPACE, Z_INDEX } from './tokens/layout.tokens';
 export { MOTION, springStops } from './tokens/motion.tokens';
 export { opticalTracking, TYPOGRAPHY } from './tokens/typography.tokens';

@@ -230,6 +230,13 @@ export const twMergeConfig = {
             "slow"
           ]
         }
+      ],
+      "cursor": [
+        {
+          "cursor": [
+            "interactive"
+          ]
+        }
       ]
     }
   }

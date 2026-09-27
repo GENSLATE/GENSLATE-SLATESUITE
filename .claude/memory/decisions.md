@@ -63,3 +63,7 @@ Short ADR log. Newest last. Format: **Decision** — context → consequence. Ad
 ## 2026-09 · Context menus
 
 27. **One window-level right-click menu, not one per component.** The design-system `WindowContextMenu` wraps the whole window once and resolves what was clicked (text field, titlebar, status item, link, content) into a typed target; apps add rows through `items(target)` and steer it with `data-context-zone` / `data-context-copy` / `data-context-menu="none"`. Nested `ContextMenu`s (the launcher's app rows) still win because Base UI's trigger stops the event. → Every app gets consistent menus with one wrapper, the webview's menu never leaks, and the design system stays Tauri-free (window commands, links and clipboard are callbacks).
+
+## 2026-09 · Cursors
+
+28. **Themed cursors are native CSS cursors, not a JS follower.** `cursor.tokens.ts` draws a 32px SVG family per theme; the generator emits `--gs-cursor-*` (`url(data:…) x y, <keyword>`) and redefines Tailwind's static `cursor-*` utilities with `@utility` (Tailwind keeps its keyword declaration first, so it doubles as the fallback). → no pointer lag, nothing to mount, every app gets it from `design-system.css`. Controls use the new `cursor-interactive` (Frost arrow, with a glyph-coloured inner edge so it stays readable on accent buttons); the hand is for links only. `.select-text` regions keep the arrow, because CSS can't target text nodes and whole pages are selectable. `[data-cursor="system"]` and forced colours hand every cursor back to the OS (custom images ignore the OS pointer size).

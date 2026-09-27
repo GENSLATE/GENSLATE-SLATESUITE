@@ -9,7 +9,13 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { DEFAULT_THEME, THEMES } from '../src/index';
-import { emitIndexCss, emitPrimitivesCss, emitScalesCss, emitThemeCss } from './emit/css.emitter';
+import {
+  emitCursorsCss,
+  emitIndexCss,
+  emitPrimitivesCss,
+  emitScalesCss,
+  emitThemeCss,
+} from './emit/css.emitter';
 import {
   checkContrast,
   emitContrastReport,
@@ -61,6 +67,7 @@ async function main(): Promise<void> {
         emitThemeCss(t, t.id === DEFAULT_THEME),
       ]),
     ),
+    [join(OUT, 'css/tokens.cursors.css')]: emitCursorsCss(),
     [join(OUT, 'css/tokens.css')]: emitIndexCss(themeFiles),
     [join(OUT, 'css/tailwind.theme.css')]: emitTailwindThemeCss(),
     [join(OUT, 'ts/tokens.generated.ts')]: emitTokensTs(themes),
