@@ -40,6 +40,8 @@ Every app is **titlebar (top) · content (middle) · status bar (bottom)**, buil
 
 The titlebar is **the same on macOS, Windows and Linux**: every window is frameless (`"decorations": false` in `tauri.conf.json`; there are no per-OS window overrides) and the design-system `TitleBar` draws the **custom macOS-style traffic lights** on the left, wired to `@genslate/tauri-bridge` window controls (red closes, yellow minimizes, green toggles maximize). There are no Windows caption buttons and no native macOS traffic lights. The launcher's own titlebar uses the same `TrafficLights` (close and minimize hide it to the tray; zoom is disabled).
 
+Right-clicking anywhere in a window opens a styled, context-aware menu instead of the webview's own. The design-system `WindowContextMenu` wraps the window and offers window commands and Theme on the titlebar, Edit commands in text fields, Copy/Select All and links in the content, and Copy on status items. Apps add their own rows per area. See [Context menus](./context-menus.md).
+
 At startup the Rust shell paints the native window background with the theme's canvas colour from `genslate-design-tokens` and applies the token minimum size — no white flash while the webview loads. Theme preference (`system | polar-night | snow-storm`) comes from the app config and is synced to the native window theme.
 
 ## Data flow

@@ -3,6 +3,7 @@ import { AppShellSection } from './app-shell.section';
 import { StatusBarSectionPage } from './status-bar.section';
 import { TitleBarSection } from './title-bar.section';
 import { TrafficLightsSection } from './traffic-lights.section';
+import { WindowContextMenuSection } from './window-context-menu.section';
 
 /** Showcase pages for the `window` category, in sidebar order. */
 export const windowSections: readonly ShowcaseSection[] = [
@@ -39,5 +40,14 @@ export const windowSections: readonly ShowcaseSection[] = [
     category: 'window',
     icon: 'codicon:layout',
     component: AppShellSection,
+  },
+  {
+    id: 'window-context-menu',
+    title: 'Window Context Menu',
+    description:
+      'One right-click menu for the whole window that adapts to the titlebar, text boxes, content and status items.',
+    category: 'window',
+    icon: 'codicon:list-selection',
+    component: WindowContextMenuSection,
   },
 ];

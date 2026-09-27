@@ -7,6 +7,7 @@ import { optionId } from '../features/apps/app-row.component';
 import { SourceTabs } from '../features/apps/source-tabs.component';
 import { CommandBar } from '../features/command-bar/command-bar.component';
 import { suggestionId } from '../features/command-bar/slash-menu.component';
+import { LauncherContextMenu } from '../features/frame/launcher-context-menu.component';
 import { LauncherFrame } from '../features/frame/launcher-frame.component';
 import { LauncherTitleBar } from '../features/frame/launcher-titlebar.component';
 import { DocumentsRail } from '../features/rail/documents-rail.component';
@@ -106,79 +107,96 @@ export function App() {
   );
 
   return (
-    <LauncherFrame
-      expanded={c.expanded}
-      titleBar={
-        <LauncherTitleBar
-          pinned={pinned}
-          pinShortcut={keys.togglePin}
-          onTogglePin={c.togglePin}
-          onMinimize={() => backend.hide().catch(c.notify)}
-          onClose={() => backend.hide().catch(c.notify)}
-        />
-      }
-      well={
-        <div
-          data-slot="launcher-well"
-          className="launcher-well-clip absolute inset-0 bg-surface-sunken shadow-inset"
-        >
-          {appsPane}
-          {c.expanded ? (
-            <div className="absolute inset-0 pl-2">
-              <ToolsView onClose={c.toggleTools} />
-            </div>
-          ) : null}
-        </div>
-      }
-      rail={
-        <DocumentsRail
-          profile={context.profile}
-          suiteName={context.suiteName}
-          onOpenFolder={(folder) => backend.openFolder(folder).catch(c.notify)}
-        />
-      }
-      commandBar={
-        <CommandBar
-          inputRef={c.inputRef}
-          value={c.query}
-          onChange={c.changeQuery}
-          onKeyDown={c.onKeyDown}
-          controls={c.slash.active ? SLASH_ID : LISTBOX_ID}
-          activeDescendant={subview ? undefined : activeDescendant}
-          focusShortcut={keys.focusSearch}
-          aiOpen={c.aiOpen}
-          onAiOpenChange={(open) => {
-            c.setAiOpen(open);
-            setPopupOpen(open);
-          }}
-          slash={
-            c.slash.active
-              ? {
-                  id: SLASH_ID,
-                  suggestions: c.slash.suggestions,
-                  activeIndex: c.activeIndex,
-                  hint:
-                    c.slashHint ??
-                    (c.slash.action?.id === 'ask'
-                      ? 'The AI assistant is coming soon — press Enter to learn more.'
-                      : undefined),
-                  onHover: c.setActiveIndex,
-                  onChoose: (index) => c.choose(c.slash.suggestions[index]),
-                }
-              : null
-          }
-        />
-      }
-      railFooter={
-        <ToolsButton expanded={c.expanded} shortcut={keys.toggleTools} onToggle={c.toggleTools} />
-      }
-      statusBar={
-        <LauncherStatusBar
-          mode={c.statusMode}
-          onModeChange={c.changeStatusMode}
-          onOpenSettings={() => backend.openConfigFile('settings').catch(c.notify)}
-        />
-      }
-    />
+    <LauncherContextMenu
+      pinned={pinned}
+      pinShortcut={keys.togglePin}
+      onTogglePin={c.togglePin}
+      toolsOpen={c.expanded}
+      toolsShortcut={keys.toggleTools}
+      onToggleTools={c.toggleTools}
+      onShowHelp={() => c.setView({ kind: 'help' })}
+      onHide={() => backend.hide().catch(c.notify)}
+      statusMode={c.statusMode}
+      onStatusModeChange={c.changeStatusMode}
+      onOpenSettings={() => backend.openConfigFile('settings').catch(c.notify)}
+      onOpenFolder={(folder) => backend.openFolder(folder).catch(c.notify)}
+      onOpenChange={setPopupOpen}
+      onError={c.notify}
+    >
+      <LauncherFrame
+        expanded={c.expanded}
+        titleBar={
+          <LauncherTitleBar
+            pinned={pinned}
+            pinShortcut={keys.togglePin}
+            onTogglePin={c.togglePin}
+            onMinimize={() => backend.hide().catch(c.notify)}
+            onClose={() => backend.hide().catch(c.notify)}
+          />
+        }
+        well={
+          <div
+            data-slot="launcher-well"
+            className="launcher-well-clip absolute inset-0 bg-surface-sunken shadow-inset"
+          >
+            {appsPane}
+            {c.expanded ? (
+              <div className="absolute inset-0 pl-2">
+                <ToolsView onClose={c.toggleTools} />
+              </div>
+            ) : null}
+          </div>
+        }
+        rail={
+          <DocumentsRail
+            profile={context.profile}
+            suiteName={context.suiteName}
+            onOpenFolder={(folder) => backend.openFolder(folder).catch(c.notify)}
+          />
+        }
+        commandBar={
+          <CommandBar
+            inputRef={c.inputRef}
+            value={c.query}
+            onChange={c.changeQuery}
+            onKeyDown={c.onKeyDown}
+            controls={c.slash.active ? SLASH_ID : LISTBOX_ID}
+            activeDescendant={subview ? undefined : activeDescendant}
+            focusShortcut={keys.focusSearch}
+            aiOpen={c.aiOpen}
+            onAiOpenChange={(open) => {
+              c.setAiOpen(open);
+              setPopupOpen(open);
+            }}
+            slash={
+              c.slash.active
+                ? {
+                    id: SLASH_ID,
+                    suggestions: c.slash.suggestions,
+                    activeIndex: c.activeIndex,
+                    hint:
+                      c.slashHint ??
+                      (c.slash.action?.id === 'ask'
+                        ? 'The AI assistant is coming soon — press Enter to learn more.'
+                        : undefined),
+                    onHover: c.setActiveIndex,
+                    onChoose: (index) => c.choose(c.slash.suggestions[index]),
+                  }
+                : null
+            }
+          />
+        }
+        railFooter={
+          <ToolsButton expanded={c.expanded} shortcut={keys.toggleTools} onToggle={c.toggleTools} />
+        }
+        statusBar={
+          <LauncherStatusBar
+            mode={c.statusMode}
+            onModeChange={c.changeStatusMode}
+            onOpenSettings={() => backend.openConfigFile('settings').catch(c.notify)}
+          />
+        }
+      />
+    </LauncherContextMenu>
   );
 }

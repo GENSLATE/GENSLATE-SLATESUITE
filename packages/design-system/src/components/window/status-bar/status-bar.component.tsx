@@ -12,6 +12,7 @@ export function StatusBar({
   return (
     <footer
       data-slot="statusbar"
+      data-context-zone="statusbar"
       role="contentinfo"
       aria-label={ariaLabel}
       className={cn(statusBarVariants().root(), className)}

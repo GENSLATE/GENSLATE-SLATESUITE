@@ -8,7 +8,7 @@ description: How to add or change a component in @genslate/design-system (Base U
 The contract lives in `.claude/rules/design-system.md` — this skill is the step-by-step recipe. Read both.
 
 ## 1. Decide the shape
-- **Category** (folder under `packages/design-system/src/components/`): `window` (TitleBar, TrafficLights, StatusBar, AppShell), `layout`, `actions`, `inputs`, `navigation`, `overlays`, `feedback`, `display`.
+- **Category** (folder under `packages/design-system/src/components/`): `window` (TitleBar, TrafficLights, StatusBar, AppShell, WindowContextMenu), `layout`, `actions`, `inputs`, `navigation`, `overlays`, `feedback`, `display`.
 - **Primitive**: if Base UI (`@base-ui/react` 1.8) has one (Menu, Popover, Dialog, Select, Tabs, Switch, Checkbox, Slider, Tooltip, Toast, …) wrap it. Read its docs page first (https://base-ui.com/react/components/<name>) for part names, props and `data-*` attributes. Polymorphism is the **`render` prop** — never `asChild`.
 - **Compound parts** are flat named exports: `Menu`, `MenuTrigger`, `MenuItem`… each part in `<name>-<part>.component.tsx`.
 
