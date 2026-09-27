@@ -1,0 +1,58 @@
+$schema: '../../../.config/moon/cache/schemas/project.json'
+
+language: 'typescript'
+layer: 'application'
+stack: 'frontend'
+tags: ['website']
+
+project:
+  title: 'GENSLATE website'
+  description: 'The GitHub Pages site for the GENSLATE suite: apps, live mockups, wiki and docs.'
+
+dependsOn:
+  - 'design-system'
+  - id: 'config-typescript'
+    scope: 'development'
+
+fileGroups:
+  web:
+    - 'index.html'
+    - 'vite.config.ts'
+    - 'plugins/**/*'
+    - 'scripts/**/*'
+    - 'content/**/*'
+    - 'public/**/*'
+    # Rendered into the developer docs and the app icons at build time.
+    - '/other/documents/**/*.md'
+    - '/other/resources/icons/genslate/*.svg'
+    - '/other/config/appdata/metadata/*.toml'
+
+tasks:
+  # Vite dev server with HMR (docs and wiki reload on save).
+  web-dev:
+    command: 'bun'
+    args: ['run', 'dev']
+    preset: 'server'
+    toolchains: ['javascript', 'bun']
+
+  # Client + SSR build, then every route prerendered to static HTML in dist/site.
+  web-build:
+    command: 'bun'
+    args: ['run', 'build']
+    # The base path and origin change every URL, so they are part of the cache key.
+    inputs:
+      - '@group(sources)'
+      - '@group(web)'
+      - '@group(configs)'
+      - '$GENSLATE_SITE_BASE'
+      - '$GENSLATE_SITE_ORIGIN'
+    outputs: ['dist/site/**/*']
+    toolchains: ['javascript', 'bun']
+
+  # Serve the production build locally (after web-build).
+  web-preview:
+    command: 'bun'
+    args: ['run', 'preview']
+    preset: 'server'
+    deps: ['web-build']
+    toolchains: ['javascript', 'bun']

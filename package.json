@@ -10,7 +10,7 @@
     "bun": ">=1.4.2"
   },
   "workspaces": {
-    "packages": ["desktop/*", "packages/*", "webapp/*"],
+    "packages": ["desktop/*", "packages/*", "webapp/*", "webapp/*/*"],
     "catalog": {
       "@babel/core": "8.0.6",
       "@base-ui/react": "1.8.0",
@@ -42,6 +42,7 @@
       "lefthook": "2.1.14",
       "react": "19.3.0",
       "react-dom": "19.3.0",
+      "shiki": "4.4.3",
       "tailwind-merge": "3.7.0",
       "tailwind-variants": "3.3.1",
       "tailwindcss": "4.3.3",

@@ -26,7 +26,7 @@ UI goal: modern flat UI with VS Code density, refined like macOS; Polar Night (d
 | `bun run new-app <name>` | Scaffold `desktop/<name>` + `crates/core/<name>` from `.config/moon/templates/{tauri-app,app-core}` |
 | `bun run clean` | Remove build output and caches |
 
-Targeted: `bun x moon run <project>:<task>` — projects `root, tokens, design-system, tauri-bridge, config-typescript, config-vite` + apps `example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox`; tasks `typecheck, test, build, check` (tokens), `dev, web-dev, web-build` (apps), `rust-fmt, rust-lint, rust-test, rust-deny, lint, format, spell, knip` (root).
+Targeted: `bun x moon run <project>:<task>` — projects `root, tokens, design-system, tauri-bridge, config-typescript, config-vite` + apps `example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox` + website `genslate-page`; tasks `typecheck, test, build, check` (tokens), `dev, web-dev, web-build` (apps; the website also has `web-preview`), `rust-fmt, rust-lint, rust-test, rust-deny, lint, format, spell, knip` (root).
 
 ## Layout
 ```

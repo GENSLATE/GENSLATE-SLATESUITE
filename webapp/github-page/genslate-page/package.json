@@ -1,0 +1,33 @@
+{
+  "name": "@genslate/genslate-page",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The GENSLATE suite website (GitHub Pages): apps, live mockups, wiki and docs, built with the GENSLATE design kit.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true bun --bun vite",
+    "build": "bun scripts/build-site.ts",
+    "preview": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true bun --bun vite preview --outDir dist/site"
+  },
+  "dependencies": {
+    "@genslate/design-system": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@babel/core": "catalog:",
+    "@genslate/config-typescript": "workspace:*",
+    "@rolldown/plugin-babel": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/bun": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "babel-plugin-react-compiler": "catalog:",
+    "shiki": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
