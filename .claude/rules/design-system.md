@@ -3,7 +3,7 @@ paths:
   - "packages/design-system/**"
   - "packages/tokens/**"
   - "desktop/*/src/**"
-  - "webapp/*/src/**"
+  - "webapps/*/src/**"
 ---
 
 # Design system contract (`@genslate/design-system`, `@genslate/tokens`)

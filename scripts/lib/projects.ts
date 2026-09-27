@@ -1,4 +1,4 @@
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 
 import { ROOT } from './paths';
 
@@ -19,7 +19,6 @@ export async function discoverProjects(): Promise<WorkspaceProject[]> {
     'desktop/*/package.json',
     'packages/*/package.json',
     'webapps/*/package.json',
-    // Nested websites, e.g. webapps/genslate-page.
     'webapps/*/*/package.json',
   ]) {
     for await (const relative of new Bun.Glob(pattern).scan({ cwd: ROOT })) {
@@ -29,7 +28,7 @@ export async function discoverProjects(): Promise<WorkspaceProject[]> {
       const first = await testFiles.next();
       projects.push({
         // The project folder: `desktop/example/package.json` → `example`.
-        name: relative.split('/').at(-2) ?? relative,
+        name: basename(dir),
         dir,
         hasTsconfig: await Bun.file(join(dir, 'tsconfig.json')).exists(),
         hasTests: first.done !== true,
