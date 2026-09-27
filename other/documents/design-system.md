@@ -44,7 +44,7 @@ Base UI 1.8 primitives styled with Tailwind v4 + tailwind-variants.
 
 | Category | Examples |
 |---|---|
-| `window` | TitleBar (+ command center), WindowControls (traffic lights), StatusBar, AppShell |
+| `window` | TitleBar (+ command center), TrafficLights (the only window controls, every OS), StatusBar, AppShell |
 | `layout` | panels, split views, stacks, separators |
 | `actions` | Button, IconButton, ToggleButton/ToggleGroup, SegmentedControl, Toolbar |
 | `inputs` | text field, checkbox, switch, radio, select, slider |

@@ -30,7 +30,7 @@ Common issues:
 - **Wrong Polymorphism**: Using `asChild` instead of Base UI 1.8's `render` prop.
 - **Density / Spacing Mismatch**: Heights deviating from specs (titlebar 38px, statusbar 24px, control md 28px, control sm 24px).
 - **Missing `data-slot`**: Every part requires a `data-slot="<component>-<part>"` attribute.
-- **Platform Branching**: Forgetting macOS overlay titlebar vs. Windows/Linux custom decorations.
+- **Platform Branching**: Re-introducing per-OS chrome (native macOS lights, Windows caption buttons) — every OS uses the same frameless titlebar with custom traffic lights.
 
 ### 3. Check Design Token Availability
 - If a new color or size is required, verify `packages/tokens/src/generated/css/tailwind.theme.css`.

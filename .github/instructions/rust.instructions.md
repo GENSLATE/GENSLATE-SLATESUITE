@@ -10,5 +10,5 @@ applyTo: "**/*.rs,**/Cargo.toml"
 - Business logic lives in `crates/core/<app>` (plain Rust, unit-tested); `desktop/<app>/src-tauri` is thin glue (builder, plugins, commands delegating to core).
 - `#[tauri::command]` functions return `Result<T, E>` with a serializable, user-safe error and validate every argument; paths come from `genslate-paths`.
 - Keep `capabilities/*.json` least-privilege; update them with any new command or plugin.
-- Window chrome: macOS overlay titlebar with native traffic lights (`tauri.macos.conf.json`), `decorations: false` elsewhere; window background colour from `genslate-design-tokens`.
+- Window chrome: `decorations: false` on every OS (no macOS overlay titlebar, no `tauri.macos.conf.json` window overrides); the design system's custom macOS-style traffic lights are the only window controls; window background colour from `genslate-design-tokens`.
 - Tests in `#[cfg(test)] mod tests`; helpers in `genslate-testing`.

@@ -25,7 +25,7 @@ export function AppTitleBar({
   onToggleInspector,
 }: AppTitleBarProps) {
   const platform = usePlatform();
-  const { isFocused, isMaximized, isFullscreen } = useWindowState();
+  const { isFocused, isFullscreen } = useWindowState();
   const { minimize, toggleMaximize, close } = useWindowControls();
   const { resolvedTheme, toggleTheme } = useTheme();
   const nextTheme = resolvedTheme === 'polar-night' ? 'Snow Storm' : 'Polar Night';
@@ -34,7 +34,6 @@ export function AppTitleBar({
     <TitleBar
       platform={platform}
       isFocused={isFocused}
-      isMaximized={isMaximized}
       isFullscreen={isFullscreen}
       onMinimize={() => void minimize()}
       onToggleMaximize={() => void toggleMaximize()}

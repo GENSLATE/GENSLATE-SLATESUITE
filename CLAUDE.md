@@ -46,7 +46,7 @@ Details: `.claude/rules/monorepo-structure.md` · docs: `other/documents/README.
 - Styling: token utilities only (`bg-surface`, `text-fg-muted`, `h-control-md`) via `tv()` + `cn()`; no hex, no `dark:`.
 - Components: `packages/design-system/src/components/<category>/<name>/{<name>.component.tsx,<name>.variants.ts,<name>.types.ts,index.ts}`; Base UI `render` prop (never `asChild`); `data-slot` on every part; design system never imports Tauri.
 - Rust: edition 2024, no `unsafe`/`unwrap`/`expect`, `thiserror` errors, `tracing` logs, logic in `crates/core/<app>`, thin `src-tauri`.
-- Window chrome: macOS overlay titlebar + native traffic lights (`tauri.macos.conf.json`); elsewhere `decorations: false` + custom macOS-style traffic lights.
+- Window chrome: one titlebar on every OS — `decorations: false` everywhere (no `tauri.macos.conf.json` window overrides) + the design system's custom macOS-style traffic lights; no Windows caption buttons, no native macOS lights.
 - Commits: Conventional Commits, scopes = project ids (incl. every app) + `crates, repo, ci, deps, claude, docs, release`.
 
 ## Rules, skills, agents

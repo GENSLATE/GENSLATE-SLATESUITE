@@ -1,4 +1,4 @@
-import { TrafficLights, WindowControls } from '@genslate/design-system';
+import { TrafficLights } from '@genslate/design-system';
 import { Specimen } from '../../components/specimen.component';
 import { StateMatrix } from '../../components/state-matrix.component';
 
@@ -11,7 +11,7 @@ export function TrafficLightsSection() {
     <>
       <Specimen
         title="Traffic lights"
-        description="12px lights, 8px apart, a 0.5px rim. Glyphs appear while the pointer is over the group."
+        description="The window controls of every GENSLATE app, on every OS: 12px lights, 8px apart, a 0.5px rim. Glyphs appear while the pointer is over the group."
         stageClassName="gap-10 p-10"
       >
         <TrafficLights style={{ zoom: 2 }} />
@@ -36,19 +36,6 @@ export function TrafficLightsSection() {
           },
         ]}
       />
-
-      <Specimen
-        title="Windows caption buttons"
-        description="46px wide, full titlebar height; close turns red on hover."
-        stageClassName="flex-col items-stretch gap-px bg-border-subtle p-0"
-      >
-        <div className="flex h-titlebar w-full items-stretch justify-end bg-titlebar-bg">
-          <WindowControls />
-        </div>
-        <div className="flex h-titlebar w-full items-stretch justify-end bg-titlebar-bg">
-          <WindowControls isMaximized />
-        </div>
-      </Specimen>
     </>
   );
 }
