@@ -100,11 +100,14 @@ function HeroScene() {
 function Dock() {
   const { href } = useRouter();
   return (
+    // `overflow-x-auto` turns `overflow-y` into `auto` too, so the dock clips anything above its
+    // box: the top padding leaves room for a magnified icon's label, and the negative margin
+    // keeps the dock where it was. The padding is see-through to the pointer.
     <nav
       aria-label="Apps"
-      className="relative z-10 mx-auto -mt-14 w-fit max-w-[calc(100vw-2rem)] overflow-x-auto overflow-y-visible px-4 pt-10 pb-2 [scrollbar-width:none] md:-mt-20"
+      className="pointer-events-none relative z-10 mx-auto -mt-24 w-fit max-w-[calc(100vw-2rem)] overflow-x-auto px-4 pt-20 pb-2 [scrollbar-width:none] md:-mt-30"
     >
-      <ul className="surface-glass flex items-end gap-1.5 rounded-[22px] border border-border-subtle px-3 pt-2.5 pb-2.5 shadow-dialog">
+      <ul className="surface-glass pointer-events-auto flex items-end gap-1.5 rounded-[22px] border border-border-subtle px-3 pt-2.5 pb-2.5 shadow-dialog">
         {APPS.map((app) => (
           <li key={app.id} className="dock-item relative">
             <a
