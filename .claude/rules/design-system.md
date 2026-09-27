@@ -59,6 +59,7 @@ Custom variants (`styles/variants.css`): `macos:` `windows:` `linux:` (from `htm
   - Every rendered part sets `data-slot="<component>-<part>"`.
 - **No CSS imports inside components.** All CSS ships through `design-system.css`.
 - **Tauri-free.** Never import `@tauri-apps/*` or `@genslate/tauri-bridge`. Window chrome takes props and callbacks (`onMinimize`, `onToggleMaximize`, `onClose`, `isFocused`, `isFullscreen`, `platform`). The traffic lights are the only window controls on every OS.
+- **Right-click menus:** apps never show the webview's menu. Wrap the window in `WindowContextMenu` (titlebar, field, content and status-bar menus) and add app rows through `items(target)`. Steer it with `data-context-zone`, `data-context-copy` and `data-context-menu="none"` (see `other/documents/context-menus.md`).
 - **Accessibility** (WCAG 2.2 AA):
   - Correct roles and names. Icon-only controls require `label`.
   - Full keyboard support per WAI-ARIA APG.

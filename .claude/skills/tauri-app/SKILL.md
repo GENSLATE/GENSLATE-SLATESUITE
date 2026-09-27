@@ -25,7 +25,7 @@ desktop/<name>/
 ├── moon.yml  package.json  tsconfig.json  vite.config.ts  index.html
 ├── src/main.tsx  src/styles/main.css
 ├── src/app/          app.component (AppShell) · app.providers (design system ↔ bridge) · app.meta (id, name, version, icon)
-├── src/features/     titlebar/ (icon + name, theme toggle) · home/ (icon, app name, version) · statusbar/ (app, theme, platform · runtime, version)
+├── src/features/     titlebar/ (icon + name, theme toggle) · home/ (icon, app name, version) · statusbar/ (app, theme, platform · runtime, version) · context-menu/ (AppContextMenu: right-click menus for the whole window)
 ├── tests/unit/app.test.tsx                 # titlebar, name + version, status bar, theme toggle + hotkey
 └── src-tauri/
     ├── Cargo.toml  build.rs  icons/
@@ -45,6 +45,7 @@ The version shown comes from `get_app_info` (`useAppInfo()` in `@genslate/tauri-
 ## 4. Window chrome rules
 - One titlebar on every OS: `"decorations": false` in `tauri.conf.json`, and no `tauri.<os>.conf.json` window overrides (no macOS overlay titlebar, no native traffic lights).
 - The design-system `TitleBar` always renders the custom macOS-style traffic lights on the left, wired to `@genslate/tauri-bridge` window controls. Never add Windows-style caption buttons.
+- Right-click menus: `app.component` wraps the `AppShell` in `AppContextMenu` (the design-system `WindowContextMenu` wired to the bridge's window controls and `openExternal`). Add app rows through its `items`, and mark areas with `data-context-zone` / `data-context-copy` / `data-context-menu="none"`. See `other/documents/context-menus.md`.
 - The window background is painted from `genslate-design-tokens` (Rust) before the webview loads — no white flash.
 - Theme: `system | polar-night | snow-storm` via `ThemeProvider`, synced to the native window theme by the bridge.
 

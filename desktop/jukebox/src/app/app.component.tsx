@@ -1,5 +1,6 @@
 import { AppShell, useHotkey, useTheme } from '@genslate/design-system';
 import { useAppInfo } from '@genslate/tauri-bridge';
+import { AppContextMenu } from '../features/context-menu/app-context-menu.component';
 import { Home } from '../features/home/home.component';
 import { AppStatusBar } from '../features/statusbar/app-statusbar.component';
 import { AppTitleBar } from '../features/titlebar/app-titlebar.component';
@@ -13,12 +14,14 @@ export function App() {
   useHotkey('mod+shift+l', toggleTheme);
 
   return (
-    <AppShell
-      mainLabel={APP.name}
-      titleBar={<AppTitleBar />}
-      statusBar={<AppStatusBar info={info} />}
-    >
-      <Home info={info} />
-    </AppShell>
+    <AppContextMenu>
+      <AppShell
+        mainLabel={APP.name}
+        titleBar={<AppTitleBar />}
+        statusBar={<AppStatusBar info={info} />}
+      >
+        <Home info={info} />
+      </AppShell>
+    </AppContextMenu>
   );
 }
