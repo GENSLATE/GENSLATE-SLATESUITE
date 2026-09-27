@@ -1,6 +1,6 @@
 # Monorepo structure
 
-moon 2.5 orchestrates tasks (`.config/moon/`); bun workspaces cover `desktop/*`, `packages/*`, `webapp/*`, `webapp/*/*`; one Cargo workspace (root `Cargo.toml`) owned by the moon `root` project.
+moon 2.5 orchestrates tasks (`.config/moon/`); bun workspaces cover `desktop/*`, `packages/*`, `webapps/*`, `webapps/*/*`; one Cargo workspace (root `Cargo.toml`) owned by the moon `root` project.
 
 ```
 .claude/            Claude Code: settings, hooks, agents, commands, skills, rules, memory
