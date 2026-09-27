@@ -7,11 +7,13 @@ moon 2.5 orchestrates tasks (`.config/moon/`); bun workspaces cover `desktop/*`,
 .config/            moon workspace (moon/), biome, cspell, knip, commitlint, cargo/ (config, deny, mutants, tarpaulin)
 .github/            CI, release, security workflows · dependabot · templates · Copilot instructions
 crates/             shared Rust crates
+  app-common/         shared app foundations: config sections + loader, AppInfo (genslate-app-common)
   design-tokens/      generated token constants (window background, …)
   paths/              portable config/data/log dirs: suite · dev · standalone · fallback
   testing/            test helpers
   core/<app>/         per-app business logic (plain Rust, unit-tested)
-desktop/<app>/      Tauri 2 apps (moon tag `desktop-app`); `example` is live, others are reserved placeholders
+desktop/<app>/      Tauri 2 apps (moon tag `desktop-app`): `example` (Design Kit), `launcher`, and the suite apps
+                    (aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox) — titlebar · home (name + version) · status bar, ready to build on
 packages/
   tokens/             Nord design tokens + generator (`bun run tokens`)
   design-system/      React 19 components (Base UI + Tailwind v4 + tailwind-variants)
