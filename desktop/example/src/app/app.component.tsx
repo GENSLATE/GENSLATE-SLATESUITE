@@ -1,6 +1,7 @@
 import { AppShell, ScrollArea, useHotkey, useTheme } from '@genslate/design-system';
 import { useState } from 'react';
 import { AppCommandPalette } from '../features/command-palette/app-command-palette.component';
+import { AppContextMenu } from '../features/context-menu/app-context-menu.component';
 import { AppSidebar } from '../features/navigation/app-sidebar.component';
 import { SettingsInspector } from '../features/settings/settings-inspector.component';
 import { PageHeader } from '../features/showcase/components/page-header.component';
@@ -45,46 +46,56 @@ export function App() {
 
   return (
     <>
-      <AppShell
-        persistKey="genslate.example.shell"
+      <AppContextMenu
         sidebarCollapsed={sidebarCollapsed}
-        onSidebarCollapsedChange={setSidebarCollapsed}
-        mainLabel={section?.title}
-        titleBar={
-          <AppTitleBar
-            sidebarCollapsed={sidebarCollapsed}
-            onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
-            onOpenCommandPalette={openPalette}
-            inspectorOpen={inspectorOpen}
-            onToggleInspector={() => setInspectorOpen(!inspectorOpen)}
-          />
-        }
-        sidebar={<AppSidebar selectedId={section?.id ?? ''} onSelect={setPageId} />}
-        inspector={
-          inspectorOpen ? <SettingsInspector onClose={() => setInspectorOpen(false)} /> : undefined
-        }
-        inspectorWidth={272}
-        statusBar={
-          <AppStatusBar
-            pageCount={SHOWCASE_SECTIONS.length}
-            onOpenInspector={() => setInspectorOpen(true)}
-          />
-        }
+        onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+        inspectorOpen={inspectorOpen}
+        onToggleInspector={() => setInspectorOpen(!inspectorOpen)}
+        onOpenCommandPalette={openPalette}
       >
-        <ScrollArea key={section?.id} className="flex-1" viewportClassName="select-text">
-          {section && Page ? (
-            <article className="mx-auto flex w-full max-w-content-max flex-col gap-10 px-10 pt-8 pb-16">
-              <PageHeader
-                eyebrow={group?.title ?? ''}
-                title={section.title}
-                description={section.description}
-                icon={group?.icon ?? section.icon}
-              />
-              <Page />
-            </article>
-          ) : null}
-        </ScrollArea>
-      </AppShell>
+        <AppShell
+          persistKey="genslate.example.shell"
+          sidebarCollapsed={sidebarCollapsed}
+          onSidebarCollapsedChange={setSidebarCollapsed}
+          mainLabel={section?.title}
+          titleBar={
+            <AppTitleBar
+              sidebarCollapsed={sidebarCollapsed}
+              onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+              onOpenCommandPalette={openPalette}
+              inspectorOpen={inspectorOpen}
+              onToggleInspector={() => setInspectorOpen(!inspectorOpen)}
+            />
+          }
+          sidebar={<AppSidebar selectedId={section?.id ?? ''} onSelect={setPageId} />}
+          inspector={
+            inspectorOpen ? (
+              <SettingsInspector onClose={() => setInspectorOpen(false)} />
+            ) : undefined
+          }
+          inspectorWidth={272}
+          statusBar={
+            <AppStatusBar
+              pageCount={SHOWCASE_SECTIONS.length}
+              onOpenInspector={() => setInspectorOpen(true)}
+            />
+          }
+        >
+          <ScrollArea key={section?.id} className="flex-1" viewportClassName="select-text">
+            {section && Page ? (
+              <article className="mx-auto flex w-full max-w-content-max flex-col gap-10 px-10 pt-8 pb-16">
+                <PageHeader
+                  eyebrow={group?.title ?? ''}
+                  title={section.title}
+                  description={section.description}
+                  icon={group?.icon ?? section.icon}
+                />
+                <Page />
+              </article>
+            ) : null}
+          </ScrollArea>
+        </AppShell>
+      </AppContextMenu>
       <AppCommandPalette
         open={paletteOpen}
         onOpenChange={setPaletteOpen}

@@ -51,6 +51,7 @@ export function TitleBar({
       {/* biome-ignore lint/a11y/noStaticElementInteractions: double-click-to-maximize is a pointer shortcut; the traffic lights cover keyboard use */}
       <header
         data-slot="titlebar"
+        data-context-zone="titlebar"
         data-tauri-drag-region
         data-platform={platform}
         data-inactive={isFocused ? undefined : ''}
