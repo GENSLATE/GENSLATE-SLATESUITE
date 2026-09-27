@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "GENSLATE Jukebox",
+  "mainBinaryName": "genslate-jukebox",
+  "version": "../package.json",
+  "identifier": "space.angeletti.genslate.jukebox",
+  "build": {
+    "beforeDevCommand": "bun run vite:dev",
+    "beforeBuildCommand": "bun run vite:build",
+    "devUrl": "http://localhost:1438",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "create": false,
+        "title": "GENSLATE Jukebox",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 520,
+        "center": true,
+        "resizable": true,
+        "decorations": false,
+        "transparent": false,
+        "shadow": true,
+        "visible": true,
+        "backgroundColor": "#2e3440"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: http://asset.localhost; font-src 'self' data:; connect-src ipc: http://ipc.localhost",
+      "devCsp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: http://asset.localhost; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost ws://localhost:1439",
+      "freezePrototype": true,
+      "capabilities": ["main"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Music",
+    "shortDescription": "Play your music library and playlists.",
+    "longDescription": "GENSLATE Jukebox: Play your music library and playlists. A portable GENSLATE desktop app.",
+    "publisher": "GENSLATE",
+    "copyright": "© GENSLATE. All rights reserved.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

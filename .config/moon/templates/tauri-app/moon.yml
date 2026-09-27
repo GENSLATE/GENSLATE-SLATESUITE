@@ -12,7 +12,6 @@ project:
 dependsOn:
   - 'design-system'
   - 'tauri-bridge'
-  - 'tokens'
   - id: 'config-vite'
     scope: 'development'
   - id: 'config-typescript'

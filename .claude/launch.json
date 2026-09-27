@@ -2,16 +2,82 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "example-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/example", "vite:dev"],
+      "port": 1420
+    },
+    {
       "name": "launcher-web",
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "--cwd=desktop/launcher", "vite:dev"],
       "port": 1422
     },
     {
-      "name": "example-web",
+      "name": "aistudio-web",
       "runtimeExecutable": "bun",
-      "runtimeArgs": ["run", "--cwd=desktop/example", "vite:dev"],
-      "port": 1420
+      "runtimeArgs": ["run", "--cwd=desktop/aistudio", "vite:dev"],
+      "port": 1424
+    },
+    {
+      "name": "browser-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/browser", "vite:dev"],
+      "port": 1426
+    },
+    {
+      "name": "coder-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/coder", "vite:dev"],
+      "port": 1428
+    },
+    {
+      "name": "command-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/command", "vite:dev"],
+      "port": 1430
+    },
+    {
+      "name": "editor-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/editor", "vite:dev"],
+      "port": 1432
+    },
+    {
+      "name": "explorer-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/explorer", "vite:dev"],
+      "port": 1434
+    },
+    {
+      "name": "gallery-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/gallery", "vite:dev"],
+      "port": 1436
+    },
+    {
+      "name": "jukebox-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/jukebox", "vite:dev"],
+      "port": 1438
+    },
+    {
+      "name": "terminal-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/terminal", "vite:dev"],
+      "port": 1440
+    },
+    {
+      "name": "theater-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/theater", "vite:dev"],
+      "port": 1442
+    },
+    {
+      "name": "toolbox-web",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--cwd=desktop/toolbox", "vite:dev"],
+      "port": 1444
     }
   ]
 }
