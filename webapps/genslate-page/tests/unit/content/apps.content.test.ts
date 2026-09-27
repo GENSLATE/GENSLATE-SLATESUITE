@@ -6,7 +6,7 @@ import { CODICON_NAMES } from '@genslate/design-system';
 import { parseFrontmatter } from '../../../plugins/markdown';
 import { APPS, METADATA_NAME_OVERRIDES } from '../../../src/content/apps.content';
 
-const repoRoot = join(import.meta.dir, '..', '..', '..', '..', '..', '..');
+const repoRoot = join(import.meta.dir, '..', '..', '..', '..', '..');
 const siteRoot = join(import.meta.dir, '..', '..', '..');
 const codicons = new Set<string>(CODICON_NAMES);
 

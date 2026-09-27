@@ -1,4 +1,4 @@
-$schema: '../../../.config/moon/cache/schemas/project.json'
+$schema: '../../.config/moon/cache/schemas/project.json'
 
 language: 'typescript'
 layer: 'application'

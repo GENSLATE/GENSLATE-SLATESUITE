@@ -1,6 +1,6 @@
 # Website: the GitHub Pages site
 
-`webapp/github-page/genslate-page` (moon project `genslate-page`) is the public site for the suite:
+`webapps/genslate-page` (moon project `genslate-page`) is the public site for the suite:
 the landing page, one page per app, the Design Kit showcase, downloads, and the docs & wiki. It is
 built with the same design system as the apps, so it looks like them.
 

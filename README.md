@@ -233,7 +233,7 @@ GENSLATE/
 │   ├── design-tokens/           Rust constants and token utilities generated from source tokens
 │   ├── testing/                 Test fixtures, fake repository trees, and mock environments
 │   └── core/                    App-specific business logic crates (core/<app>, one per app)
-├── webapp/                      Web portals & API services
+├── webapps/                     Web portals & API services
 ├── scripts/bun-commands/        Single-purpose executable scripts backing bun run <cmd>
 ├── other/                       Portable suite assets, documents, configurations, logs, and cache
 │   ├── config/                  Hand-editable app configurations & launcher metadata

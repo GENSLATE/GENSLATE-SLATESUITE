@@ -35,7 +35,7 @@ crates/{app-common,design-tokens,paths,testing,core/<app>}  shared Rust
 desktop/<app>/                                      Tauri apps (example = Design Kit, launcher, 11 suite apps)
 packages/{tokens,design-system,tauri-bridge,config-typescript,config-vite}
 scripts/bun-commands/<cmd>.ts                        one file per root command
-webapp/{github-page,tauri-servers}   tests/e2e   release/   other/{documents,config,licenses,logs,resources}
+webapps/{genslate-page,tauri-servers}  tests/e2e   release/   other/{documents,config,licenses,logs,resources}
 ```
 Details: `.claude/rules/monorepo-structure.md` · docs: `other/documents/README.md`.
 

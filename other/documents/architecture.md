@@ -13,7 +13,7 @@ packages/tokens (typed source) ──bun run tokens──► CSS · Tailwind @th
 ```
 
 - **moon 2.5** orchestrates every task (caching, dependency graph, affected detection). Workspace config: `.config/moon/`. Shared tasks: `.config/moon/tasks/{all,typescript,tauri}.yml`.
-- **bun 1.4** is the package manager, script runner, test runner and runtime. Workspaces: `desktop/*`, `packages/*`, `webapp/*`. Versions are pinned in the root `workspaces.catalog`.
+- **bun 1.4** is the package manager, script runner, test runner and runtime. Workspaces: `desktop/*`, `packages/*`, `webapps/*`. Versions are pinned in the root `workspaces.catalog`.
 - **Cargo workspace** at the root, owned by the moon `root` project (one project avoids cargo lock contention).
 
 ## Projects and layers

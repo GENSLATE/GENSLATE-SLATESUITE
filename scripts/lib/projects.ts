@@ -2,7 +2,7 @@ import { dirname, join } from 'node:path';
 
 import { ROOT } from './paths';
 
-/** A bun workspace package under desktop/, packages/ or webapp/ (one or two levels deep). */
+/** A bun workspace package under desktop/, packages/ or webapps/ (one or two levels deep). */
 export interface WorkspaceProject {
   readonly name: string;
   readonly dir: string;
@@ -18,9 +18,9 @@ export async function discoverProjects(): Promise<WorkspaceProject[]> {
   for (const pattern of [
     'desktop/*/package.json',
     'packages/*/package.json',
-    'webapp/*/package.json',
-    // Nested websites, e.g. webapp/github-page/genslate-page.
-    'webapp/*/*/package.json',
+    'webapps/*/package.json',
+    // Nested websites, e.g. webapps/genslate-page.
+    'webapps/*/*/package.json',
   ]) {
     for await (const relative of new Bun.Glob(pattern).scan({ cwd: ROOT })) {
       const dir = dirname(join(ROOT, relative));

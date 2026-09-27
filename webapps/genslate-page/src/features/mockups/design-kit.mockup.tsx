@@ -1,5 +1,5 @@
-import darkShot from '../../../../../../other/resources/screenshots/example.polar-night.png';
-import lightShot from '../../../../../../other/resources/screenshots/example.snow-storm.png';
+import darkShot from '../../../../../other/resources/screenshots/example.polar-night.png';
+import lightShot from '../../../../../other/resources/screenshots/example.snow-storm.png';
 
 /**
  * The Design Kit exists, so it gets real screenshots (other/resources/screenshots) instead of a

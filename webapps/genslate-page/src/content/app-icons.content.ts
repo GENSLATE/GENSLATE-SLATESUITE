@@ -3,7 +3,7 @@
  * hashed asset URLs. Each SVG is a 1024 canvas with an 824 plate at (100, 100) — the macOS icon
  * grid — so `AppIcon` can crop to the plate for small tiles.
  */
-const ICON_URLS = import.meta.glob<string>('../../../../../other/resources/icons/genslate/*.svg', {
+const ICON_URLS = import.meta.glob<string>('../../../../other/resources/icons/genslate/*.svg', {
   eager: true,
   query: '?url',
   import: 'default',

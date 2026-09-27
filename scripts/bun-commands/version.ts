@@ -29,7 +29,7 @@ Apps whose tauri.conf.json has \`"version": "../package.json"\` follow their pac
     log.title(`${current} → ${next}${dryRun ? ' (dry run)' : ''}`);
 
     const edits: { file: string; update: (text: string) => string }[] = [];
-    for (const pattern of ['package.json', '{desktop,packages,webapp}/*/package.json']) {
+    for (const pattern of ['package.json', '{desktop,packages,webapps}/*/package.json']) {
       for await (const file of new Bun.Glob(pattern).scan({ cwd: ROOT })) {
         edits.push({
           file,

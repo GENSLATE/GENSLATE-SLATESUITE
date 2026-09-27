@@ -12,8 +12,8 @@ projects:
   globs:
     - 'desktop/*/moon.yml'
     - 'packages/*/moon.yml'
-    - 'webapp/*/moon.yml'
-    - 'webapp/*/*/moon.yml'
+    - 'webapps/*/moon.yml'
+    - 'webapps/*/*/moon.yml'
   sources:
     # The root project owns the Cargo workspace and repo-wide tasks (lint, spell, knip).
     root: '.'

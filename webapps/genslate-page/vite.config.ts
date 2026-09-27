@@ -9,7 +9,7 @@ import { themeInit } from './plugins/theme-init.plugin';
 import { SITE_DEFAULTS } from './src/app/site.defaults';
 
 const siteRoot = fileURLToPath(new URL('.', import.meta.url));
-const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
+const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 /**
  * The GENSLATE website. `GENSLATE_SITE_BASE` is the path the site is served under: `/GENSLATE/`
