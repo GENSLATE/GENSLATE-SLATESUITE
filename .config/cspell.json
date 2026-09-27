@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
+  "enabled": false,
   "language": "en,en-GB",
   "useGitignore": true,
   "dictionaryDefinitions": [
