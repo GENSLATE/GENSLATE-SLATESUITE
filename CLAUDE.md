@@ -23,16 +23,16 @@ UI goal: modern flat UI with VS Code density, refined like macOS; Polar Night (d
 | `bun run format` | Biome `--write` + `cargo fmt` |
 | `bun run tokens` | Regenerate design tokens (CSS, Tailwind, TS, JSON, Rust) |
 | `bun run version` | Bump versions across package.json / Cargo / tauri.conf |
-| `bun run new-app <name>` | Scaffold `desktop/<name>` from `.config/moon/templates/tauri-app` |
+| `bun run new-app <name>` | Scaffold `desktop/<name>` + `crates/core/<name>` from `.config/moon/templates/{tauri-app,app-core}` |
 | `bun run clean` | Remove build output and caches |
 
-Targeted: `bun x moon run <project>:<task>` — projects `root, tokens, design-system, tauri-bridge, config-typescript, config-vite, example`; tasks `typecheck, test, build, check` (tokens), `dev, web-dev, web-build` (apps), `rust-fmt, rust-lint, rust-test, rust-deny, lint, format, spell, knip` (root).
+Targeted: `bun x moon run <project>:<task>` — projects `root, tokens, design-system, tauri-bridge, config-typescript, config-vite` + apps `example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox`; tasks `typecheck, test, build, check` (tokens), `dev, web-dev, web-build` (apps), `rust-fmt, rust-lint, rust-test, rust-deny, lint, format, spell, knip` (root).
 
 ## Layout
 ```
 .claude/  .config/  .github/  .vscode/
-crates/{design-tokens,paths,testing,core/<app>}     shared Rust
-desktop/<app>/                                      Tauri apps (example = live; others reserved)
+crates/{app-common,design-tokens,paths,testing,core/<app>}  shared Rust
+desktop/<app>/                                      Tauri apps (example = Design Kit, launcher, 11 suite apps)
 packages/{tokens,design-system,tauri-bridge,config-typescript,config-vite}
 scripts/bun-commands/<cmd>.ts                        one file per root command
 webapp/{github-page,tauri-servers}   tests/e2e   release/   other/{documents,config,licenses,logs,resources}
@@ -47,7 +47,7 @@ Details: `.claude/rules/monorepo-structure.md` · docs: `other/documents/README.
 - Components: `packages/design-system/src/components/<category>/<name>/{<name>.component.tsx,<name>.variants.ts,<name>.types.ts,index.ts}`; Base UI `render` prop (never `asChild`); `data-slot` on every part; design system never imports Tauri.
 - Rust: edition 2024, no `unsafe`/`unwrap`/`expect`, `thiserror` errors, `tracing` logs, logic in `crates/core/<app>`, thin `src-tauri`.
 - Window chrome: macOS overlay titlebar + native traffic lights (`tauri.macos.conf.json`); elsewhere `decorations: false` + custom macOS-style traffic lights.
-- Commits: Conventional Commits, scopes = project ids + `crates, repo, ci, deps, claude, docs, release`.
+- Commits: Conventional Commits, scopes = project ids (incl. every app) + `crates, repo, ci, deps, claude, docs, release`.
 
 ## Rules, skills, agents
 Rules in `.claude/rules/` load automatically (path-scoped ones when you touch matching files):

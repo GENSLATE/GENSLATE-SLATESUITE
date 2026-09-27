@@ -39,3 +39,13 @@ Short ADR log. Newest last. Format: **Decision** — context → consequence. Ad
 17. **Launcher DTO types are hand-written** (`desktop/launcher/src/ipc/launcher.types.ts`) with boundary type guards (`launcher.parse.ts`) instead of ts-rs codegen — one less build step; keep them in step with the Rust structs.
 
 18. **AI-ready command registry.** Every launcher action is an `ActionSpec` (id, params, `Effect`) in `genslate-core-launcher::actions`; the slash bar lists them and `run_action` executes them — the same entry point a future agent/MCP server will use, gated by `Effect`.
+
+## 2026-09 · Suite apps
+
+19. **Every suite app starts from the template.** `aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox` were generated with `bun run new-app` (ports 1424–1444, HMR +1): titlebar (icon + name, theme toggle) · home view (icon, app name, version) · status bar (app, theme, platform · runtime, version). Each has its own `crates/core/<app>` so business logic has a home from day one.
+
+20. **Shared app foundations in `genslate-app-common`.** The `[appearance]`/`[window]`/`[logging]` config sections, the generic TOML loader (missing file → defaults) and `AppInfo` live there; each `crates/core/<app>` composes the sections into its own `Config` (serde `flatten` can't be combined with `deny_unknown_fields`, so composition is by field). → 12 apps don't each carry ~250 lines of identical config code, and app-specific sections sit next to the shared ones.
+
+21. **`useAppInfo()` lives in `@genslate/tauri-bridge`.** Fetching `get_app_info` once is identical in every app, so it's a bridge hook (null in a browser; callers fall back to `package.json`).
+
+22. **GENSLATE icon family = dark plate + one accent.** Every app icon (`other/resources/icons/genslate/<app>.svg`) is a flat nord1 plate with a nord2 rim on the Big Sur grid, Snow Storm line work (secondary layer at 40 %) and one signature Nord accent — the icon-sized version of the design kit's "Polar Night surfaces, one accent" rule, matching the launcher mark and the Design Kit icon. The accent is the app's `color` in its launcher metadata. Bundle icons (`src-tauri/icons`) are generated from the SVG with `bun run tauri icon` (desktop sizes only).
