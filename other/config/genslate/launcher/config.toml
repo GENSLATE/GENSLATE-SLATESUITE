@@ -24,4 +24,4 @@ mode = "temps"
 
 [logging]
 # "off" · "error" · "warn" · "info" · "debug" · "trace"
-level = "info"
+level = "trace"
