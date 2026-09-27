@@ -16,13 +16,19 @@ import { useLauncher } from './launcher.context';
 export function AppProviders({ children }: { children: ReactNode }) {
   const [platform] = useState(detectPlatform);
   const systemScheme = useSystemTheme();
-  const { settings } = useLauncher();
+  const { backend, settings } = useLauncher();
 
   return (
     <DesignSystemProvider
       platform={platform}
       systemScheme={systemScheme}
       theme={settings.config.appearance.theme}
+      // The context menu's Theme submenu writes config.toml; the file watcher echoes it back.
+      onThemeChange={(theme) => {
+        backend
+          .setSetting('theme', theme)
+          .catch((error: unknown) => console.warn('launcher', error));
+      }}
       storageKey={null}
       windowState={{ isFocused: true, isMaximized: false, isFullscreen: false }}
     >

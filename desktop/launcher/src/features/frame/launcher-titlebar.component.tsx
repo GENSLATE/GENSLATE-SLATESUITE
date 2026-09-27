@@ -26,6 +26,7 @@ export function LauncherTitleBar({
   return (
     <header
       data-slot="launcher-titlebar"
+      data-context-zone="titlebar"
       data-tauri-drag-region
       className="relative flex h-full items-center justify-end gap-0.5 pr-2"
     >
