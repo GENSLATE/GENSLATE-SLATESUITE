@@ -1,6 +1,6 @@
 # Context menus
 
-Every GENSLATE window has its own right-click menu instead of the webview's (Back, Reload, Inspect…). One design-system component, `WindowContextMenu`, wraps the whole window, reads what was clicked and shows the matching rows. Apps add their own rows per area.
+Every GENSLATE window has its own right-click menu instead of the webview's (Back, Reload, Inspect…). One design-system component, `WindowContextMenu`, wraps the whole window, reads what was clicked and shows the matching rows. Apps add their own rows per area. The launcher's tray icon uses the same menu components (see [The launcher's tray menu](#the-launchers-tray-menu)).
 
 ## What the user sees
 
@@ -24,6 +24,39 @@ Undo/Redo use the platform shortcut hint (Redo is Ctrl+Y on Windows, ⇧⌘Z els
 **Keyboard:** Shift+F10 and the Menu (ContextMenu) key open the menu for the focused element. Focus returns to the text field when the menu closes.
 
 **Webview menu:** hidden everywhere, portals included. With `allowNativeMenu` (the apps set it in dev builds), Shift+right-click still opens the webview's own menu, so Inspect stays one click away while developing.
+
+## The launcher's tray menu
+
+Right-clicking the launcher's tray icon opens the same design-system menu, not the OS's native one. Left-click still shows or hides the launcher.
+
+| Row | What it does |
+|---|---|
+| **Header** | GENSLATE mark, "GENSLATE Launcher", where it runs from (Suite · *name*, Standalone, Development build) and the version |
+| Show Launcher | Shows the launcher; the hint is the global hotkey from `keybindings.toml` |
+| Pin on Top / Unpin from Top | Same as the titlebar's pin |
+| Recent ▸ | The last 5 launched apps with their icons. Apps that can't start are disabled. |
+| Favorites ▸ | Favorite apps by name |
+| Folders ▸ | Desktop, Documents, Downloads, Music, Pictures, Videos, then the Storage Folder |
+| Appearance ▸ | Theme (Polar Night · Snow Storm · Match System) and Window Size (Small · Medium · Large), written to `config.toml` |
+| Settings ▸ | Edit Settings…, Edit Keybindings…, Open Logs, Rescan Apps, Start with System ✓ |
+| Help | Shows the launcher on its help view |
+| Quit GENSLATE Launcher | Exits the launcher (apps keep running) |
+
+**How it works (Windows and macOS).** The menu is a small frameless, transparent, always-on-top window (`desktop/launcher/tray-menu.html`, label `tray-menu`), created hidden at startup so it opens instantly.
+- On a right-click, `src-tauri/src/tray_menu.rs` asks `genslate_core_launcher::geometry::tray_menu_placement` where to put it. The menu opens away from the tray's screen edge: up from a bottom taskbar, down from the macOS menu bar, and towards the screen's centre. It always stays inside the work area.
+- The shell then moves the window and sends the anchor with `tray-menu://open`.
+- The window hides once the menu's exit animation ends: after a pick, Esc, a click outside, or losing focus (`tray-menu://close`).
+
+**Linux.** Linux tray icons don't report clicks, so the icon keeps a native menu there. It has the same rows and submenus (Recent, Favorites, Folders, Appearance, Settings) with native check marks. It is rebuilt whenever the catalog, settings or pin state change.
+
+**Permissions.** The window has its own capability (`capabilities/tray-menu.capability.json`). `build.rs` generates an `allow-<command>` permission per IPC command. The tray menu may call only the commands its rows need. It cannot change app overrides, run slash actions, read telemetry or drag windows.
+
+**Right-clicking inside the tray menu** shows nothing: it is wrapped in `WindowContextMenu` with no rows, so the webview's menu stays hidden too.
+
+**Preview in a browser:** run `bun x moon run launcher:web-dev` and open `http://localhost:1422/tray-menu.html`. The query options are:
+- `?theme=snow-storm` for the light theme;
+- `?tray=top-right` for the macOS menu-bar placement;
+- `?pinned` and `?autostart` to show those rows turned on.
 
 ## Adding it to an app
 

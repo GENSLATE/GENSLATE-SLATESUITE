@@ -31,6 +31,10 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
 - `WindowContextMenu` (design system) wraps every app: launcher, Design Kit, the 11 suite apps and the `tauri-app` template (`src/features/context-menu/`). Docs: `other/documents/context-menus.md`.
 - **Next:** back Paste with Tauri's clipboard plugin (the webview clipboard may prompt); QA the menus natively on macOS/Windows.
 
+## Tray menu (2026-09-27)
+- Right-click on the launcher's tray icon opens a styled design-system menu in its own transparent window (`tray-menu.html`, `src-tauri/src/tray_menu.rs`): header, Show, Pin, Recent ▸, Favorites ▸, Folders ▸, Appearance ▸, Settings ▸, Help, Quit. Linux keeps a native menu with the same rows. Docs: `other/documents/context-menus.md#the-launchers-tray-menu`.
+- **Next:** QA it natively on Windows (taskbar bottom/left/top, 125–150 % scaling) and macOS (menu bar); check focus loss closes it and a second right-click repositions it.
+
 ## Open questions
 - Code signing / notarisation for macOS and Windows (secrets not configured yet; release workflow builds unsigned drafts).
 - Updater (tauri-plugin-updater) — not enabled; `uploadUpdaterJson` is off until signing keys exist.

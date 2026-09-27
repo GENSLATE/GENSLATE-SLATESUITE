@@ -6,8 +6,8 @@ import type { AppEntry } from '../../ipc/launcher.types';
 
 export interface AppIconProps {
   readonly app: AppEntry;
-  /** `md` 28px list tile · `lg` 56px properties header. @default 'md' */
-  readonly size?: 'md' | 'lg';
+  /** `sm` 16px menu row · `md` 28px list tile · `lg` 56px properties header. @default 'md' */
+  readonly size?: 'sm' | 'md' | 'lg';
   readonly className?: string;
 }
 
@@ -20,7 +20,7 @@ export function AppIcon({ app, size = 'md', className }: AppIconProps) {
   const [failed, setFailed] = useState(false);
   const src = app.hasIcon && !failed ? backend.iconUrl(app.id) : '';
   const dimmed = app.status === 'not-installed' || app.status === 'broken-manifest';
-  const box = size === 'lg' ? 'size-14' : 'size-launcher-tile';
+  const box = size === 'lg' ? 'size-14' : size === 'sm' ? 'size-4' : 'size-launcher-tile';
 
   if (src !== '') {
     return (
@@ -42,12 +42,12 @@ export function AppIcon({ app, size = 'md', className }: AppIconProps) {
       className={cn(
         box,
         'grid shrink-0 place-items-center rounded-md bg-accent-subtle font-semibold text-accent-fg',
-        size === 'lg' ? 'rounded-xl text-xl' : 'text-sm',
+        size === 'lg' ? 'rounded-xl text-xl' : size === 'sm' ? 'rounded-sm text-xs' : 'text-sm',
         dimmed && 'opacity-55',
         className,
       )}
     >
-      {monogram(app.name)}
+      {size === 'sm' ? monogram(app.name).charAt(0) : monogram(app.name)}
     </span>
   );
 }

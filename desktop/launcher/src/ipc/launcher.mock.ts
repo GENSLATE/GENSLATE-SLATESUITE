@@ -14,6 +14,7 @@ import type {
   Settings,
   Source,
   Telemetry,
+  TrayMenuAnchor,
 } from './launcher.types';
 
 // The icon family lives in other/resources (it ships with the suite); crop it like the shell does.
@@ -264,6 +265,26 @@ function query(name: string): string | null {
   return new URLSearchParams(globalThis.location?.search ?? '').get(name);
 }
 
+/**
+ * Where the browser preview anchors the tray menu: `?tray=top-right` (macOS menu bar),
+ * `bottom-left`, `top-left`, or the default `bottom-right` (Windows taskbar).
+ */
+export function mockTrayAnchor(): TrayMenuAnchor {
+  const corner = query('tray') ?? 'bottom-right';
+  const opensUp = !corner.startsWith('top');
+  const alignEnd = !corner.endsWith('left');
+  const width = globalThis.innerWidth ?? 560;
+  const height = globalThis.innerHeight ?? 440;
+  return { x: alignEnd ? width - 12 : 12, y: opensUp ? height - 12 : 12, opensUp, alignEnd };
+}
+
+function withAppearance(settings: Settings, change: Partial<Settings['config']['appearance']>) {
+  return {
+    ...settings,
+    config: { ...settings.config, appearance: { ...settings.config.appearance, ...change } },
+  };
+}
+
 export function createMockBackend(): LauncherBackend {
   let apps: AppEntry[] = [
     ...entries('genslate', GENSLATE),
@@ -272,7 +293,7 @@ export function createMockBackend(): LauncherBackend {
   ];
   let recent = ['genslate/editor', 'portableapps/FirefoxPortable', 'genslate/terminal'];
   let pinned = query('pinned') !== null;
-  const settings: Settings = {
+  let settings: Settings = {
     config: {
       appearance: {
         theme:
@@ -283,7 +304,12 @@ export function createMockBackend(): LauncherBackend {
               : 'system',
         size: query('size') === 's' ? 's' : query('size') === 'l' ? 'l' : 'm',
       },
-      behavior: { hideOnBlur: true, hideOnLaunch: true, pinned, autostart: false },
+      behavior: {
+        hideOnBlur: true,
+        hideOnLaunch: true,
+        pinned,
+        autostart: query('autostart') !== null,
+      },
       status: { mode: query('status') === 'usage' ? 'usage' : 'temps' },
     },
     keybindings: {
@@ -354,7 +380,7 @@ export function createMockBackend(): LauncherBackend {
   };
 
   return {
-    context: async () => context,
+    context: async () => ({ ...context, settings, pinned }),
     listApps: async () => ({ apps, tabs: tabs(), recent }),
     rescan: async () => emit('catalog', undefined),
     launch: async (id) => {
@@ -371,7 +397,25 @@ export function createMockBackend(): LauncherBackend {
       })),
     openFolder: async () => {},
     openConfigFile: async () => {},
-    setSetting: async () => {},
+    setSetting: async (key, value) => {
+      if (
+        key === 'theme' &&
+        (value === 'system' || value === 'polar-night' || value === 'snow-storm')
+      )
+        settings = withAppearance(settings, { theme: value });
+      else if (key === 'size' && (value === 's' || value === 'm' || value === 'l'))
+        settings = withAppearance(settings, { size: value });
+      else if (key === 'autostart')
+        settings = {
+          ...settings,
+          config: {
+            ...settings.config,
+            behavior: { ...settings.config.behavior, autostart: value === 'true' },
+          },
+        };
+      else return;
+      emit('settings', settings);
+    },
     volume: async () => ({
       label: 'D:',
       name: 'GENSLATE-USB',
@@ -393,7 +437,12 @@ export function createMockBackend(): LauncherBackend {
     hide: async () => {
       emit('willHide', undefined);
       // A browser tab can't hide: come back so the page stays usable.
-      setTimeout(() => emit('shown', undefined), 700);
+      setTimeout(() => emit('shown', 'apps'), 700);
+    },
+    show: async (view) => emit('shown', view ?? 'apps'),
+    // The browser preview of the tray menu reopens it, so the page stays usable.
+    hideTrayMenu: async () => {
+      setTimeout(() => emit('trayMenuOpen', mockTrayAnchor()), 700);
     },
     quit: async () => {},
     runAction: async (id) => ({ kind: 'done', message: `/${id} runs in the desktop app` }),
