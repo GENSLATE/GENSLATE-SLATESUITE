@@ -11,7 +11,7 @@ import { APP } from '../../app/app.meta';
 /** Titlebar: app icon and name · theme toggle. The empty centre is the drag area. */
 export function AppTitleBar() {
   const platform = usePlatform();
-  const { isFocused, isMaximized, isFullscreen } = useWindowState();
+  const { isFocused, isFullscreen } = useWindowState();
   const { minimize, toggleMaximize, close } = useWindowControls();
   const { resolvedTheme, toggleTheme } = useTheme();
   const nextTheme = resolvedTheme === 'polar-night' ? 'Snow Storm' : 'Polar Night';
@@ -20,7 +20,6 @@ export function AppTitleBar() {
     <TitleBar
       platform={platform}
       isFocused={isFocused}
-      isMaximized={isMaximized}
       isFullscreen={isFullscreen}
       onMinimize={() => void minimize()}
       onToggleMaximize={() => void toggleMaximize()}

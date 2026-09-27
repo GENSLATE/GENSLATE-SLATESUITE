@@ -37,7 +37,7 @@ Components style **only** through these utilities. Never use raw hex, `--gs-nord
 | Shadow | `shadow-control` `shadow-card` `shadow-popover` `shadow-dialog` `shadow-inset` |
 | Motion | `duration-{instant,fast,base,moderate,slow}` · `ease-{standard,enter,exit,spring}` |
 | Z-index | `z-{base,raised,sticky,chrome,sash,popover,scrim,dialog,toast,tooltip,max}` |
-| Layout sizes (spacing namespace) | `h-titlebar` `h-statusbar` `h-tabbar` `h-toolbar` `h-panel-header` `w-sidebar` · `h-control-{xs,sm,md,lg,xl}` / `size-control-*` · `h-row-sm` `h-row-md` `h-menu-item` · `size-icon-{sm,md,lg}` · `size-traffic-light` `gap-traffic-gap` `w-traffic-spacer` · `max-w-command-center-max` `w-palette` `max-w-dialog-{sm,md,lg}` `max-w-content-max` |
+| Layout sizes (spacing namespace) | `h-titlebar` `h-statusbar` `h-tabbar` `h-toolbar` `h-panel-header` `w-sidebar` · `h-control-{xs,sm,md,lg,xl}` / `size-control-*` · `h-row-sm` `h-row-md` `h-menu-item` · `size-icon-{sm,md,lg}` · `size-traffic-light` `gap-traffic-gap` `px-traffic-inset-x` · `max-w-command-center-max` `w-palette` `max-w-dialog-{sm,md,lg}` `max-w-content-max` |
 | Spacing | Tailwind's 4px grid: `p-2` = 8px, and so on |
 
 Custom variants (`styles/variants.css`): `macos:` `windows:` `linux:` (from `html[data-platform]`), `window-inactive:` (from `html[data-window-focused="false"]`), `vibrancy:`. Custom utilities (`styles/utilities.css`): `focus-ring`, `focus-ring-inset`, `surface-glass`, `hairline-t`, `hairline-b`, `scrollbar-thin`.
@@ -57,7 +57,7 @@ Custom variants (`styles/variants.css`): `macos:` `windows:` `linux:` (from `htm
   - Put shared recipes in `src/recipes/*.recipe.ts`: `popupSurface`, `field`, `listItem`. Focus uses the `focus-ring` / `focus-ring-inset` utilities.
   - Every rendered part sets `data-slot="<component>-<part>"`.
 - **No CSS imports inside components.** All CSS ships through `design-system.css`.
-- **Tauri-free.** Never import `@tauri-apps/*` or `@genslate/tauri-bridge`. Window chrome takes props and callbacks (`onMinimize`, `onToggleMaximize`, `onClose`, `isMaximized`, `isFocused`, `platform`).
+- **Tauri-free.** Never import `@tauri-apps/*` or `@genslate/tauri-bridge`. Window chrome takes props and callbacks (`onMinimize`, `onToggleMaximize`, `onClose`, `isFocused`, `isFullscreen`, `platform`). The traffic lights are the only window controls on every OS.
 - **Accessibility** (WCAG 2.2 AA):
   - Correct roles and names. Icon-only controls require `label`.
   - Full keyboard support per WAI-ARIA APG.

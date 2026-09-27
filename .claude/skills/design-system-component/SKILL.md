@@ -8,7 +8,7 @@ description: How to add or change a component in @genslate/design-system (Base U
 The contract lives in `.claude/rules/design-system.md` — this skill is the step-by-step recipe. Read both.
 
 ## 1. Decide the shape
-- **Category** (folder under `packages/design-system/src/components/`): `window` (TitleBar, WindowControls/traffic lights, StatusBar, AppShell), `layout`, `actions`, `inputs`, `navigation`, `overlays`, `feedback`, `display`.
+- **Category** (folder under `packages/design-system/src/components/`): `window` (TitleBar, TrafficLights, StatusBar, AppShell), `layout`, `actions`, `inputs`, `navigation`, `overlays`, `feedback`, `display`.
 - **Primitive**: if Base UI (`@base-ui/react` 1.8) has one (Menu, Popover, Dialog, Select, Tabs, Switch, Checkbox, Slider, Tooltip, Toast, …) wrap it. Read its docs page first (https://base-ui.com/react/components/<name>) for part names, props and `data-*` attributes. Polymorphism is the **`render` prop** — never `asChild`.
 - **Compound parts** are flat named exports: `Menu`, `MenuTrigger`, `MenuItem`… each part in `<name>-<part>.component.tsx`.
 
@@ -43,7 +43,7 @@ export const fooVariants = tv({
 - `className={cn(styles.root(), className)}` — consumer classes last.
 - Every rendered element gets `data-slot="<name>"` / `data-slot="<name>-<part>"`.
 - Icon-only controls require a `label` prop → `aria-label`. User-facing a11y strings come from a `labels` prop with English defaults.
-- No CSS imports, no `@tauri-apps/*`, no `@genslate/tauri-bridge` — chrome takes callbacks (`onClose`, `onMinimize`, `onToggleMaximize`) and state (`isFocused`, `isMaximized`, `platform`).
+- No CSS imports, no `@tauri-apps/*`, no `@genslate/tauri-bridge` — chrome takes callbacks (`onClose`, `onMinimize`, `onToggleMaximize`) and state (`isFocused`, `isFullscreen`, `platform`).
 - Icons: `<Icon name="codicon:…" />` (default) or `<Icon icon={LucideIcon} />` where no codicon fits.
 - Follow the Rules of React — the React Compiler memoises for you; don't add `useMemo`/`useCallback` by reflex.
 

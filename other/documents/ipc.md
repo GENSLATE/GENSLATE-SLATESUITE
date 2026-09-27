@@ -13,7 +13,7 @@ Apps never call `@tauri-apps/api` from UI code directly. They use **`@genslate/t
 | `commands` | typed wrappers for the app's Rust commands and plugins (`commands.appInfo()`, `commands.openExternal(url)`) |
 | `CommandError`, `isCommandError()` | the typed rejection shape |
 
-The design system stays Tauri-free: apps pass bridge callbacks/state into window components (`onMinimize`, `onToggleMaximize`, `onClose`, `isMaximized`, `isFocused`, `platform`).
+The design system stays Tauri-free: apps pass bridge callbacks/state into window components (`onMinimize`, `onToggleMaximize`, `onClose`, `isFocused`, `isFullscreen`, `platform`).
 
 ## Adding a command
 
