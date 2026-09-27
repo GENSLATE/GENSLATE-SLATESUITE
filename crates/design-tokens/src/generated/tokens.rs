@@ -67,7 +67,6 @@ pub mod size {
     pub const TRAFFIC_LIGHT: f64 = 12.0;
     pub const TRAFFIC_GAP: f64 = 8.0;
     pub const TRAFFIC_INSET_X: f64 = 14.0;
-    pub const TRAFFIC_SPACER: f64 = 78.0;
     pub const COMMAND_CENTER_MAX: f64 = 480.0;
     pub const PALETTE: f64 = 560.0;
     pub const DIALOG_SM: f64 = 400.0;

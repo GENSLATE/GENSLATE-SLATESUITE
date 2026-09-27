@@ -39,7 +39,7 @@ function FullscreenGlyph({ className, exit }: { className: string; exit: boolean
   );
 }
 
-/** macOS window buttons (close, minimize, zoom) for custom titlebars on non-mac platforms. */
+/** macOS-style window buttons (close, minimize, zoom): the only window controls, on every OS. */
 export function TrafficLights({
   onClose,
   onMinimize,

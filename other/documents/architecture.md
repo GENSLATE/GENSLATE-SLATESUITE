@@ -38,10 +38,7 @@ React 19.3 · Vite 8 (shared preset `@genslate/config-vite`: React Compiler via 
 
 Every app is **titlebar (top) · content (middle) · status bar (bottom)**, built from the design-system `window` components.
 
-| Platform | Config | Traffic lights |
-|---|---|---|
-| macOS | `tauri.macos.conf.json`: `decorations: true`, `titleBarStyle: "Overlay"`, `hiddenTitle: true` | **Native**, overlaid on the custom titlebar (which leaves a spacer) |
-| Windows, Linux | `tauri.conf.json`: `decorations: false` | **Custom macOS-style** traffic lights from the design system, wired to `@genslate/tauri-bridge` window controls |
+The titlebar is **the same on macOS, Windows and Linux**: every window is frameless (`"decorations": false` in `tauri.conf.json`; there are no per-OS window overrides) and the design-system `TitleBar` draws the **custom macOS-style traffic lights** on the left, wired to `@genslate/tauri-bridge` window controls (red closes, yellow minimizes, green toggles maximize). There are no Windows caption buttons and no native macOS traffic lights. The launcher's own titlebar uses the same `TrafficLights` (close and minimize hide it to the tray; zoom is disabled).
 
 At startup the Rust shell paints the native window background with the theme's canvas colour from `genslate-design-tokens` and applies the token minimum size — no white flash while the webview loads. Theme preference (`system | polar-night | snow-storm`) comes from the app config and is synced to the native window theme.
 

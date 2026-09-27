@@ -1,6 +1,9 @@
 import { tv } from '../../../utils/cn.util';
 
-/** 38px unified titlebar: quiet chrome, a hairline below, dims when the window is in the background. */
+/**
+ * 38px unified titlebar: traffic lights on the left, quiet chrome, a hairline below, dims when
+ * the window is in the background.
+ */
 export const titleBarVariants = tv({
   slots: {
     root: [
@@ -9,20 +12,12 @@ export const titleBarVariants = tv({
       'transition-colors duration-fast ease-standard',
       'data-inactive:bg-titlebar-bg-inactive data-inactive:text-titlebar-fg-inactive',
     ],
-    start: 'flex h-full min-w-0 items-center gap-1 justify-self-stretch',
+    start: 'flex h-full min-w-0 items-center gap-1 justify-self-stretch pr-1',
     lights: 'flex h-full items-center px-traffic-inset-x',
-    spacer: 'h-full w-traffic-spacer shrink-0',
     center: 'flex h-full min-w-0 items-center justify-center px-2',
     title: 'truncate-flex font-medium text-sm',
     end: 'flex h-full min-w-0 items-center justify-end gap-0.5 justify-self-stretch',
     actions: 'flex items-center gap-0.5 pr-2',
-  },
-  variants: {
-    controls: {
-      'traffic-lights': { start: 'pr-1' },
-      windows: { start: 'pl-2', actions: 'pr-1' },
-      none: { start: 'pl-2' },
-    },
   },
 });
 

@@ -74,7 +74,6 @@ export const LAYOUT_SIZE: Readonly<Record<LayoutSizeKey, number>> = {
   'traffic-light': 12,
   'traffic-gap': 8,
   'traffic-inset-x': 14,
-  'traffic-spacer': 78,
   'command-center-max': 480,
   palette: 560,
   'dialog-sm': 400,

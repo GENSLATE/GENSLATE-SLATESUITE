@@ -1,6 +1,6 @@
 ---
 name: tauri-app
-description: How to add a new GENSLATE Tauri 2 desktop app with `bun run new-app <name>` (moon templates .config/moon/templates/{tauri-app,app-core}), wire it into the Cargo workspace, moon, config and packaging, give it an icon from the GENSLATE icon family, and keep the window chrome consistent (overlay titlebar + native traffic lights on macOS, frameless + custom traffic lights elsewhere). Use when creating or restructuring a desktop app.
+description: How to add a new GENSLATE Tauri 2 desktop app with `bun run new-app <name>` (moon templates .config/moon/templates/{tauri-app,app-core}), wire it into the Cargo workspace, moon, config and packaging, give it an icon from the GENSLATE icon family, and keep the window chrome consistent (frameless + the custom macOS-style traffic lights titlebar on every OS). Use when creating or restructuring a desktop app.
 ---
 
 # Adding a desktop app
@@ -29,8 +29,7 @@ desktop/<name>/
 ├── tests/unit/app.test.tsx                 # titlebar, name + version, status bar, theme toggle + hotkey
 └── src-tauri/
     ├── Cargo.toml  build.rs  icons/
-    ├── tauri.conf.json                     # shared config (frameless: `decorations: false`)
-    ├── tauri.macos.conf.json               # macOS overrides merged on top (overlay titlebar)
+    ├── tauri.conf.json                     # the only config, every OS (frameless: `decorations: false`)
     ├── capabilities/main.capability.json   # least-privilege permissions
     └── src/{main,lib,window,error}.rs + commands/app_info.rs   # thin shell on genslate-core-<name>
 crates/core/<name>/src/{lib,config}.rs      # Config = shared sections (genslate-app-common) + the app's own
@@ -44,8 +43,8 @@ The version shown comes from `get_app_info` (`useAppInfo()` in `@genslate/tauri-
 4. Commit scopes: add `<name>` to `.config/commitlint.config.ts`; add a `<name>-web` entry to `.claude/launch.json`.
 
 ## 4. Window chrome rules
-- macOS (`tauri.macos.conf.json`): `"decorations": true`, `"titleBarStyle": "Overlay"`, `"hiddenTitle": true` → native traffic lights; the design-system `TitleBar` reserves `w-traffic-spacer` on the left.
-- Windows/Linux (`tauri.conf.json`): `"decorations": false`; the design-system window controls render macOS-style traffic lights wired to `@genslate/tauri-bridge` window controls.
+- One titlebar on every OS: `"decorations": false` in `tauri.conf.json`, and no `tauri.<os>.conf.json` window overrides (no macOS overlay titlebar, no native traffic lights).
+- The design-system `TitleBar` always renders the custom macOS-style traffic lights on the left, wired to `@genslate/tauri-bridge` window controls. Never add Windows-style caption buttons.
 - The window background is painted from `genslate-design-tokens` (Rust) before the webview loads — no white flash.
 - Theme: `system | polar-night | snow-storm` via `ThemeProvider`, synced to the native window theme by the bridge.
 
