@@ -5,6 +5,7 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 import { genslateContent } from './plugins/content.plugin';
+import { themeInit } from './plugins/theme-init.plugin';
 import { SITE_DEFAULTS } from './src/app/site.defaults';
 
 const siteRoot = fileURLToPath(new URL('.', import.meta.url));
@@ -21,6 +22,7 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
+    themeInit(),
     genslateContent({
       repoRoot,
       siteRoot,

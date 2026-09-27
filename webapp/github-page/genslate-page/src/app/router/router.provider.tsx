@@ -2,12 +2,13 @@ import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 
 import { type ResolvedRoute, resolveRoute } from '../routes';
+import { runViewTransition } from '../view-transition.util';
 import { RouterContext, type RouterValue } from './router.context';
 import { stripBase, withBase } from './router.util';
 
 const BASE = import.meta.env.BASE_URL;
 
-type Direction = 'forward' | 'backward' | 'none';
+type Direction = 'forward' | 'backward';
 
 interface HistoryState {
   readonly idx: number;
@@ -30,22 +31,6 @@ function cachedResolve(path: string): Promise<ResolvedRoute> {
   return entry;
 }
 
-const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/** `startViewTransition({ update, types })` — the object form needs View Transition types. */
-const supportsTypes = () =>
-  typeof CSS !== 'undefined' && CSS.supports('selector(:active-view-transition-type(a))');
-
-/** Runs `update` inside a view transition when the browser (and the user) allow it. */
-export function withViewTransition(update: () => void, types: readonly string[] = []): void {
-  if (typeof document.startViewTransition !== 'function' || reducedMotion()) {
-    update();
-    return;
-  }
-  if (supportsTypes()) document.startViewTransition({ update, types: [...types] });
-  else document.startViewTransition(update);
-}
-
 function applyMeta(route: ResolvedRoute): void {
   document.title = route.meta.title;
   document
@@ -58,14 +43,14 @@ function scrollToHash(hash: string): boolean {
   const target = document.getElementById(decodeURIComponent(hash));
   if (!target) return false;
   target.scrollIntoView({ block: 'start' });
-  target.focus({ preventScroll: true });
   return true;
 }
 
 /**
  * Client-side navigation over prerendered pages: intercepts same-site link clicks, loads the next
  * route's data, then swaps the page inside a directional view transition. Scroll positions are
- * restored on back/forward and focus moves to the new page's `<main>`.
+ * restored on back/forward, focus moves to the new page's `<main>`, and a live region announces
+ * the new title.
  */
 export function RouterProvider({
   initial,
@@ -79,6 +64,7 @@ export function RouterProvider({
   const navigateRef = useRef<(to: string) => void>(() => {});
 
   useEffect(() => {
+    resolved.set(initial.path, Promise.resolve(initial));
     history.scrollRestoration = 'manual';
     let index = readIndex(history.state) ?? 0;
     if (readIndex(history.state) === undefined) {
@@ -102,11 +88,8 @@ export function RouterProvider({
       if (mode === 'push') {
         positions.set(index, window.scrollY);
         index += 1;
-        history.pushState(
-          { idx: index } satisfies HistoryState,
-          '',
-          withBase(`${path}#${hash}`, BASE).replace(/#$/, ''),
-        );
+        const url = withBase(hash ? `${path}#${hash}` : path, BASE);
+        history.pushState({ idx: index } satisfies HistoryState, '', url);
       }
       const samePage = next.path === current;
       current = next.path;
@@ -117,13 +100,13 @@ export function RouterProvider({
         if (restoreY !== undefined) window.scrollTo(0, restoreY);
         else if (!scrollToHash(hash)) window.scrollTo(0, 0);
       };
-      if (samePage) commit();
-      else withViewTransition(commit, [direction]);
-
-      if (!samePage) {
-        setAnnouncement(next.meta.title);
-        if (!hash) document.getElementById('main')?.focus({ preventScroll: true });
+      if (samePage) {
+        commit();
+        return;
       }
+      runViewTransition(direction, commit);
+      setAnnouncement(next.meta.title);
+      if (!hash) document.getElementById('main')?.focus({ preventScroll: true });
     };
 
     navigateRef.current = (to: string) => {
@@ -145,7 +128,7 @@ export function RouterProvider({
       const path = siteRoute(anchor);
       if (path === undefined) return;
       const hash = anchor.hash.slice(1);
-      // In-page anchors: let the browser scroll (and add the history entry).
+      // In-page anchors: the browser scrolls and records the history entry.
       if (path === current && hash) return;
       event.preventDefault();
       void go(path, hash, 'push', 'forward');
@@ -165,7 +148,7 @@ export function RouterProvider({
       void go(path, location.hash.slice(1), 'pop', direction, positions.get(nextIndex) ?? 0);
     };
 
-    // Warm the next page's data (and docs chunk) on hover or focus.
+    // Warm the next page's data (and its docs chunk) on hover or keyboard focus.
     const onIntent = (event: Event) => {
       const anchor = (event.target as Element | null)?.closest?.('a[href]');
       if (!(anchor instanceof HTMLAnchorElement)) return;
@@ -183,7 +166,7 @@ export function RouterProvider({
       document.removeEventListener('focusin', onIntent);
       window.removeEventListener('popstate', onPopState);
     };
-  }, [initial.path]);
+  }, [initial]);
 
   const value: RouterValue = {
     route,
