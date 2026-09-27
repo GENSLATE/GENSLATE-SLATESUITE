@@ -5,8 +5,8 @@ name = "Browser"
 description = "A private, portable web browser"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Internet"
-# Nord colour of the icon tile: nord0 … nord15
-color = "nord7"
+# Signature Nord colour (the accent of its icon): nord7 … nord15
+color = "nord8"
 keywords = ["web", "internet", "www"]
 
 [build]

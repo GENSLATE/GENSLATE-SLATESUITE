@@ -5,7 +5,7 @@ name = "Jukebox"
 description = "Play your music library and playlists"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Media"
-# Nord colour of the icon tile: nord0 … nord15
+# Signature Nord colour (the accent of its icon): nord7 … nord15
 color = "nord11"
 keywords = ["music", "audio", "player", "mp3"]
 

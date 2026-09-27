@@ -1,9 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <title>GENSLATE Editor</title>
   <!--
-    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
-    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
-    no gradients. Plate nord9, glyph nord0.
+    GENSLATE app icon family: a flat Polar Night plate (nord1, nord2 hairline rim) on the macOS
+    Big Sur icon grid (824 × 824 at (100, 100), radius 185 — same as
+    other/resources/branding/app-icon.svg), Snow Storm line work (nord6; secondary layer at 40 %)
+    and one signature accent: nord9. Glyphs sit in the 440 × 440 live area around (512, 512).
+    No gradients; the only effect is the grid's standard drop shadow.
+    Glyph: a page with a folded corner, a nord9 heading and body lines.
     The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
   -->
   <defs>
@@ -11,7 +14,12 @@
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
     </filter>
   </defs>
-  <rect x="100" y="100" width="824" height="824" rx="185" fill="#81a1c1" filter="url(#drop)"/>
-  <rect x="336" y="292" width="352" height="440" rx="44" fill="#2e3440"/>
-  <path d="M408 412h208M408 492h208M408 572h128" stroke="#81a1c1" fill="none" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#3b4252" filter="url(#drop)"/>
+  <rect x="102" y="102" width="820" height="820" rx="183" fill="none" stroke="#434c5e" stroke-width="4"/>
+  <path d="M372 284H580L696 400V696Q696 740 652 740H372Q328 740 328 696V328Q328 284 372 284Z" fill="none" stroke="#eceff4" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M580 284V360Q580 400 620 400H696" fill="none" stroke="#eceff4" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M408 488H560" fill="none" stroke="#81a1c1" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
+  <g opacity="0.4">
+    <path d="M408 572H616M408 652H548" fill="none" stroke="#eceff4" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>

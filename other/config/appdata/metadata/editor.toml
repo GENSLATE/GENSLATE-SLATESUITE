@@ -5,7 +5,7 @@ name = "Editor"
 description = "Write and edit notes, text and Markdown"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Office"
-# Nord colour of the icon tile: nord0 … nord15
+# Signature Nord colour (the accent of its icon): nord7 … nord15
 color = "nord9"
 keywords = ["text", "notes", "markdown", "writer"]
 
