@@ -1,9 +1,9 @@
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { listItem } from '../../../recipes';
 import { cn } from '../../../utils/cn.util';
-import { Icon } from '../../display/icon';
 import type { MenuRadioGroupProps, MenuRadioItemProps } from './menu.types';
 import { menuVariants } from './menu.variants';
+import { MenuRowLeading } from './menu-row-leading.component';
 import { MenuShortcut } from './menu-shortcut.component';
 
 const styles = menuVariants();
@@ -16,6 +16,7 @@ export function MenuRadioGroup({ className, ...props }: MenuRadioGroupProps) {
 /** One choice of a `MenuRadioGroup`, marked with a leading dot. */
 export function MenuRadioItem({
   icon,
+  media,
   shortcut,
   platform,
   className,
@@ -34,7 +35,7 @@ export function MenuRadioItem({
       >
         <span className={styles.radioDot()} />
       </BaseMenu.RadioItemIndicator>
-      {icon != null && <Icon name={icon} size={16} className={styles.icon()} />}
+      <MenuRowLeading icon={icon} media={media} />
       <span className={styles.label()}>{children}</span>
       {shortcut != null && <MenuShortcut shortcut={shortcut} platform={platform} />}
     </BaseMenu.RadioItem>

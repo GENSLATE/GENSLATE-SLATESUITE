@@ -1,5 +1,5 @@
 import type { Menu as BaseMenu } from '@base-ui/react/menu';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import type { Platform } from '../../../utils/platform.util';
 import type { CodiconRef } from '../../display/icon/icon.types';
 
@@ -23,6 +23,8 @@ export interface MenuPopupProps extends Omit<BaseMenu.Popup.Props, 'className'> 
 export interface MenuRowContentProps {
   /** Leading codicon. */
   icon?: CodiconRef | undefined;
+  /** A leading visual other than a codicon (an app icon, an avatar), drawn in the 16px icon slot. Wins over `icon`. */
+  media?: ReactNode | undefined;
   /** Keyboard shortcut hint, e.g. `"mod+shift+p"`. */
   shortcut?: string | undefined;
   /** Platform used to format `shortcut` (defaults to a user-agent guess). */
@@ -80,4 +82,15 @@ export interface MenuShortcutProps {
   platform?: Platform | undefined;
   className?: string | undefined;
   children?: ReactNode | undefined;
+}
+
+export interface MenuHeaderProps extends Omit<ComponentProps<'div'>, 'title'> {
+  /** Leading visual: an app mark or avatar (drawn at 32px). */
+  media?: ReactNode | undefined;
+  /** The menu's subject, e.g. the app name. */
+  title: ReactNode;
+  /** One muted line under the title (version, account, status). */
+  description?: ReactNode | undefined;
+  /** Trailing element, e.g. a `Badge`. */
+  accessory?: ReactNode | undefined;
 }
