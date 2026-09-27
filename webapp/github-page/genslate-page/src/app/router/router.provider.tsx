@@ -65,6 +65,8 @@ export function RouterProvider({
 
   useEffect(() => {
     resolved.set(initial.path, Promise.resolve(initial));
+    // Prerendered pages already carry their <title>; the dev server's index.html does not.
+    applyMeta(initial);
     history.scrollRestoration = 'manual';
     let index = readIndex(history.state) ?? 0;
     if (readIndex(history.state) === undefined) {

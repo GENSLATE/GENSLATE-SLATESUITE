@@ -37,4 +37,9 @@
   --container-prose: 46rem;
 
   --spacing-header: 3.5rem;
+
+  /* Video and photo overlays are white on black in both themes. */
+  --color-white: white;
+  --color-black: black;
+  --color-film: color-mix(in oklab, var(--gs-nord-0) 55%, black);
 }

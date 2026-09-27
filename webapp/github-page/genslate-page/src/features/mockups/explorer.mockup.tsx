@@ -14,8 +14,8 @@ import { Artwork, Glyph } from './mock-parts.component';
 import { MockWindow } from './mock-stage.component';
 
 const PLACES: readonly { label: string; icon: CodiconRef; selected?: boolean }[] = [
-  { label: 'Desktop', icon: 'codicon:device-desktop' },
-  { label: 'Documents', icon: 'codicon:file' },
+  { label: 'Desktop', icon: 'codicon:vm' },
+  { label: 'Documents', icon: 'codicon:file-text' },
   { label: 'Downloads', icon: 'codicon:cloud-download' },
   { label: 'Music', icon: 'codicon:unmute' },
   { label: 'Pictures', icon: 'codicon:file-media', selected: true },

@@ -18,8 +18,8 @@ const GROUPS: readonly Group[] = [
 ];
 
 const FOLDERS: readonly { label: string; icon: CodiconRef }[] = [
-  { label: 'Desktop', icon: 'codicon:device-desktop' },
-  { label: 'Documents', icon: 'codicon:file' },
+  { label: 'Desktop', icon: 'codicon:vm' },
+  { label: 'Documents', icon: 'codicon:file-text' },
   { label: 'Downloads', icon: 'codicon:cloud-download' },
   { label: 'Music', icon: 'codicon:unmute' },
   { label: 'Pictures', icon: 'codicon:file-media' },

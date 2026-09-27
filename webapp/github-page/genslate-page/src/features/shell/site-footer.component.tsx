@@ -86,7 +86,7 @@ export function SiteFooter() {
               value={isClient ? theme : 'system'}
               onValueChange={(value) => setTheme(value as ThemePreference)}
             >
-              <SegmentedControlItem value="system" icon="codicon:device-desktop" label="System" />
+              <SegmentedControlItem value="system" icon="codicon:vm" label="System" />
               <SegmentedControlItem value="polar-night">Polar Night</SegmentedControlItem>
               <SegmentedControlItem value="snow-storm">Snow Storm</SegmentedControlItem>
             </SegmentedControl>
@@ -122,7 +122,7 @@ export function SiteFooter() {
           <StatusBarItem icon="codicon:color-mode">
             {isClient ? THEME_LABELS[resolvedTheme] : 'Nord'}
           </StatusBarItem>
-          <StatusBarItem icon="codicon:git-branch">main</StatusBarItem>
+          <StatusBarItem icon="codicon:source-control">main</StatusBarItem>
         </StatusBarSection>
         <StatusBarSection align="end">
           <StatusBarItem icon="codicon:law">© {new Date().getFullYear()} GENSLATE</StatusBarItem>

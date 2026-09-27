@@ -62,7 +62,7 @@ function useSearchItems(close: () => void): CommandPaletteItem[] {
         id: `doc:${doc.slug}#${heading.id}`,
         label: heading.text,
         group: 'Sections',
-        icon: 'codicon:symbol-key' as const,
+        icon: 'codicon:symbol-keyword' as const,
         detail: doc.title,
         onSelect: go(`${doc.route}#${heading.id}`),
       })),
