@@ -1,4 +1,4 @@
-/** Returned by the `get_app_info` command (Rust: `genslate_core_example::AppInfo`). */
+/** Returned by the `get_app_info` command (Rust: `genslate_app_common::AppInfo`). */
 export interface AppInfo {
   /** Product name from tauri.conf.json. */
   name: string;

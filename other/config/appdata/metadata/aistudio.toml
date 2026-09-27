@@ -5,8 +5,8 @@ name = "AI Studio"
 description = "Chat, create and automate with AI models"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "AI"
-# Nord colour of the icon tile: nord0 … nord15
-color = "nord0"
+# Signature Nord colour (the accent of its icon): nord7 … nord15
+color = "nord15"
 keywords = ["ai", "chat", "assistant", "llm"]
 
 [build]

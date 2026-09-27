@@ -1,9 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <title>GENSLATE Browser</title>
   <!--
-    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
-    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
-    no gradients. Plate nord7, glyph nord0.
+    GENSLATE app icon family: a flat Polar Night plate (nord1, nord2 hairline rim) on the macOS
+    Big Sur icon grid (824 × 824 at (100, 100), radius 185 — same as
+    other/resources/branding/app-icon.svg), Snow Storm line work (nord6; secondary layer at 40 %)
+    and one signature accent: nord8. Glyphs sit in the 440 × 440 live area around (512, 512).
+    No gradients; the only effect is the grid's standard drop shadow.
+    Glyph: a globe — nord8 rim, Snow Storm meridian and parallels.
     The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
   -->
   <defs>
@@ -11,8 +14,11 @@
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
     </filter>
   </defs>
-  <rect x="100" y="100" width="824" height="824" rx="185" fill="#8fbcbb" filter="url(#drop)"/>
-  <circle cx="512" cy="512" r="210" stroke="#2e3440" fill="none" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-  <ellipse cx="512" cy="512" rx="88" ry="210" stroke="#2e3440" fill="none" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M302 512h420M330 420h364M330 604h364" stroke="#2e3440" fill="none" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#3b4252" filter="url(#drop)"/>
+  <rect x="102" y="102" width="820" height="820" rx="183" fill="none" stroke="#434c5e" stroke-width="4"/>
+  <g opacity="0.4">
+    <path d="M512 300C440 360 416 440 416 512S440 664 512 724C584 664 608 584 608 512S584 360 512 300Z" fill="none" stroke="#eceff4" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M308 448H716M308 576H716" fill="none" stroke="#eceff4" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M300 512a212 212 0 1 0 424 0a212 212 0 1 0 -424 0Z" fill="none" stroke="#88c0d0" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

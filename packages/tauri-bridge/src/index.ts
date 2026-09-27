@@ -2,6 +2,7 @@
  * @genslate/tauri-bridge — typed, tree-shakeable access to Tauri 2 from React.
  * Every API is a safe no-op (or a sensible web fallback) in a plain browser.
  */
+export { useAppInfo } from './ipc/app-info.hook';
 export type { AppInfo } from './ipc/app-info.types';
 export { type CommandError, isCommandError } from './ipc/command-error.types';
 export { commands } from './ipc/commands';

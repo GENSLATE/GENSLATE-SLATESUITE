@@ -1,0 +1,7 @@
+{
+  "extends": "@genslate/config-typescript/tsconfig.react.json",
+  "compilerOptions": {
+    "types": ["bun", "vite/client"]
+  },
+  "include": ["src", "tests", "vite.config.ts"]
+}
