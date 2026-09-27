@@ -1,0 +1,15 @@
+# GENSLATE AI Studio — config. Every key is optional; delete a key to get its default.
+# Location: <installDir>/other/config/genslate/aistudio/config.toml (suite), the same path beside
+# the app when run from its own zip, or the repo's other/config in dev. See other/documents/portability.md.
+
+[appearance]
+# "system" | "polar-night" | "snow-storm"
+theme = "system"
+
+[window]
+# Restore window size and position between launches.
+remember-state = true
+
+[logging]
+# "off" | "error" | "warn" | "info" | "debug" | "trace"
+level = "info"

@@ -55,6 +55,10 @@ jobs:
     name: Rust · fmt · clippy · tests
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    env:
+      # Every desktop app links a Tauri test binary; with full debug info the workspace's test
+      # build needs ~28 GB, more than the runner's disk. Panics still report file:line without it.
+      CARGO_PROFILE_DEV_DEBUG: '0'
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

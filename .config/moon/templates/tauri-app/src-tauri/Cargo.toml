@@ -19,6 +19,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { workspace = true }
 
 [dependencies]
+genslate-core-{{ name }}.workspace = true
 genslate-design-tokens.workspace = true
 genslate-paths.workspace = true
 log.workspace = true

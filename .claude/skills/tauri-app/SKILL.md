@@ -1,39 +1,47 @@
 ---
 name: tauri-app
-description: How to add a new GENSLATE Tauri 2 desktop app with `bun run new-app <name>` (moon template .config/moon/templates/tauri-app), wire it into the Cargo workspace, moon, config and packaging, and keep the window chrome consistent (overlay titlebar + native traffic lights on macOS, frameless + custom traffic lights elsewhere). Use when creating or restructuring a desktop app.
+description: How to add a new GENSLATE Tauri 2 desktop app with `bun run new-app <name>` (moon templates .config/moon/templates/{tauri-app,app-core}), wire it into the Cargo workspace, moon, config and packaging, give it an icon from the GENSLATE icon family, and keep the window chrome consistent (overlay titlebar + native traffic lights on macOS, frameless + custom traffic lights elsewhere). Use when creating or restructuring a desktop app.
 ---
 
 # Adding a desktop app
 
-Every app under `desktop/<name>/` is a moon project tagged `desktop-app` (it inherits `dev`, `web-dev`, `web-build`, `build` from `.config/moon/tasks/tauri.yml` and `typecheck`/`test` from `typescript.yml`). `desktop/example` is the reference app. Folders with only a `.gitkeep` (`launcher`, `terminal`, `explorer`, …) are reserved names.
+Every app under `desktop/<name>/` is a moon project tagged `desktop-app` (it inherits `dev`, `web-dev`, `web-build`, `build` from `.config/moon/tasks/tauri.yml` and `typecheck`/`test` from `typescript.yml`). `desktop/example` is the Design Kit reference app and `desktop/launcher` the suite launcher; the suite apps (`aistudio`, `browser`, `coder`, `command`, `editor`, `explorer`, `gallery`, `jukebox`, `terminal`, `theater`, `toolbox`) were generated from the template and are the starting points for their full UIs.
 
 ## 1. Scaffold
 ```sh
-bun run new-app <name>        # kebab-case, e.g. launcher
+bun run new-app <name>        # kebab-case, e.g. notes
 ```
-The script renders `.config/moon/templates/tauri-app` (variables: `name`, `title`, `identifier` like `space.angeletti.genslate.<name>`, `port` — the next free Vite port; HMR uses port + 1) and copies the icons. Under the hood: `moon generate tauri-app --to desktop/<name> -- --name … --title … --identifier … --port …`.
+The script renders two templates (with `moon generate`, or its own Tera-subset renderer when moon can't load the workspace offline):
+- `.config/moon/templates/tauri-app` → `desktop/<name>` — variables `name`, `title` (default `GENSLATE <metadata name>`), `identifier` (`space.angeletti.genslate.<name>`), `port` (next free Vite port; HMR = port + 1), `description` and `category` (defaults from `other/config/appdata/metadata/<name>.toml`).
+- `.config/moon/templates/app-core` → `crates/core/<name>` (crate `genslate-core-<name>`), added to `[workspace.dependencies]` in the root `Cargo.toml` (members already glob `crates/core/*`).
+
+It also writes `other/config/genslate/<name>/{config,keybindings}.toml`, the launcher metadata and `other/logs/app-logs/<name>/` when missing, a placeholder icon when `other/resources/icons/genslate/<name>.svg` is missing, runs `bun install`, and generates `src-tauri/icons` from the SVG (`bun run tauri icon`, desktop sizes only).
+
+Template files are Tera: never write `{{`, `{%` or `{#` in them except for variables (hoist JSX object literals such as `windowState={…}` into a variable). `scripts/tests/template.test.ts` renders both templates and fails on leftovers.
 
 ## 2. What you get
 ```
 desktop/<name>/
 ├── moon.yml  package.json  tsconfig.json  vite.config.ts  index.html
-├── src/main.tsx  src/styles/main.css      # React 19 + design-system AppShell (titlebar · content · status bar)
-├── tests/unit/
+├── src/main.tsx  src/styles/main.css
+├── src/app/          app.component (AppShell) · app.providers (design system ↔ bridge) · app.meta (id, name, version, icon)
+├── src/features/     titlebar/ (icon + name, theme toggle) · home/ (icon, app name, version) · statusbar/ (app, theme, platform · runtime, version)
+├── tests/unit/app.test.tsx                 # titlebar, name + version, status bar, theme toggle + hotkey
 └── src-tauri/
-    ├── Cargo.toml  build.rs
+    ├── Cargo.toml  build.rs  icons/
     ├── tauri.conf.json                     # shared config (frameless: `decorations: false`)
     ├── tauri.macos.conf.json               # macOS overrides merged on top (overlay titlebar)
-    ├── capabilities/*.json                 # least-privilege permissions
-    └── src/{main.rs,lib.rs}                # thin shell: plugins + commands delegating to crates/core/<name>
+    ├── capabilities/main.capability.json   # least-privilege permissions
+    └── src/{main,lib,window,error}.rs + commands/app_info.rs   # thin shell on genslate-core-<name>
+crates/core/<name>/src/{lib,config}.rs      # Config = shared sections (genslate-app-common) + the app's own
 ```
+The version shown comes from `get_app_info` (`useAppInfo()` in `@genslate/tauri-bridge`), falling back to `package.json` in a browser.
 
 ## 3. Wire it up
-1. `bun install` (links the workspace package).
-2. Make sure the Cargo workspace includes it (root `Cargo.toml` `members` covers `desktop/*/src-tauri`).
-3. Business logic: create `crates/core/<name>` (crate `genslate-core-<name>`), add it to `[workspace.dependencies]`, unit-test it there.
-4. Config: `other/config/genslate/<name>/{config,keybindings}.toml` plus launcher metadata `other/config/appdata/metadata/<name>.toml` (portable paths via `genslate-paths`: suite, dev, standalone — see `other/documents/portability.md`); logs go to `other/logs/app-logs/<name>/`. The main window is created in code (`"create": false`) so the webview profile stays in `other/cache/genslate/<name>/webview`.
-5. Packaging: add `scripts/bun-commands/package/<name>.ts` if the app needs custom packaging; installers land in `release/<name>/<version>/`.
-6. Commit scopes: add `<name>` to `.config/commitlint.config.ts`.
+1. Business logic goes in `crates/core/<name>`; add the app's own config sections next to `appearance`/`window`/`logging` in its `Config` (and document them in `other/config/genslate/<name>/config.toml`).
+2. Icon: replace a placeholder glyph in `other/resources/icons/genslate/<name>.svg` (icon family: nord1 plate with nord2 rim, Snow Storm line work with a 40 % secondary layer, one signature Nord accent that matches `color` in the metadata), then `bun run tauri icon ../../other/resources/icons/genslate/<name>.svg` in `desktop/<name>` and delete `src-tauri/icons/{android,ios}`.
+3. Packaging: add `scripts/bun-commands/package/<name>.ts` if the app needs custom packaging; installers land in `release/<name>/<version>/`.
+4. Commit scopes: add `<name>` to `.config/commitlint.config.ts`; add a `<name>-web` entry to `.claude/launch.json`.
 
 ## 4. Window chrome rules
 - macOS (`tauri.macos.conf.json`): `"decorations": true`, `"titleBarStyle": "Overlay"`, `"hiddenTitle": true` → native traffic lights; the design-system `TitleBar` reserves `w-traffic-spacer` on the left.

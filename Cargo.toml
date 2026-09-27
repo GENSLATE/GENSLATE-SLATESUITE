@@ -1,16 +1,17 @@
 # ──────────────────────────────────────────────────────────────────────
 #  GENSLATE — Cargo workspace
 #  Members are listed explicitly: `crates/*` would also match `crates/core`,
-#  which is a grouping folder without a manifest.
+#  which is a grouping folder without a manifest; `crates/core/*` holds one
+#  crate per app (`genslate-core-<app>`).
 # ──────────────────────────────────────────────────────────────────────
 [workspace]
 resolver = "3"
 members = [
+    "crates/app-common",
     "crates/design-tokens",
     "crates/paths",
     "crates/testing",
-    "crates/core/example",
-    "crates/core/launcher",
+    "crates/core/*",
     "desktop/*/src-tauri",
 ]
 
@@ -25,11 +26,23 @@ repository = "https://github.com/ATOMANGELETTI/GENSLATE"
 
 [workspace.dependencies]
 # ── Internal crates ──────────────────────────────────────────────────
+genslate-app-common = { path = "crates/app-common" }
 genslate-design-tokens = { path = "crates/design-tokens" }
 genslate-paths = { path = "crates/paths" }
 genslate-testing = { path = "crates/testing" }
+genslate-core-aistudio = { path = "crates/core/aistudio" }
+genslate-core-browser = { path = "crates/core/browser" }
+genslate-core-coder = { path = "crates/core/coder" }
+genslate-core-command = { path = "crates/core/command" }
+genslate-core-editor = { path = "crates/core/editor" }
 genslate-core-example = { path = "crates/core/example" }
+genslate-core-explorer = { path = "crates/core/explorer" }
+genslate-core-gallery = { path = "crates/core/gallery" }
+genslate-core-jukebox = { path = "crates/core/jukebox" }
 genslate-core-launcher = { path = "crates/core/launcher" }
+genslate-core-terminal = { path = "crates/core/terminal" }
+genslate-core-theater = { path = "crates/core/theater" }
+genslate-core-toolbox = { path = "crates/core/toolbox" }
 
 # ── Tauri (stable 2.x only) ──────────────────────────────────────────
 tauri = { version = "2.11.6", default-features = false }

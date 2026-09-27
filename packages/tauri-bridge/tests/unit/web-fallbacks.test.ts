@@ -6,6 +6,7 @@ import {
   detectPlatform,
   isTauri,
   setNativeTheme,
+  useAppInfo,
   useSystemTheme,
   useWindowControls,
 } from '../../src';
@@ -25,6 +26,14 @@ describe('in a plain browser', () => {
 
   test('commands.appInfo() resolves to null', async () => {
     expect(await commands.appInfo()).toBeNull();
+  });
+
+  test('useAppInfo() stays null', async () => {
+    const { result } = renderHook(() => useAppInfo());
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(result.current).toBeNull();
   });
 
   test('commands.openExternal() opens a new tab without an opener', async () => {

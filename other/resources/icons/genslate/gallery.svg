@@ -1,18 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <title>GENSLATE Gallery</title>
   <!--
-    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
-    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
-    no gradients. Plate nord15, glyph nord0.
+    GENSLATE app icon family: a flat Polar Night plate (nord1, nord2 hairline rim) on the macOS
+    Big Sur icon grid (824 × 824 at (100, 100), radius 185 — same as
+    other/resources/branding/app-icon.svg), Snow Storm line work (nord6; secondary layer at 40 %)
+    and one signature accent: nord14 + nord13. Glyphs sit in the 440 × 440 live area around (512, 512).
+    No gradients; the only effect is the grid's standard drop shadow.
+    Glyph: a photo over a second print — nord14 hills, nord13 sun.
     The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
   -->
   <defs>
     <filter id="drop" x="-10%" y="-10%" width="120%" height="125%">
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
     </filter>
+    <clipPath id="photo"><rect x="344" y="404" width="384" height="300" rx="44"/></clipPath>
   </defs>
-  <rect x="100" y="100" width="824" height="824" rx="185" fill="#b48ead" filter="url(#drop)"/>
-  <rect x="300" y="332" width="424" height="360" rx="52" stroke="#2e3440" fill="none" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="614" cy="436" r="42" fill="#2e3440"/>
-  <path d="M326 668l136-164 96 112 60-62 82 114Z" fill="#2e3440" stroke="#2e3440" stroke-width="12" stroke-linejoin="round"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#3b4252" filter="url(#drop)"/>
+  <rect x="102" y="102" width="820" height="820" rx="183" fill="none" stroke="#434c5e" stroke-width="4"/>
+  <g opacity="0.4">
+    <rect x="296" y="320" width="384" height="300" rx="44" transform="rotate(-8 488 470)" fill="none" stroke="#eceff4" stroke-width="36"/>
+  </g>
+  <rect x="344" y="404" width="384" height="300" rx="44" fill="#3b4252"/>
+  <g clip-path="url(#photo)">
+    <path d="M336 720L468 592Q484 576 500 592L568 660L604 624Q620 608 636 624L744 720Z" fill="#a3be8c"/>
+  </g>
+  <path d="M596 504a36 36 0 1 0 72 0a36 36 0 1 0 -72 0Z" fill="#ebcb8b"/>
+  <rect x="344" y="404" width="384" height="300" rx="44" fill="none" stroke="#eceff4" stroke-width="40"/>
 </svg>
