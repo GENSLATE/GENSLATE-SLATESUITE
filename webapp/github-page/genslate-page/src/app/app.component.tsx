@@ -1,4 +1,9 @@
-import { DesignSystemProvider, TooltipProvider } from '@genslate/design-system';
+import {
+  DesignSystemProvider,
+  ToastProvider,
+  ToastViewport,
+  TooltipProvider,
+} from '@genslate/design-system';
 
 import { SiteShell } from '../features/shell/site-shell.component';
 import { RouterProvider } from './router/router.provider';
@@ -9,9 +14,12 @@ export function App({ initial }: { readonly initial: ResolvedRoute }) {
   return (
     <DesignSystemProvider platform="web" windowState={{ isFocused: true }}>
       <TooltipProvider>
-        <RouterProvider initial={initial}>
-          <SiteShell />
-        </RouterProvider>
+        <ToastProvider>
+          <RouterProvider initial={initial}>
+            <SiteShell />
+          </RouterProvider>
+          <ToastViewport />
+        </ToastProvider>
       </TooltipProvider>
     </DesignSystemProvider>
   );

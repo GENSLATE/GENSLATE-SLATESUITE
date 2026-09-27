@@ -5,8 +5,10 @@
  */
 import { createCssVariablesTheme, createHighlighter } from 'shiki';
 
+const THEME_NAME = 'genslate-nord';
+
 const THEME = createCssVariablesTheme({
-  name: 'genslate-nord',
+  name: THEME_NAME,
   variablePrefix: '--shiki-',
   fontStyle: true,
 });
@@ -54,9 +56,14 @@ export interface Highlighter {
   tokens(code: string, language: string): SnippetToken[][];
 }
 
-function resolveLanguage(language: string): string {
+type Language = (typeof LANGUAGES)[number];
+
+const isLanguage = (value: string): value is Language =>
+  (LANGUAGES as readonly string[]).includes(value);
+
+function resolveLanguage(language: string): Language | 'text' {
   const lang = ALIASES[language.toLowerCase()] ?? language.toLowerCase();
-  return (LANGUAGES as readonly string[]).includes(lang) ? lang : 'text';
+  return isLanguage(lang) ? lang : 'text';
 }
 
 let shared: Promise<Highlighter> | undefined;
@@ -65,18 +72,16 @@ let shared: Promise<Highlighter> | undefined;
 export function getHighlighter(): Promise<Highlighter> {
   shared ??= createHighlighter({ themes: [THEME], langs: [...LANGUAGES] }).then((shiki) => ({
     html: (code, language) =>
-      shiki.codeToHtml(code, { lang: resolveLanguage(language), theme: THEME.name }),
+      shiki.codeToHtml(code, { lang: resolveLanguage(language), theme: THEME }),
     tokens: (code, language) =>
-      shiki
-        .codeToTokensBase(code, { lang: resolveLanguage(language) as never, theme: THEME.name })
-        .map((line) =>
-          line.map((token) => ({
-            text: token.content,
-            ...(token.color && !token.color.includes('foreground') ? { color: token.color } : {}),
-            // FontStyle.Italic === 1 (a bit flag).
-            ...((token.fontStyle ?? 0) & 1 ? { italic: true } : {}),
-          })),
-        ),
+      shiki.codeToTokensBase(code, { lang: resolveLanguage(language), theme: THEME }).map((line) =>
+        line.map((token) => ({
+          text: token.content,
+          ...(token.color && !token.color.includes('foreground') ? { color: token.color } : {}),
+          // FontStyle.Italic === 1 (a bit flag).
+          ...((token.fontStyle ?? 0) & 1 ? { italic: true } : {}),
+        })),
+      ),
   }));
   return shared;
 }

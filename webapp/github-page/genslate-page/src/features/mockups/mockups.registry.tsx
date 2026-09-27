@@ -65,7 +65,7 @@ export function AppMockup({
       width={entry.width}
       height={entry.height}
       label={`The GENSLATE ${name} window`}
-      className={className}
+      {...(className ? { className } : {})}
       {...(theme ? { theme } : {})}
     >
       <Component />

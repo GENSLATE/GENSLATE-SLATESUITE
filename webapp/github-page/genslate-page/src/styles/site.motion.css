@@ -319,3 +319,36 @@ html[data-vt='theme']::view-transition-new(root) {
     background-color: var(--gs-color-surface-popover);
   }
 }
+
+/* ── Showcase filmstrip: slides grow into the centre and recede at the edges ── */
+@keyframes showcase-enter {
+  from {
+    opacity: 0.4;
+    scale: 0.9;
+  }
+}
+
+@keyframes showcase-exit {
+  to {
+    opacity: 0.4;
+    scale: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .showcase-slide {
+      animation:
+        showcase-enter linear backwards,
+        showcase-exit linear forwards;
+      animation-timeline: view(inline);
+      animation-range: entry, exit;
+    }
+  }
+}
+
+/* Filters re-flow named cards; the page itself stays put. */
+html[data-vt='layout']::view-transition-old(root),
+html[data-vt='layout']::view-transition-new(root) {
+  animation: none;
+}

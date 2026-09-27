@@ -74,7 +74,7 @@ export const APPS: readonly SuiteApp[] = [
         body: 'GENSLATE, PortableApps.com and portapps.io apps in their own tabs, icons extracted automatically.',
       },
       {
-        icon: 'codicon:keyboard',
+        icon: 'codicon:record-keys',
         title: 'Keyboard first',
         body: 'Ctrl+Alt+Space from anywhere, then Ctrl+1–3 for tabs, Ctrl+D to favourite, Ctrl+P to pin.',
       },
@@ -183,7 +183,7 @@ export const APPS: readonly SuiteApp[] = [
         body: 'Every heading in a sidebar; drag to reorder whole sections.',
       },
       {
-        icon: 'codicon:zen-mode',
+        icon: 'codicon:eye',
         title: 'Focus mode',
         body: 'Hide the chrome, dim everything but the current paragraph.',
       },
@@ -217,7 +217,7 @@ export const APPS: readonly SuiteApp[] = [
         body: 'Ctrl+P for files, Ctrl+Shift+P for commands, Ctrl+Shift+F to search the project.',
       },
       {
-        icon: 'codicon:git-branch',
+        icon: 'codicon:source-control',
         title: 'Git at a glance',
         body: 'Changed files, the current branch and inline diff gutters.',
       },
@@ -411,7 +411,7 @@ export const APPS: readonly SuiteApp[] = [
       'Converters, encoders, hashing, a colour picker, JSON and regex tools — all offline, all in one tidy window.',
     features: [
       {
-        icon: 'codicon:json',
+        icon: 'codicon:bracket-dot',
         title: 'Formatters',
         body: 'JSON, TOML, YAML and XML: format, validate and convert.',
       },

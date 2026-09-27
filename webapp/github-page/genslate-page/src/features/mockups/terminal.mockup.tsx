@@ -14,7 +14,7 @@ function Prompt({ branch = 'main' }: { readonly branch?: string }) {
     <span>
       <span className="text-info-fg">~/genslate</span>{' '}
       <span className="text-accent-fg">
-        <Icon name="codicon:git-branch" size={12} className="translate-y-0.5" /> {branch}
+        <Icon name="codicon:source-control" size={12} className="translate-y-0.5" /> {branch}
       </span>{' '}
       <span className="text-success-fg">❯</span>{' '}
     </span>
@@ -71,7 +71,7 @@ export function TerminalMockup() {
             <StatusBarItem accent icon="codicon:terminal-bash">
               zsh
             </StatusBarItem>
-            <StatusBarItem icon="codicon:git-branch">main</StatusBarItem>
+            <StatusBarItem icon="codicon:source-control">main</StatusBarItem>
             <StatusBarItem icon="codicon:check">0 problems</StatusBarItem>
           </StatusBarSection>
           <StatusBarSection align="end">

@@ -1,33 +1,12 @@
-import type { CodiconRef } from '@genslate/design-system';
+/** Public names for the content shapes declared in `virtual-modules.d.ts`. */
 
-/** One outline entry of a docs page. */
-export interface DocHeading {
-  readonly id: string;
-  readonly text: string;
-  readonly level: 2 | 3;
-}
+/** One outline entry (h2 / h3) of a docs page. */
+export type DocHeading = GenslateDocHeading;
 
-/** A wiki or developer docs page (HTML is loaded lazily per page). */
-export interface DocEntry {
-  readonly slug: string;
-  /** Base-relative route, e.g. `/docs/launcher/`. */
-  readonly route: string;
-  readonly title: string;
-  readonly description: string;
-  readonly section: string;
-  readonly order: number;
-  readonly icon: CodiconRef;
-  /** Repo-relative source file (for "Edit on GitHub"). */
-  readonly source: string;
-  readonly headings: readonly DocHeading[];
-  readonly readingMinutes: number;
-}
+/** A wiki or developer docs page; its HTML is loaded lazily per page. */
+export type DocEntry = GenslateDocEntry;
 
 /** One highlighted token of a code snippet (colours are `var(--shiki-token-*)`). */
-export interface SnippetToken {
-  readonly text: string;
-  readonly color?: string;
-  readonly italic?: boolean;
-}
+export type SnippetToken = GenslateSnippetToken;
 
 export type SnippetLines = readonly (readonly SnippetToken[])[];
