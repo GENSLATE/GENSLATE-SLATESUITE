@@ -4,6 +4,7 @@ import { cn } from '../../../utils/cn.util';
 import { Icon } from '../../display/icon';
 import type { MenuCheckboxItemProps } from './menu.types';
 import { menuVariants } from './menu.variants';
+import { MenuRowLeading } from './menu-row-leading.component';
 import { MenuShortcut } from './menu-shortcut.component';
 
 const styles = menuVariants();
@@ -11,6 +12,7 @@ const styles = menuVariants();
 /** A toggle row with a leading macOS checkmark. */
 export function MenuCheckboxItem({
   icon,
+  media,
   shortcut,
   platform,
   className,
@@ -29,7 +31,7 @@ export function MenuCheckboxItem({
       >
         <Icon name="codicon:check" size={14} />
       </BaseMenu.CheckboxItemIndicator>
-      {icon != null && <Icon name={icon} size={16} className={styles.icon()} />}
+      <MenuRowLeading icon={icon} media={media} />
       <span className={styles.label()}>{children}</span>
       {shortcut != null && <MenuShortcut shortcut={shortcut} platform={platform} />}
     </BaseMenu.CheckboxItem>

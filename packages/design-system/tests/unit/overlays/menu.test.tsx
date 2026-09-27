@@ -6,6 +6,7 @@ import {
   MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
+  MenuHeader,
   MenuItem,
   MenuPopup,
   MenuRadioGroup,
@@ -125,5 +126,65 @@ describe('Menu', () => {
     await user.keyboard('{ArrowRight}');
     expect(await screen.findByRole('menuitem', { name: 'Copy Link' })).toBeInTheDocument();
     expect(share).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('a header shows title, description and accessory and is skipped by the keyboard', async () => {
+    const user = userEvent.setup();
+    const onShow = mock(() => {});
+    render(
+      <Menu>
+        <MenuTrigger>App</MenuTrigger>
+        <MenuPopup>
+          <MenuHeader
+            media={<img alt="" src="data:," />}
+            title="GENSLATE Launcher"
+            description="Suite · USB"
+            accessory={<span>v1.0</span>}
+          />
+          <MenuSeparator />
+          <MenuItem onClick={onShow}>Show</MenuItem>
+          <MenuItem media={<span data-testid="app-icon" />}>Editor</MenuItem>
+        </MenuPopup>
+      </Menu>,
+    );
+    screen.getByRole('button', { name: 'App' }).focus();
+    await user.keyboard('{ArrowDown}');
+    const menu = await screen.findByRole('menu');
+    const header = menu.querySelector('[data-slot="menu-header"]');
+    expect(header).toHaveTextContent('GENSLATE Launcher');
+    expect(header?.querySelector('[data-slot="menu-header-description"]')).toHaveTextContent(
+      'Suite · USB',
+    );
+    expect(header?.querySelector('[data-slot="menu-header-accessory"]')).toHaveTextContent('v1.0');
+    expect(header?.querySelector('[data-slot="menu-header-media"]')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
+    // The first row the keyboard reaches is the first item, not the header.
+    await waitFor(() =>
+      expect(screen.getByRole('menuitem', { name: 'Show' })).toHaveAttribute('data-highlighted'),
+    );
+    await user.keyboard('{Enter}');
+    expect(onShow).toHaveBeenCalledTimes(1);
+  });
+
+  test('media replaces the codicon in the leading slot', async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu>
+        <MenuTrigger>Apps</MenuTrigger>
+        <MenuPopup>
+          <MenuItem icon="codicon:terminal" media={<span data-testid="app-icon" />}>
+            Terminal
+          </MenuItem>
+        </MenuPopup>
+      </Menu>,
+    );
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    const item = await screen.findByRole('menuitem', { name: 'Terminal' });
+    expect(item.querySelector('[data-slot="menu-item-media"]')).toContainElement(
+      screen.getByTestId('app-icon'),
+    );
+    expect(item.querySelector('[data-slot="icon"]')).toBeNull();
   });
 });

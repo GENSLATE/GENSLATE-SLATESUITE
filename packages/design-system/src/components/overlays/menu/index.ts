@@ -3,6 +3,7 @@ export type {
   MenuCheckboxItemProps,
   MenuGroupLabelProps,
   MenuGroupProps,
+  MenuHeaderProps,
   MenuItemProps,
   MenuPopupProps,
   MenuProps,
@@ -18,6 +19,7 @@ export type {
 export { menuVariants } from './menu.variants';
 export { MenuCheckboxItem } from './menu-checkbox-item.component';
 export { MenuGroup, MenuGroupLabel } from './menu-group.component';
+export { MenuHeader } from './menu-header.component';
 export { MenuItem } from './menu-item.component';
 export { MenuPopup } from './menu-popup.component';
 export { MenuRadioGroup, MenuRadioItem } from './menu-radio-item.component';
