@@ -5,7 +5,7 @@ name = "Toolbox"
 description = "Handy utilities for everyday tasks"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Utilities"
-# Nord colour of the icon tile: nord0 … nord15
+# Signature Nord colour (the accent of its icon): nord7 … nord15
 color = "nord13"
 keywords = ["tools", "utilities", "converter"]
 
