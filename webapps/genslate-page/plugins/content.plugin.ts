@@ -49,6 +49,7 @@ const DEVELOPER_DOCS: readonly { file: string; icon: string }[] = [
   { file: 'commands', icon: 'codicon:terminal' },
   { file: 'architecture', icon: 'codicon:type-hierarchy' },
   { file: 'design-system', icon: 'codicon:symbol-color' },
+  { file: 'context-menus', icon: 'codicon:list-flat' },
   { file: 'ipc', icon: 'codicon:plug' },
   { file: 'portability', icon: 'codicon:package' },
   { file: 'testing', icon: 'codicon:beaker' },

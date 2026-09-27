@@ -46,6 +46,8 @@ export function LauncherStatusBar({ mode, onModeChange, onOpenSettings }: Launch
   return (
     <footer
       data-slot="launcher-status-bar"
+      data-context-zone="statusbar"
+      data-has-temps={hasTemps || undefined}
       className="relative flex h-full items-center border-border-subtle border-t text-fg-muted text-xs tabular-nums"
     >
       <div className="launcher-follow-edge absolute inset-y-0 left-0 flex items-center gap-2 pl-3.5">
@@ -90,7 +92,7 @@ function VolumeMeter({ volume }: { volume: VolumeInfo }) {
   const title = `${volume.name ?? volume.label} — ${formatBytes(volume.availableBytes)} free of ${formatBytes(volume.totalBytes)}${volume.removable ? ' (removable)' : ''}`;
   return (
     <Tooltip content={title} side="top">
-      <span className="flex cursor-default items-center gap-2">
+      <span data-context-copy={title} className="flex cursor-default items-center gap-2">
         <Icon name={volume.removable ? 'codicon:archive' : 'codicon:database'} size={12} />
         <span className="font-semibold text-fg-secondary">{volume.label}</span>
         <ProgressBar value={used} size="md" tone={tone} aria-label="Space used" className="w-16" />
@@ -128,8 +130,9 @@ function Readings({ telemetry, mode }: { telemetry: Telemetry; mode: StatusMode 
 }
 
 function Reading({ label, icon, value }: { label?: string; icon?: 'down' | 'up'; value: string }) {
+  const name = label ?? (icon === 'down' ? 'Download' : 'Upload');
   return (
-    <span className="flex items-center gap-1">
+    <span data-context-copy={`${name} ${value}`} className="flex items-center gap-1">
       {icon === undefined ? null : (
         <Icon name={icon === 'down' ? 'codicon:arrow-down' : 'codicon:arrow-up'} size={12} />
       )}
