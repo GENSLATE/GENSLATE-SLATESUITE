@@ -15,7 +15,7 @@ Every root command is `bun run <name>` → `bun scripts/bun-commands/<name>.ts`.
 | `bun run format` | Biome `check --write` + `cargo fmt`. |
 | `bun run tokens` | Regenerates design tokens (CSS, Tailwind theme, TS, JSON, Rust). |
 | `bun run version` | Bumps the version across `package.json`, `Cargo.toml` and `tauri.conf.json` files. |
-| `bun run new-app <name>` | Scaffolds `desktop/<name>` from the moon template `.config/moon/templates/tauri-app`. |
+| `bun run new-app <name>` | Scaffolds `desktop/<name>` and `crates/core/<name>` from the moon templates `.config/moon/templates/{tauri-app,app-core}`, wires the crate into the Cargo workspace, writes config/metadata stubs and generates the bundle icons from `other/resources/icons/genslate/<name>.svg`. |
 | `bun run clean` | Removes build output and caches. |
 
 ## moon tasks

@@ -5,8 +5,8 @@ name = "Explorer"
 description = "Browse, search and manage your files"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "System"
-# Nord colour of the icon tile: nord0 … nord15
-color = "nord8"
+# Signature Nord colour (the accent of its icon): nord7 … nord15
+color = "nord7"
 keywords = ["files", "folders", "file manager"]
 
 [build]

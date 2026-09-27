@@ -1,0 +1,11 @@
+/* Tailwind v4 + GENSLATE tokens and components (design-system.css imports tailwindcss). */
+@import '@genslate/design-system/design-system.css';
+
+/* This app's own sources. */
+@source '../';
+
+html,
+body,
+#root {
+  height: 100%;
+}

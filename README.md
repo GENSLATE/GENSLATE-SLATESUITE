@@ -218,7 +218,9 @@ bun x moon project-graph                # Visualize the project dependency graph
 GENSLATE/
 ├── desktop/                     Tauri 2 native desktop applications
 │   ├── launcher/                The suite application launcher & process orchestrator
-│   └── example/                 Design Kit showcase (the reference app)
+│   ├── example/                 Design Kit showcase (the reference app)
+│   └── aistudio/ browser/ coder/ command/ editor/ explorer/ gallery/ jukebox/ terminal/ theater/ toolbox/
+│                                Suite apps: titlebar · home (name + version) · status bar, ready to build on
 ├── packages/                    Shared TypeScript libraries & UI foundation
 │   ├── design-system/           React components (Base UI 1.8 + Tailwind v4 + tailwind-variants)
 │   ├── tokens/                  Nord design token definitions & compiler
@@ -226,10 +228,11 @@ GENSLATE/
 │   ├── config-typescript/       Shared TypeScript configuration presets
 │   └── config-vite/             Shared Vite build configuration (React Compiler, Tailwind v4)
 ├── crates/                      Shared Rust crates
+│   ├── app-common/              genslate-app-common: shared config sections + loader, AppInfo
 │   ├── paths/                   genslate-paths: suite, dev, standalone, and fallback path resolution
 │   ├── design-tokens/           Rust constants and token utilities generated from source tokens
 │   ├── testing/                 Test fixtures, fake repository trees, and mock environments
-│   └── core/                    App-specific business logic crates (core/launcher, core/example)
+│   └── core/                    App-specific business logic crates (core/<app>, one per app)
 ├── webapp/                      Web portals & API services
 ├── scripts/bun-commands/        Single-purpose executable scripts backing bun run <cmd>
 ├── other/                       Portable suite assets, documents, configurations, logs, and cache

@@ -2,7 +2,7 @@
   "name": "@genslate/{{ name }}",
   "version": "0.1.0",
   "private": true,
-  "description": "{{ title }}.",
+  "description": "{{ title }}: {{ description }}.",
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
@@ -14,7 +14,6 @@
   "dependencies": {
     "@genslate/design-system": "workspace:*",
     "@genslate/tauri-bridge": "workspace:*",
-    "@genslate/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

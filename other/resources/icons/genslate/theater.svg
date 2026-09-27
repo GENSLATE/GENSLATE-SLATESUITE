@@ -1,9 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <title>GENSLATE Theater</title>
   <!--
-    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
-    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
-    no gradients. Plate nord12, glyph nord0.
+    GENSLATE app icon family: a flat Polar Night plate (nord1, nord2 hairline rim) on the macOS
+    Big Sur icon grid (824 × 824 at (100, 100), radius 185 — same as
+    other/resources/branding/app-icon.svg), Snow Storm line work (nord6; secondary layer at 40 %)
+    and one signature accent: nord12. Glyphs sit in the 440 × 440 live area around (512, 512).
+    No gradients; the only effect is the grid's standard drop shadow.
+    Glyph: a screen with a nord12 play button.
     The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
   -->
   <defs>
@@ -11,7 +14,8 @@
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
     </filter>
   </defs>
-  <rect x="100" y="100" width="824" height="824" rx="185" fill="#d08770" filter="url(#drop)"/>
-  <rect x="290" y="340" width="444" height="344" rx="60" stroke="#2e3440" fill="none" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M474 432l126 80-126 80Z" fill="#2e3440" stroke="#2e3440" stroke-width="28" stroke-linejoin="round"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#3b4252" filter="url(#drop)"/>
+  <rect x="102" y="102" width="820" height="820" rx="183" fill="none" stroke="#434c5e" stroke-width="4"/>
+  <path d="M332 332H692Q752 332 752 392V632Q752 692 692 692H332Q272 692 272 632V392Q272 332 332 332Z" fill="none" stroke="#eceff4" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M464 436Q464 412 486 424L602 494Q620 512 602 530L486 600Q464 612 464 588Z" fill="#d08770"/>
 </svg>
