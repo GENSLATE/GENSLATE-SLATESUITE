@@ -1,9 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <title>GENSLATE Coder</title>
   <!--
-    GENSLATE app icon family: flat Nord plate on the macOS Big Sur icon grid (824 × 824 at
-    (100, 100), radius 185 — same as other/resources/branding/app-icon.svg), one glyph colour,
-    no gradients. Plate nord10, glyph nord6.
+    GENSLATE app icon family: a flat Polar Night plate (nord1, nord2 hairline rim) on the macOS
+    Big Sur icon grid (824 × 824 at (100, 100), radius 185 — same as
+    other/resources/branding/app-icon.svg), Snow Storm line work (nord6; secondary layer at 40 %)
+    and one signature accent: nord9. Glyphs sit in the 440 × 440 live area around (512, 512).
+    No gradients; the only effect is the grid's standard drop shadow.
+    Glyph: code brackets in nord9 around a Snow Storm slash.
     The launcher crops the viewBox to the plate (100 100 824 824) for list rows.
   -->
   <defs>
@@ -11,7 +14,8 @@
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
     </filter>
   </defs>
-  <rect x="100" y="100" width="824" height="824" rx="185" fill="#5e81ac" filter="url(#drop)"/>
-  <path d="M414 380L292 512l122 132M610 380l122 132-122 132" stroke="#eceff4" fill="none" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M556 336L468 688" stroke="#eceff4" fill="none" stroke-width="56" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#3b4252" filter="url(#drop)"/>
+  <rect x="102" y="102" width="820" height="820" rx="183" fill="none" stroke="#434c5e" stroke-width="4"/>
+  <path d="M404 372L288 512L404 652M620 372L736 512L620 652" fill="none" stroke="#81a1c1" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M564 332L460 692" fill="none" stroke="#eceff4" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

@@ -101,21 +101,10 @@ fn log_plugin<R: Runtime>(paths: &AppPaths, level: LogLevel) -> tauri::plugin::T
                 file_name: Some(APP_NAME.to_owned()),
             }),
         ])
-        .level(level_filter(level))
+        .level(log::LevelFilter::from(level))
         .max_file_size(5 * 1024 * 1024)
         .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepSome(5))
         .build()
-}
-
-const fn level_filter(level: LogLevel) -> log::LevelFilter {
-    match level {
-        LogLevel::Off => log::LevelFilter::Off,
-        LogLevel::Error => log::LevelFilter::Error,
-        LogLevel::Warn => log::LevelFilter::Warn,
-        LogLevel::Info => log::LevelFilter::Info,
-        LogLevel::Debug => log::LevelFilter::Debug,
-        LogLevel::Trace => log::LevelFilter::Trace,
-    }
 }
 
 fn focus_main_window<R: Runtime>(app: &AppHandle<R>) {
@@ -138,16 +127,4 @@ fn focus_main_window<R: Runtime>(app: &AppHandle<R>) {
 fn report_fatal(error: &AppError) {
     log::error!("fatal: {error}");
     eprintln!("genslate-example: {error}");
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn log_levels_map_one_to_one() {
-        assert_eq!(level_filter(LogLevel::Off), log::LevelFilter::Off);
-        assert_eq!(level_filter(LogLevel::Info), log::LevelFilter::Info);
-        assert_eq!(level_filter(LogLevel::Trace), log::LevelFilter::Trace);
-    }
 }

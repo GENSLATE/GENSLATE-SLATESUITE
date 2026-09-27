@@ -1431,14 +1431,163 @@ dependencies = [
 ]
 
 [[package]]
-name = "genslate-core-example"
+name = "genslate-aistudio"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-aistudio",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-app-common"
 version = "0.1.0"
 dependencies = [
  "genslate-testing",
+ "log",
  "serde",
  "serde_json",
  "thiserror 2.0.21",
  "toml 1.1.6+spec-1.1.0",
+]
+
+[[package]]
+name = "genslate-browser"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-browser",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-coder"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-coder",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-command"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-command",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-core-aistudio"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-browser"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-coder"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-command"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-editor"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-example"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-explorer"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-gallery"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-jukebox"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
 ]
 
 [[package]]
@@ -1463,14 +1612,114 @@ dependencies = [
 ]
 
 [[package]]
+name = "genslate-core-terminal"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-theater"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
+name = "genslate-core-toolbox"
+version = "0.1.0"
+dependencies = [
+ "genslate-app-common",
+ "serde",
+]
+
+[[package]]
 name = "genslate-design-tokens"
 version = "0.1.0"
+
+[[package]]
+name = "genslate-editor"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-editor",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
 
 [[package]]
 name = "genslate-example"
 version = "0.1.0"
 dependencies = [
  "genslate-core-example",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-explorer"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-explorer",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-gallery"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-gallery",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-jukebox"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-jukebox",
  "genslate-design-tokens",
  "genslate-paths",
  "log",
@@ -1516,10 +1765,67 @@ dependencies = [
 ]
 
 [[package]]
+name = "genslate-terminal"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-terminal",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
 name = "genslate-testing"
 version = "0.1.0"
 dependencies = [
  "tempfile",
+]
+
+[[package]]
+name = "genslate-theater"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-theater",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "genslate-toolbox"
+version = "0.1.0"
+dependencies = [
+ "genslate-core-toolbox",
+ "genslate-design-tokens",
+ "genslate-paths",
+ "log",
+ "serde",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-window-state",
+ "thiserror 2.0.21",
 ]
 
 [[package]]

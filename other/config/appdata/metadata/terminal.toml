@@ -5,7 +5,7 @@ name = "Terminal"
 description = "A fast, modern terminal with tabs and splits"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Development"
-# Nord colour of the icon tile: nord0 … nord15
+# Signature Nord colour (the accent of its icon): nord7 … nord15
 color = "nord14"
 keywords = ["shell", "console", "command line", "cli"]
 

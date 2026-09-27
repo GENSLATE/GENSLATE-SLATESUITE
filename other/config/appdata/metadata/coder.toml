@@ -5,8 +5,8 @@ name = "Coder"
 description = "A focused code editor for your projects"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Development"
-# Nord colour of the icon tile: nord0 … nord15
-color = "nord10"
+# Signature Nord colour (the accent of its icon): nord7 … nord15
+color = "nord9"
 keywords = ["code", "ide", "programming"]
 
 [build]

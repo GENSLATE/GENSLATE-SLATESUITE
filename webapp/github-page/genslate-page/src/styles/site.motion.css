@@ -1,0 +1,259 @@
+/*
+ * Motion. Everything here is progressive enhancement: pages are complete without it, only
+ * transform / opacity / clip-path animate, and `prefers-reduced-motion: reduce` turns it off.
+ *
+ * - Scroll reveals use native scroll-driven animations (`animation-timeline: view()`); browsers
+ *   without them (Firefox) get an IntersectionObserver fallback (`html[data-reveal-fallback]`).
+ * - Page navigations and theme switches run inside view transitions (`html[data-vt]`).
+ */
+
+@keyframes site-rise {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+    scale: 0.985;
+  }
+}
+
+@keyframes site-fade-up {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+
+@keyframes site-float {
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+@keyframes site-drift-a {
+  50% {
+    transform: translate3d(8%, 6%, 0) rotate(12deg) scale(1.08);
+  }
+}
+
+@keyframes site-drift-b {
+  50% {
+    transform: translate3d(-10%, 4%, 0) rotate(-10deg) scale(0.94);
+  }
+}
+
+@keyframes site-untilt {
+  to {
+    transform: rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes site-marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+
+@keyframes site-progress {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* ── Load-in (hero copy) ── */
+.intro {
+  animation: site-fade-up 900ms var(--gs-ease-enter) backwards;
+  animation-delay: calc(var(--intro-step, 0) * 90ms + 60ms);
+}
+
+/* ── Scroll reveals ── */
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .reveal {
+      animation: site-rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(4% + var(--reveal-step, 0) * 5%) entry
+        calc(62% + var(--reveal-step, 0) * 5%);
+    }
+
+    /* The hero stage leans back and straightens as the page scrolls. */
+    .hero-tilt {
+      transform: rotateX(14deg) scale(0.96);
+      animation: site-untilt linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 55vh;
+    }
+
+    .read-progress {
+      transform-origin: 0 50%;
+      animation: site-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  html[data-reveal-fallback] .reveal {
+    transition:
+      opacity 800ms var(--gs-ease-enter),
+      translate 800ms var(--gs-ease-enter),
+      scale 800ms var(--gs-ease-enter);
+    transition-delay: calc(var(--reveal-step, 0) * 80ms);
+  }
+
+  html[data-reveal-fallback] .reveal:not([data-revealed]) {
+    opacity: 0;
+    translate: 0 28px;
+    scale: 0.985;
+  }
+
+  .float {
+    animation: site-float 7s ease-in-out infinite;
+  }
+
+  .aurora-blob-a {
+    animation: site-drift-a 22s ease-in-out infinite;
+  }
+
+  .aurora-blob-b {
+    animation: site-drift-b 28s ease-in-out infinite;
+  }
+
+  .marquee-track {
+    animation: site-marquee 48s linear infinite;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@media not (prefers-reduced-motion: no-preference) {
+  .read-progress {
+    display: none;
+  }
+}
+
+/* Without scroll timelines the progress bar is hidden rather than stuck at 0. */
+@supports not (animation-timeline: scroll()) {
+  .read-progress {
+    display: none;
+  }
+}
+
+/* ── Dock: macOS magnification ── */
+.dock-item {
+  transform-origin: 50% 100%;
+  transition:
+    scale var(--gs-duration-moderate) var(--gs-ease-spring),
+    translate var(--gs-duration-moderate) var(--gs-ease-spring);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .dock-item:is(:hover, :focus-visible) {
+    scale: 1.45;
+    translate: 0 -10px;
+  }
+
+  .dock-item:has(+ .dock-item:is(:hover, :focus-visible)),
+  .dock-item:is(:hover, :focus-visible) + .dock-item {
+    scale: 1.2;
+    translate: 0 -4px;
+  }
+}
+
+.dock-label {
+  opacity: 0;
+  translate: -50% 4px;
+  transition:
+    opacity var(--gs-duration-fast) var(--gs-ease-standard),
+    translate var(--gs-duration-base) var(--gs-ease-enter);
+}
+
+.dock-item:is(:hover, :focus-visible) .dock-label {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+/* ── Brand mark: the three slates lift apart on hover ── */
+.mark-slate {
+  transition: translate var(--gs-duration-slow) var(--gs-ease-spring);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mark:is(:hover, :focus-visible) .mark-slate-top {
+    translate: 0 -60px;
+  }
+
+  .mark:is(:hover, :focus-visible) .mark-slate-bottom {
+    translate: 0 60px;
+  }
+}
+
+/* ── View transitions ── */
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    translate: var(--vt-shift-out, 0) 0;
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    translate: var(--vt-shift-in, 0) 10px;
+  }
+}
+
+@keyframes vt-theme-reveal {
+  from {
+    clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0%));
+  }
+
+  to {
+    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 0%));
+  }
+}
+
+html[data-vt='forward'] {
+  --vt-shift-out: -18px;
+  --vt-shift-in: 18px;
+}
+
+html[data-vt='backward'] {
+  --vt-shift-out: 18px;
+  --vt-shift-in: -18px;
+}
+
+::view-transition-old(root) {
+  animation: 140ms var(--gs-ease-exit) both vt-out;
+}
+
+::view-transition-new(root) {
+  animation: 340ms var(--gs-ease-enter) 60ms both vt-in;
+}
+
+/* The header and docs sidebar persist across pages instead of fading. */
+::view-transition-group(site-header),
+::view-transition-group(docs-sidebar) {
+  animation-duration: 0s;
+}
+
+::view-transition-group(*) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--gs-ease-enter);
+}
+
+/* Theme switch: the new theme grows out of the toggle button. */
+html[data-vt='theme']::view-transition-old(root) {
+  animation: none;
+}
+
+html[data-vt='theme']::view-transition-new(root) {
+  animation: 620ms var(--gs-ease-standard) both vt-theme-reveal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

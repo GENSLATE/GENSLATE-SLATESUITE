@@ -40,9 +40,9 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "category": "DeveloperTool",
-    "shortDescription": "{{ title }}.",
-    "longDescription": "{{ title }}, a GENSLATE desktop app.",
+    "category": "{{ category }}",
+    "shortDescription": "{{ description }}.",
+    "longDescription": "{{ title }}: {{ description }}. A portable GENSLATE desktop app.",
     "publisher": "GENSLATE",
     "copyright": "© GENSLATE. All rights reserved.",
     "icon": [

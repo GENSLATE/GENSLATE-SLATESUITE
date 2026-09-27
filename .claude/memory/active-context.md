@@ -1,6 +1,6 @@
 # Active context
 
-_Last updated: 2026-09-26. Update this file at the end of any multi-session task: what changed, what's next, what's blocked._
+_Last updated: 2026-09-27. Update this file at the end of any multi-session task: what changed, what's next, what's blocked._
 
 ## Current focus: GENSLATE Launcher (`desktop/launcher`)
 Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
@@ -18,9 +18,14 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
   - M11: docs (`other/documents/launcher.md`), code/security review.
 - **Known:** Ctrl+Alt+Space may be taken by another app (logged, not fatal) — change it in `keybindings.toml`.
 
+## Suite apps scaffolded (2026-09-27)
+- All 11 reserved apps are real Tauri apps generated from the refreshed template: titlebar · home (icon, name, version) · status bar; each with `crates/core/<app>`, config stubs, launch config (`<app>-web`) and bundle icons.
+- New shared crate `crates/app-common` (config sections, loader, `AppInfo`); `useAppInfo()` in the bridge; new icon family for the 11 apps.
+- **Next:** build each app's real UI and core logic; run each natively once (`bun x moon run <app>:dev`) on Windows/macOS to QA chrome and icons.
+
 ## Open questions
 - Code signing / notarisation for macOS and Windows (secrets not configured yet; release workflow builds unsigned drafts).
 - Updater (tauri-plugin-updater) — not enabled; `uploadUpdaterJson` is off until signing keys exist.
 
 ## Placeholders (reserved names, no code yet)
-`desktop/{aistudio,browser,coder,command,editor,explorer,gallery,jukebox,terminal,theater,toolbox}`, `webapp/{github-page,tauri-servers}`.
+`webapp/{github-page,tauri-servers}`.

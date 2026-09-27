@@ -28,7 +28,7 @@ packages/tokens (typed source) ──bun run tokens──► CSS · Tailwind @th
 
 `constraints.tagRelationships` in `.config/moon/workspace.yml` enforces the table. The design system never imports Tauri; only apps use the bridge.
 
-Rust crates: `genslate-design-tokens` (generated constants), `genslate-paths` (portable directories: suite/dev/standalone/fallback), `genslate-testing` (helpers), `genslate-core-<app>` (per-app logic). `desktop/<app>/src-tauri` is thin glue.
+Rust crates: `genslate-app-common` (config sections every app shares + TOML loader, `AppInfo`), `genslate-design-tokens` (generated constants), `genslate-paths` (portable directories: suite/dev/standalone/fallback), `genslate-testing` (helpers), `genslate-core-<app>` (per-app logic). `desktop/<app>/src-tauri` is thin glue.
 
 ## Frontend stack
 

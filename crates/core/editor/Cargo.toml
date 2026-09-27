@@ -1,0 +1,17 @@
+[package]
+name = "genslate-core-editor"
+description = "Core logic for GENSLATE Editor (config), independent of Tauri."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+genslate-app-common.workspace = true
+serde.workspace = true
+
+[lints]
+workspace = true

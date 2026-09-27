@@ -2,7 +2,14 @@ import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { clearMocks, mockIPC, mockWindows } from '@tauri-apps/api/mocks';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-import { commands, detectPlatform, isTauri, setNativeTheme, useWindowControls } from '../../src';
+import {
+  commands,
+  detectPlatform,
+  isTauri,
+  setNativeTheme,
+  useAppInfo,
+  useWindowControls,
+} from '../../src';
 
 type TauriGlobals = typeof globalThis & {
   isTauri?: boolean;
@@ -71,6 +78,12 @@ describe('inside Tauri (mocked IPC)', () => {
   test('commands.appInfo() invokes get_app_info', async () => {
     expect(await commands.appInfo()).toEqual(APP_INFO);
     expect(calls.map((call) => call.cmd)).toContain('get_app_info');
+  });
+
+  test('useAppInfo() loads the build metadata once', async () => {
+    const { result } = renderHook(() => useAppInfo());
+    await waitFor(() => expect(result.current).toEqual(APP_INFO));
+    expect(calls.filter((call) => call.cmd === 'get_app_info')).toHaveLength(1);
   });
 
   test('commands.openExternal() goes through the opener plugin', async () => {

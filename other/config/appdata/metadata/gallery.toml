@@ -5,8 +5,8 @@ name = "Gallery"
 description = "View and organise your photos and images"
 # Development · Office · Internet · Media · Utilities · System · AI
 category = "Media"
-# Nord colour of the icon tile: nord0 … nord15
-color = "nord15"
+# Signature Nord colour (the accent of its icon): nord7 … nord15
+color = "nord14"
 keywords = ["photos", "images", "pictures", "viewer"]
 
 [build]
