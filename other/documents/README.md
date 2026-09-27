@@ -6,6 +6,7 @@
 | [Commands](./commands.md) | You want to know what each `bun run <cmd>` and moon task does. |
 | [Architecture](./architecture.md) | You need the big picture: projects, layers, data flow, window chrome. |
 | [Design system](./design-system.md) | You're building UI — tokens, themes, components, the contract. |
+| [Context menus](./context-menus.md) | You're changing what a right-click shows in an app (titlebar, fields, content, status bar). |
 | [IPC](./ipc.md) | You're adding a Rust command or calling Tauri from React. |
 | [Portability](./portability.md) | You care where config and logs live (dev / portable / installed). |
 | [Testing](./testing.md) | You're writing or running TS, React, Rust or e2e tests. |
