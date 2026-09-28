@@ -71,3 +71,14 @@ Short ADR log. Newest last. Format: **Decision** — context → consequence. Ad
 ## 2026-09 · Tray menu
 
 29. **The launcher's tray menu is a webview window, not a native menu.** Native tray menus can't be styled, so on Windows and macOS a right-click opens a hidden, pre-created, transparent `tray-menu` window that draws the design-system `Menu` (with the new `MenuHeader` and `media` rows). Placement is a pure function (`geometry::tray_menu_placement`): open away from the tray's edge, clamp to the work area, and send the anchor to the UI. Linux trays report no clicks, so Linux keeps a native menu with the same rows, rebuilt on catalog/settings/pin events. The window's capability is least-privilege: `build.rs` generates `allow-<command>` permissions (`AppManifest`), so each capability lists exactly the commands its window may call.
+
+## 2026-09 · Explorer
+
+30. **The explorer's AI is a preview, wired like the real thing.** AI commands are registry entries with `soon: true` (listed in the palette and menus, never enabled), and the side panel's Git, Chat and Smart folders tabs are `preview` panels. Turning a feature on later means implementing `run` / the panel, not re-plumbing the UI.
+
+31. **File previews go through a scoped `explorer-file://` scheme.** The shell only serves files inside folders the UI has listed, so the webview can't read arbitrary paths through it. Text previews use `read_text` (capped, binary-detected) instead.
+
+32. **In-app file clipboard and drag and drop.** Cut/copy/paste and drag and drop move paths inside the app (`application/x-genslate-paths`); Tauri's `dragDropEnabled` is off because it swallows HTML5 drag and drop on Windows. Consequence: no drag-in from other apps and no OS clipboard sharing yet.
+
+33. **Trash Undo only where the OS can restore.** `CAN_RESTORE_FROM_TRASH` (Windows, Linux/freedesktop) decides whether Trash is recorded for Undo; macOS has no restore API in the `trash` crate, so the toast offers no Undo there. "Open with" is Windows-only; "Open in GENSLATE Editor/Terminal" waits until those apps can open files.
+

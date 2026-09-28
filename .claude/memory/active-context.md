@@ -35,6 +35,10 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
 - Right-click on the launcher's tray icon opens a styled design-system menu in its own transparent window (`tray-menu.html`, `src-tauri/src/tray_menu.rs`): header, Show, Pin, Recent ▸, Favorites ▸, Folders ▸, Appearance ▸, Settings ▸, Help, Quit. Linux keeps a native menu with the same rows. Docs: `other/documents/context-menus.md#the-launchers-tray-menu`.
 - **Next:** QA it natively on Windows (taskbar bottom/left/top, 125–150 % scaling) and macOS (menu bar); check focus loss closes it and a second right-click repositions it.
 
+## Explorer (2026-09-28, branch `feat/explorer-app-n2wyjx`)
+- Full file manager in `desktop/explorer` + `crates/core/explorer`: tabs, details/icons/tiles, search, transfers with conflicts, Trash + Undo, preview pane, side-panel tabs (Files, and Git/Chat/Smart previews), palette, menus, settings. AI features are previews only. Docs: `other/documents/explorer.md`.
+- **Next:** run it natively on Windows/macOS (thumbnails via `explorer-file://`, watcher, Trash, Open with); dual-pane view; OS clipboard and drag-in; implement the AI previews.
+
 ## Open questions
 - Code signing / notarisation for macOS and Windows (secrets not configured yet; release workflow builds unsigned drafts).
 - Updater (tauri-plugin-updater) — not enabled; `uploadUpdaterJson` is off until signing keys exist.
