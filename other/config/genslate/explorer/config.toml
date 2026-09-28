@@ -13,3 +13,21 @@ remember-state = true
 [logging]
 # "off" | "error" | "warn" | "info" | "debug" | "trace"
 level = "info"
+
+[explorer]
+# View for new tabs: "details" | "icons" | "tiles"
+view = "details"
+# Sort column: "name" | "modified" | "kind" | "size"
+sort-by = "name"
+sort-descending = false
+# Keep folders above files whatever the sort.
+folders-first = true
+show-hidden = false
+# Ask before moving items to the trash (deleting for good always asks).
+confirm-trash = false
+# Where the first tab opens: "home", "desktop", "documents", "downloads", "pictures", "music",
+# "videos", or an absolute path.
+start-folder = "home"
+# Reopen the last session's tabs.
+restore-tabs = true
+preview-pane = true

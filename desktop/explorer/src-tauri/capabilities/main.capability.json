@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main",
-  "description": "Least-privilege permissions for the main window: custom titlebar controls, native theme, OS info, logging, window state and opening https links.",
+  "description": "Least privilege for the main window: its own typed file commands (every path checked in Rust), custom titlebar controls, native theme, OS info, logging, window state and opening https links. No fs or shell plugin access from the webview.",
   "windows": ["main"],
   "permissions": [
     "core:default",
@@ -17,9 +17,35 @@
     "os:default",
     "log:default",
     "window-state:default",
+    "allow-get-app-info",
+    "allow-get-context",
+    "allow-get-volumes",
+    "allow-list-dir",
+    "allow-create-folder",
+    "allow-create-file",
+    "allow-rename",
+    "allow-trash",
+    "allow-delete-permanently",
+    "allow-undo",
+    "allow-read-text",
+    "allow-get-properties",
+    "allow-open-path",
+    "allow-open-with",
+    "allow-reveal-path",
+    "allow-watch-folders",
+    "allow-set-setting",
+    "allow-find-conflicts",
+    "allow-start-transfer",
+    "allow-start-search",
+    "allow-folder-size",
+    "allow-cancel-task",
     {
       "identifier": "opener:allow-open-url",
-      "allow": [{ "url": "https://*" }]
+      "allow": [
+        {
+          "url": "https://*"
+        }
+      ]
     }
   ]
 }

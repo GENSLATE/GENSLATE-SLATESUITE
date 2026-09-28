@@ -2,3 +2,5 @@
 //! (`#[tauri::command]` companion items are not carried by `pub use`).
 
 pub mod app_info;
+pub mod files;
+pub mod tasks;
