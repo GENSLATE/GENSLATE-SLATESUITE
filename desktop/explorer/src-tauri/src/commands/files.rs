@@ -22,6 +22,9 @@ use crate::{AppError, events};
 /// The longest text preview, in bytes.
 const TEXT_PREVIEW_LIMIT: usize = 256 * 1024;
 
+/// Items moved to the Trash can be put back (not on macOS, which has no API for it).
+const CAN_RESTORE_FROM_TRASH: bool = cfg!(any(windows, all(unix, not(target_os = "macos"))));
+
 /// Everything the UI needs at start.
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -50,7 +53,7 @@ pub fn get_context(explorer: State<'_, Explorer>) -> ExplorerContext {
         places,
         volumes: places::volumes(),
         settings,
-        can_restore_from_trash: cfg!(any(windows, all(unix, not(target_os = "macos")))),
+        can_restore_from_trash: CAN_RESTORE_FROM_TRASH,
         can_open_with: cfg!(windows),
         undo: explorer.undo_label(),
     }
@@ -153,7 +156,10 @@ pub fn trash(
 ) -> Result<(), AppError> {
     let paths = absolute_all(&paths)?;
     ops::trash(&paths)?;
-    record(&app, &explorer, UndoAction::Trash { paths });
+    // Without a way to restore (macOS), Undo would only fail: leave the stack as it is.
+    if CAN_RESTORE_FROM_TRASH {
+        record(&app, &explorer, UndoAction::Trash { paths });
+    }
     Ok(())
 }
 

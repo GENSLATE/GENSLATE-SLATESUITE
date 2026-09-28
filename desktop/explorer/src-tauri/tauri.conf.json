@@ -26,6 +26,7 @@
         "decorations": false,
         "transparent": false,
         "shadow": true,
+        "dragDropEnabled": false,
         "visible": true,
         "backgroundColor": "#2e3440"
       }
