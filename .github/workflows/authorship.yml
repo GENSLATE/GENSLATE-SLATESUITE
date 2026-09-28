@@ -58,8 +58,9 @@ jobs:
               --range "$PR_BASE..$PR_HEAD" --branch "$PR_BRANCH" --body-env PR_BODY
           elif [ "$EVENT" = "merge_group" ]; then
             proto run bun -- scripts/bun-commands/attribution.ts --range "$MERGE_BASE..$GITHUB_SHA"
-          elif [ -n "$PUSH_BEFORE" ] && [ "$PUSH_BEFORE" != "0000000000000000000000000000000000000000" ]; then
+          elif git cat-file -e "$PUSH_BEFORE^{commit}" 2>/dev/null; then
             proto run bun -- scripts/bun-commands/attribution.ts --range "$PUSH_BEFORE..$GITHUB_SHA"
           else
+            # New branch or a force-push whose old head is gone: check the whole history.
             proto run bun -- scripts/bun-commands/attribution.ts --range "$GITHUB_SHA"
           fi
