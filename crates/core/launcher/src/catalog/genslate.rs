@@ -137,12 +137,15 @@ fn dev_exe_name(key: &str, host: HostOs) -> String {
 }
 
 /// `true` for `a.exe` or `bin/a`, `false` for absolute paths and anything with `..`.
+///
+/// Judged the same on every OS: both `/` and `\` separate segments and a `:` (drive letter,
+/// stream name) is refused, so a Windows-style `C:\x.exe` or `..\..\x.exe` from a config file
+/// is rejected on macOS and Linux too, where `Path` would read it as one plain file name.
 pub(super) fn is_relative_inside(path: &str) -> bool {
-    let path = Path::new(path);
-    !path.as_os_str().is_empty()
+    !path.is_empty()
         && path
-            .components()
-            .all(|part| matches!(part, std::path::Component::Normal(_)))
+            .split(['/', '\\'])
+            .all(|part| !part.is_empty() && part != "." && part != ".." && !part.contains(':'))
 }
 
 /// App keys are the folder/metadata names: lowercase kebab-case.
@@ -237,7 +240,11 @@ mod tests {
         );
         assert!(!is_relative_inside("../x.exe"));
         assert!(!is_relative_inside("C:\\x.exe"));
+        assert!(!is_relative_inside("..\\..\\x.exe"));
+        assert!(!is_relative_inside("/usr/bin/x"));
+        assert!(!is_relative_inside("\\\\server\\share\\x.exe"));
         assert!(is_relative_inside("bin/x"));
+        assert!(is_relative_inside("App\\x.exe"));
         Ok(())
     }
 

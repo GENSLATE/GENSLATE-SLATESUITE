@@ -15,6 +15,7 @@ Every root command is a bun TypeScript file in `bun-commands/`, wired up in the 
 | `bun run tokens [--check]` | Regenerates design tokens from `packages/tokens` (CSS, Tailwind theme, TS, JSON, Rust). |
 | `bun run version <patch\|minor\|major\|x.y.z> [--dry-run]` | Bumps every `package.json`, the Cargo workspace version and literal `tauri.conf.json` versions. |
 | `bun run new-app <name>` | Scaffolds `desktop/<name>` from `.config/moon/templates/tauri-app`, using the next free port pair. |
+| `bun run attribution [--message <file>] [--range <a..b>] [--branch <name> \| --current-branch] [--body-env <VAR>]` | Rejects commits, branches and PR bodies that credit an agent as author (git hooks + CI). |
 | `bun run clean [--all] [--dry-run]` | Removes `dist`, coverage, moon cache; `--all` also runs `cargo clean` and deletes `node_modules`. |
 
 ## moon or direct

@@ -41,9 +41,14 @@ commit-msg:
   jobs:
     - name: commitlint
       run: bun x --bun commitlint --config .config/commitlint.config.ts --edit {1}
+    # No agent author, committer, Co-Authored-By/session trailer or footer (other/documents/contributing.md#authorship).
+    - name: authorship
+      run: bun scripts/bun-commands/attribution.ts --message {1}
 
 pre-push:
   jobs:
+    - name: authorship
+      run: bun scripts/bun-commands/attribution.ts --range origin/main..HEAD --current-branch
     # The bun commands use moon when it can load the workspace and fall back to running
     # bun/cargo directly otherwise (e.g. offline), so the hook works everywhere.
     - name: typecheck + lint

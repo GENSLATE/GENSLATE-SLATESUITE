@@ -17,12 +17,12 @@
 ## 3. Strict Adherence to Project Standards
 
 - **ALWAYS FOLLOW THE RULES, GUIDELINES AND GENERAL PROCESSES SETUP IN THE `.claude/` DIRECTORY.**
-  - [Code Standards](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/code-standards.md)
-  - [Code Quality](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/code-quality.md)
-  - [Design System Contract](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/design-system.md)
-  - [Monorepo Structure](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/monorepo-structure.md)
-  - [TypeScript Standards](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/typescript-standards.md)
-  - [Rust Standards](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/rust-standards.md)
+  - [Code Standards](../../.claude/rules/code-standards.md)
+  - [Code Quality](../../.claude/rules/code-quality.md)
+  - [Design System Contract](../../.claude/rules/design-system.md)
+  - [Monorepo Structure](../../.claude/rules/monorepo-structure.md)
+  - [TypeScript Standards](../../.claude/rules/typescript-standards.md)
+  - [Rust Standards](../../.claude/rules/rust-standards.md)
 
 ## 4. Tooling & Environment
 

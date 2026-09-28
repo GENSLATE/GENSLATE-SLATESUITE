@@ -25,6 +25,7 @@ UI goal: modern flat UI with VS Code density, refined like macOS; Polar Night (d
 | `bun run version` | Bump versions across package.json / Cargo / tauri.conf |
 | `bun run new-app <name>` | Scaffold `desktop/<name>` + `crates/core/<name>` from `.config/moon/templates/{tauri-app,app-core}` |
 | `bun run clean` | Remove build output and caches |
+| `bun run attribution` | Reject agent authors, trailers, session links and branch names (hooks + CI) |
 
 Targeted: `bun x moon run <project>:<task>` — projects `root, tokens, design-system, tauri-bridge, config-typescript, config-vite` + apps `example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox` + website `genslate-page`; tasks `typecheck, test, build, check` (tokens), `dev, web-dev, web-build` (apps; the website also has `web-preview`), `rust-fmt, rust-lint, rust-test, rust-deny, lint, format, spell, knip` (root).
 
@@ -48,7 +49,8 @@ Details: `.claude/rules/monorepo-structure.md` · docs: `other/documents/README.
 - Rust: edition 2024, no `unsafe`/`unwrap`/`expect`, `thiserror` errors, `tracing` logs, logic in `crates/core/<app>`, thin `src-tauri`.
 - Window chrome: one titlebar on every OS — `decorations: false` everywhere (no `tauri.macos.conf.json` window overrides) + the design system's custom macOS-style traffic lights; no Windows caption buttons, no native macOS lights.
 - Right-click: every window is wrapped in the design system's `WindowContextMenu` (never the webview's menu); apps add rows per area via `items(target)`.
-- Commits: Conventional Commits, scopes = project ids (incl. every app) + `crates, repo, ci, deps, claude, docs, release`.
+- Authorship: never credit the agent: no agent author/committer, `Co-Authored-By`/session trailers, session links, "Generated with" footers or `claude/` branches (`bun run attribution`, hooks + CI).
+- Commits: Conventional Commits, scopes = project ids (incl. every app) + `crates, repo, ci, deps, agents, docs, release`.
 
 ## Rules, skills, agents
 Rules in `.claude/rules/` load automatically (path-scoped ones when you touch matching files):
