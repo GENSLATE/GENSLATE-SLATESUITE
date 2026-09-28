@@ -50,18 +50,32 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    # Requires the repository's Dependency graph (Settings → Security → Code security) to be
-    # enabled; on a repo where it hasn't finished indexing yet the action fails outright rather
-    # than finding no dependency changes. That's an account/repo setting, not something a commit
-    # here can fix, so it never blocks the PR — but it still reports honestly when it does run.
+    # Requires the repository's Dependency graph (Settings → Security → Code security). While it
+    # is off (or still indexing) the action fails outright rather than finding no dependency
+    # changes, so the review is skipped with a visible warning instead; it runs again, and blocks
+    # on findings, as soon as the setting is on.
     continue-on-error: true
     steps:
+      - name: Check that Dependency graph is on
+        id: graph
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/$GITHUB_REPOSITORY/dependency-graph/sbom" --silent 2>/dev/null; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning title=Dependency review skipped::Dependency graph is off for this repository. Turn it on under Settings → Code security to review dependency changes."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.graph.outputs.enabled == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Review dependency changes
+        if: steps.graph.outputs.enabled == 'true'
         uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           fail-on-severity: moderate
