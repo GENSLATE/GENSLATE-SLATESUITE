@@ -23,7 +23,7 @@
 Rust files follow Rust conventions (`snake_case.rs`).
 
 ## Commits
-Conventional Commits, enforced by commitlint (`.config/commitlint.config.ts`): `type(scope): subject`, lower-case subject, ≤ 100 chars. Scopes: `tokens, design-system, tauri-bridge, config-typescript, config-vite`, every app (`example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox`), `crates, repo, ci, deps, claude, docs, release`.
+Conventional Commits, enforced by commitlint (`.config/commitlint.config.ts`): `type(scope): subject`, lower-case subject, ≤ 100 chars. Scopes: `tokens, design-system, tauri-bridge, config-typescript, config-vite`, every app (`example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox`), `crates, repo, ci, deps, agents, docs, release`.
 
 ## Never
 - Edit generated files (`**/generated/**`, `*.generated.ts`, `src-tauri/gen/**`, lockfiles).

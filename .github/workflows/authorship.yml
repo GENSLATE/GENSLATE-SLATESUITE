@@ -1,0 +1,65 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GENSLATE — Authorship
+#  GENSLATE code is authored by the GENSLATE team. Fails when a commit, branch or PR body
+#  credits an agent (agent author/committer, Co-Authored-By or session trailers, session
+#  links, "Generated with" footers). Same check as the lefthook commit-msg / pre-push hooks:
+#  `bun run attribution` · other/documents/contributing.md#authorship
+# ──────────────────────────────────────────────────────────────────────
+name: Authorship
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+  merge_group:
+
+concurrency:
+  group: authorship-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  authorship:
+    name: No agent attribution
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Only bun is needed; the check has no npm dependencies.
+      - name: Setup proto + moon
+        uses: moonrepo/setup-toolchain@261c62cb5b0f580c7be7c8cd0f023a2e96756095 # v0.6.4
+        with:
+          auto-install: false
+
+      - name: Install bun (version from .prototools)
+        run: proto install bun
+
+      # Event data goes through env, never straight into the script (untrusted PR text).
+      - name: Check commits, branch and PR body
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          MERGE_BASE: ${{ github.event.merge_group.base_sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            proto run bun -- scripts/bun-commands/attribution.ts \
+              --range "$PR_BASE..$PR_HEAD" --branch "$PR_BRANCH" --body-env PR_BODY
+          elif [ "$EVENT" = "merge_group" ]; then
+            proto run bun -- scripts/bun-commands/attribution.ts --range "$MERGE_BASE..$GITHUB_SHA"
+          elif [ -n "$PUSH_BEFORE" ] && [ "$PUSH_BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            proto run bun -- scripts/bun-commands/attribution.ts --range "$PUSH_BEFORE..$GITHUB_SHA"
+          else
+            proto run bun -- scripts/bun-commands/attribution.ts --range "$GITHUB_SHA"
+          fi
