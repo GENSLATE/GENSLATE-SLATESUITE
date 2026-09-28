@@ -1,6 +1,6 @@
 [package]
 name = "genslate-core-explorer"
-description = "Core logic for GENSLATE Explorer (config), independent of Tauri."
+description = "GENSLATE Explorer logic: listing, file operations with progress and undo, trash, search, previews, places and file watching, independent of Tauri."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -10,8 +10,20 @@ publish.workspace = true
 repository.workspace = true
 
 [dependencies]
+dirs.workspace = true
+dunce.workspace = true
 genslate-app-common.workspace = true
+log.workspace = true
+notify.workspace = true
 serde.workspace = true
+sysinfo.workspace = true
+thiserror.workspace = true
+toml_edit.workspace = true
+trash.workspace = true
+
+[dev-dependencies]
+genslate-testing.workspace = true
+serde_json.workspace = true
 
 [lints]
 workspace = true

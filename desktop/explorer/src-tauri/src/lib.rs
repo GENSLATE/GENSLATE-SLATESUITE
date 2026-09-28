@@ -1,13 +1,20 @@
 //! GENSLATE Explorer: the Tauri 2 shell.
 //!
 //! Startup order: resolve portable paths (`genslate-paths`) → load the TOML config
-//! (`genslate-core-explorer`) → register plugins → create the window (webview profile in the
-//! app's cache folder) → paint it with the Nord canvas colour (no white flash).
+//! (`genslate-core-explorer`) → register plugins, the preview scheme and the folder watcher →
+//! create the window (webview profile in the app's cache folder) → paint it with the Nord
+//! canvas colour (no white flash).
 
 mod commands;
 mod error;
+mod events;
+mod preview_scheme;
+mod state;
 mod window;
 
+use std::time::Duration;
+
+use genslate_core_explorer::watch::FolderWatcher;
 use genslate_core_explorer::{Config, LogLevel};
 use genslate_paths::AppPaths;
 use tauri::{AppHandle, Manager, Runtime};
@@ -55,7 +62,10 @@ fn try_run() -> Result<(), AppError> {
         );
     }
 
+    let explorer = state::Explorer::new(paths.clone(), config.clone());
     builder
+        .manage(explorer)
+        .register_asynchronous_uri_scheme_protocol(preview_scheme::SCHEME, preview_scheme::handle)
         .setup(move |app| {
             log::info!(
                 "{} {} ({:?} mode, root {})",
@@ -72,13 +82,54 @@ fn try_run() -> Result<(), AppError> {
             if let Some(error) = &config_error {
                 log::warn!("using default config: {error}");
             }
+            start_watcher(app.handle());
             window::create_main_window(app.handle(), paths.cache_dir.join("webview"))?;
             window::prepare_main_window(app.handle(), config.appearance.theme)?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![commands::app_info::get_app_info])
+        .invoke_handler(tauri::generate_handler![
+            commands::app_info::get_app_info,
+            commands::files::get_context,
+            commands::files::get_volumes,
+            commands::files::list_dir,
+            commands::files::create_folder,
+            commands::files::create_file,
+            commands::files::rename,
+            commands::files::trash,
+            commands::files::delete_permanently,
+            commands::files::undo,
+            commands::files::read_text,
+            commands::files::get_properties,
+            commands::files::open_path,
+            commands::files::open_with,
+            commands::files::reveal_path,
+            commands::files::watch_folders,
+            commands::files::set_setting,
+            commands::tasks::find_conflicts,
+            commands::tasks::start_transfer,
+            commands::tasks::start_search,
+            commands::tasks::folder_size,
+            commands::tasks::cancel_task,
+        ])
         .run(context)?;
     Ok(())
+}
+
+/// Starts live refresh: changed folders are sent to the UI as `explorer://changed`. Without a
+/// watcher (e.g. the OS limit on watches is reached) the UI still refreshes on focus.
+fn start_watcher(app: &AppHandle) {
+    let handle = app.clone();
+    let watcher = FolderWatcher::new(Duration::from_millis(250), move |folders| {
+        let folders: Vec<String> = folders
+            .iter()
+            .filter_map(|folder| folder.to_str().map(str::to_owned))
+            .collect();
+        commands::files::emit(&handle, events::CHANGED, folders);
+    });
+    match watcher {
+        Ok(watcher) => *app.state::<state::Explorer>().watcher() = Some(watcher),
+        Err(error) => log::warn!("live refresh is off: {error}"),
+    }
 }
 
 /// `<data dir>/window-state.json`, as the string the window-state plugin expects.
