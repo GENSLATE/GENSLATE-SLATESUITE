@@ -21,7 +21,7 @@ Use this skill when tasked with fixing visual defects, theme issues, layout glit
 ### 1. Locate and Inspect
 - Find the affected component in `packages/design-system/src/components/<category>/<name>/`.
 - Check its showcase section in `desktop/example/src/features/showcase/sections/`.
-- Review the design contract in [.claude/rules/design-system.md](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.claude/rules/design-system.md) and [.agents/rules/ui-guidelines.md](file:///d:/DEVELOPMENT/PROJECTS/GENSLATE/.agents/rules/ui-guidelines.md).
+- Review the design contract in [.claude/rules/design-system.md](../../../.claude/rules/design-system.md) and [.agents/rules/ui-guidelines.md](../../../.agents/rules/ui-guidelines.md).
 
 ### 2. Identify the Root Cause
 Common issues:

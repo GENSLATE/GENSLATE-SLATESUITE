@@ -61,7 +61,8 @@
     "tokens": "bun scripts/bun-commands/tokens.ts",
     "version": "bun scripts/bun-commands/version.ts",
     "new-app": "bun scripts/bun-commands/new-app.ts",
-    "clean": "bun scripts/bun-commands/clean.ts"
+    "clean": "bun scripts/bun-commands/clean.ts",
+    "attribution": "bun scripts/bun-commands/attribution.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

@@ -33,7 +33,7 @@ const scopes = [
   'repo',
   'ci',
   'deps',
-  'claude',
+  'agents',
   'docs',
   'release',
 ] as const;
