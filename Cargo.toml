@@ -10,6 +10,7 @@ members = [
     "crates/app-common",
     "crates/design-tokens",
     "crates/paths",
+    "crates/storage",
     "crates/testing",
     "crates/core/*",
     "desktop/*/src-tauri",
@@ -29,6 +30,7 @@ repository = "https://github.com/ATOMANGELETTI/GENSLATE"
 genslate-app-common = { path = "crates/app-common" }
 genslate-design-tokens = { path = "crates/design-tokens" }
 genslate-paths = { path = "crates/paths" }
+genslate-storage = { path = "crates/storage" }
 genslate-testing = { path = "crates/testing" }
 genslate-core-aistudio = { path = "crates/core/aistudio" }
 genslate-core-browser = { path = "crates/core/browser" }
@@ -58,11 +60,17 @@ tauri-plugin-window-state = "2.4.1"
 # ── Core ─────────────────────────────────────────────────────────────
 dirs = "7.0.0"
 dunce = "1.0.5"
+gix = { version = "0.88.0", default-features = false, features = ["sha1", "status"] }
 ico = "0.5.0"
+ignore = "0.4.33"
 log = "0.4.34"
 notify = "8.2.0"
+nucleo-matcher = "0.3.1"
 nvml-wrapper = "0.13.0"
 pelite = "0.10.0"
+portable-pty = "0.9.0"
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+rusqlite_migration = "2.6.0"
 rust-ini = "0.21.3"
 sysinfo = { version = "0.39.6", default-features = false, features = ["component", "disk", "network", "system"] }
 toml_edit = "0.25.15"
@@ -74,6 +82,9 @@ tempfile = "3.27.0"
 toml = "1.1.6"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+vte = "0.15.0"
+which = "8.0.6"
+winreg = "0.56.0"
 
 [workspace.lints.rust]
 unsafe_code = "deny"

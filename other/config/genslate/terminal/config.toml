@@ -13,3 +13,55 @@ remember-state = true
 [logging]
 # "off" | "error" | "warn" | "info" | "debug" | "trace"
 level = "info"
+
+[terminal]
+# Profile id new tabs open with ("pwsh", "cmd", "wsl-ubuntu", "git-bash", "zsh", "bash",
+# "custom-<name>", …). Empty = the first detected shell.
+default-profile = ""
+# CSS font family, e.g. "JetBrains Mono". Empty = the design system's monospace stack.
+font-family = ""
+# Font size in px (8–32).
+font-size = 13
+# Line height as a multiple of the font size (1.0–2.0).
+line-height = 1.2
+# "block" | "bar" | "underline"
+cursor-style = "block"
+cursor-blink = true
+# Lines kept above the screen (0–200000).
+scrollback = 10000
+# Copy the selection to the clipboard as soon as it is made.
+copy-on-select = false
+# Right-click: "menu" (context menu) | "paste" (paste the clipboard, like Windows consoles).
+right-click = "menu"
+# Ask before pasting several lines or text ending with a newline (it would run at once).
+paste-warning = true
+# "visual" (flash the tab) | "none"
+bell = "visual"
+# Let bash, zsh, PowerShell and cmd report prompts, commands, exit codes and the current folder
+# (command navigation, history, the file tree following `cd`). fish and Nushell do it natively.
+shell-integration = true
+# Reopen the last session's tabs and folders.
+restore-session = true
+# Show a notification when a command that ran over 10 s ends in a background tab.
+notify-when-done = true
+# Ask before closing a tab that is running a program.
+confirm-close = true
+# Record commands in the history database (other/databases/genslate/terminal/history.sqlite).
+# Commands typed with a leading space are never recorded.
+history = true
+
+# Extra shells. `command` is looked up on PATH unless it is a full path; `cwd` may start with ~.
+# The profile id is "custom-" + the name in kebab-case (here "custom-dev-server").
+# icon: "powershell" | "cmd" | "linux" | "ubuntu" | "debian" | "bash" | "zsh" | "fish" | "nu"
+#       | "git" | "vs" | "terminal"
+# color: "frost" | "aurora-red" | "aurora-orange" | "aurora-yellow" | "aurora-green"
+#        | "aurora-purple"
+#
+# [[profiles]]
+# name = "Dev server"
+# command = "pwsh"
+# args = ["-NoLogo"]
+# cwd = "~/Projects"
+# env = { NODE_ENV = "development" }
+# icon = "terminal"
+# color = "aurora-green"
