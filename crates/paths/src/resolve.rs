@@ -14,6 +14,7 @@ use crate::{Environment, Layout, Mode, PathsError, detect_layout, fallback_layou
 /// | `metadata_dir` | `config/appdata/metadata/` |
 /// | `log_dir` | `logs/app-logs/<app>/` |
 /// | `data_dir` | `databases/genslate/<app>/` |
+/// | `shared_data_dir` | `databases/genslate/shared/` (suite-wide databases, e.g. AI memory) |
 /// | `cache_dir` | `cache/genslate/<app>/` (safe to delete: webview data, icon cache) |
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AppPaths {
@@ -29,6 +30,9 @@ pub struct AppPaths {
     pub metadata_dir: PathBuf,
     /// Durable app state (recents, databases).
     pub data_dir: PathBuf,
+    /// Durable state shared by every GENSLATE app (suite-wide databases such as the AI
+    /// memory). Sits next to the per-app data folders.
+    pub shared_data_dir: PathBuf,
     /// Disposable state (webview profile, thumbnails).
     pub cache_dir: PathBuf,
     /// Log files.
@@ -41,11 +45,12 @@ impl AppPaths {
         self.layout.mode
     }
 
-    /// Creates the config, data, cache and log folders.
+    /// Creates the config, data, shared data, cache and log folders.
     pub fn create_dirs(&self) -> Result<(), PathsError> {
         for dir in [
             &self.config_dir,
             &self.data_dir,
+            &self.shared_data_dir,
             &self.cache_dir,
             &self.log_dir,
         ] {
@@ -58,18 +63,24 @@ impl AppPaths {
     }
 }
 
+/// Folder name of the suite-wide data folder inside `other/databases/genslate/`. Reserved: no
+/// app may be called this.
+pub const SHARED_DATA: &str = "shared";
+
 impl Layout {
     /// Paths for `app` (lowercase kebab-case) inside this layout.
     pub fn app(&self, app: &str) -> Result<AppPaths, PathsError> {
         validate(app)?;
         let config = self.other.join("config");
         let config_dir = config.join("genslate").join(app);
+        let databases = self.other.join("databases").join("genslate");
         Ok(AppPaths {
             config_file: config_dir.join("config.toml"),
             keybindings_file: config_dir.join("keybindings.toml"),
             config_dir,
             metadata_dir: config.join("appdata").join("metadata"),
-            data_dir: self.other.join("databases").join("genslate").join(app),
+            data_dir: databases.join(app),
+            shared_data_dir: databases.join(SHARED_DATA),
             cache_dir: self.other.join("cache").join("genslate").join(app),
             log_dir: self.other.join("logs").join("app-logs").join(app),
             layout: self.clone(),
@@ -105,6 +116,7 @@ pub fn resolve_with(app: &str, env: &Environment) -> Result<AppPaths, PathsError
 fn validate(app: &str) -> Result<(), PathsError> {
     let valid = !app.is_empty()
         && !app.starts_with('-')
+        && app != SHARED_DATA
         && app
             .bytes()
             .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-');
@@ -146,9 +158,14 @@ mod tests {
             paths.data_dir,
             suite.join("other/databases/genslate/launcher")
         );
+        assert_eq!(
+            paths.shared_data_dir,
+            suite.join("other/databases/genslate/shared")
+        );
         assert_eq!(paths.cache_dir, suite.join("other/cache/genslate/launcher"));
         paths.create_dirs()?;
         assert!(paths.cache_dir.is_dir());
+        assert!(paths.shared_data_dir.is_dir());
         Ok(())
     }
 
@@ -168,13 +185,17 @@ mod tests {
             repo.join("other/config/genslate/example/config.toml")
         );
         assert_eq!(paths.log_dir, repo.join("other/logs/app-logs/example"));
+        assert_eq!(
+            paths.shared_data_dir,
+            repo.join("other/databases/genslate/shared")
+        );
         Ok(())
     }
 
     #[test]
     fn validates_names() {
         let env = Environment::default();
-        for bad in ["", "Example", "../x", "-x", "a b", "a/b"] {
+        for bad in ["", "Example", "../x", "-x", "a b", "a/b", SHARED_DATA] {
             assert!(
                 matches!(resolve_with(bad, &env), Err(PathsError::InvalidName(_))),
                 "{bad}"

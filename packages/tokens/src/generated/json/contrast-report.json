@@ -282,6 +282,26 @@
       "pass": true
     },
     {
+      "theme": "polar-night",
+      "fg": "terminal-fg",
+      "bg": "terminal-bg",
+      "fgHex": "#d8dee9",
+      "bgHex": "#2e3440",
+      "ratio": 9.25,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "polar-night",
+      "fg": "terminal-fg",
+      "bg": "terminal-selection",
+      "fgHex": "#d8dee9",
+      "bgHex": "#465b76",
+      "ratio": 5.15,
+      "min": 4.5,
+      "pass": true
+    },
+    {
       "theme": "snow-storm",
       "fg": "fg",
       "bg": "canvas",
@@ -558,6 +578,26 @@
       "fgHex": "#eceff4",
       "bgHex": "#3b4252",
       "ratio": 8.73,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "terminal-fg",
+      "bg": "terminal-bg",
+      "fgHex": "#3b4252",
+      "bgHex": "#f4f7fc",
+      "ratio": 9.37,
+      "min": 4.5,
+      "pass": true
+    },
+    {
+      "theme": "snow-storm",
+      "fg": "terminal-fg",
+      "bg": "terminal-selection",
+      "fgHex": "#3b4252",
+      "bgHex": "#d0dbe9",
+      "ratio": 7.18,
       "min": 4.5,
       "pass": true
     }

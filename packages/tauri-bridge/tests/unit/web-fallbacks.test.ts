@@ -113,6 +113,11 @@ describe('generic IPC in a plain browser', () => {
     expect(invokeCommand('list_apps')).rejects.toEqual(UNAVAILABLE);
   });
 
+  test('invokeBytes() rejects as unavailable', async () => {
+    const { invokeBytes, UNAVAILABLE } = await import('../../src');
+    expect(invokeBytes('pty_write', Uint8Array.of(1), {})).rejects.toEqual(UNAVAILABLE);
+  });
+
   test('listenEvent() resolves to a harmless unsubscribe', async () => {
     const { listenEvent } = await import('../../src');
     const unlisten = await listenEvent('launcher://shown', () => {});

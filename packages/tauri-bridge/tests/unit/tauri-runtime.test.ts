@@ -5,6 +5,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import {
   commands,
   detectPlatform,
+  invokeBytes,
   isTauri,
   setNativeTheme,
   useAppInfo,
@@ -16,6 +17,11 @@ type TauriGlobals = typeof globalThis & {
   __TAURI_OS_PLUGIN_INTERNALS__?: { platform: string };
 };
 const globals = globalThis as TauriGlobals;
+type TauriInternals = typeof globalThis & {
+  __TAURI_INTERNALS__?: {
+    invoke: (cmd: string, args: unknown, options?: { headers?: HeadersInit }) => Promise<unknown>;
+  };
+};
 
 const APP_INFO = {
   name: 'GENSLATE Example',
@@ -78,6 +84,23 @@ describe('inside Tauri (mocked IPC)', () => {
   test('commands.appInfo() invokes get_app_info', async () => {
     expect(await commands.appInfo()).toEqual(APP_INFO);
     expect(calls.map((call) => call.cmd)).toContain('get_app_info');
+  });
+
+  test('invokeBytes() sends the bytes as the raw body with its headers', async () => {
+    // mockIPC's callback doesn't see the options, so watch the internal invoke instead.
+    const internals = (globalThis as TauriInternals).__TAURI_INTERNALS__;
+    if (internals === undefined) throw new Error('mockIPC did not install the internals');
+    const seen: { args: unknown; headers: HeadersInit | undefined }[] = [];
+    const original = internals.invoke;
+    internals.invoke = (cmd, args, options) => {
+      seen.push({ args, headers: options?.headers });
+      return original(cmd, args, options);
+    };
+    const bytes = Uint8Array.of(0x1b, 0x5b, 0x4d, 0xff);
+    await invokeBytes('pty_write', bytes, { 'x-session': 'pane-1' });
+    expect(seen).toHaveLength(1);
+    expect(seen[0]?.args).toBe(bytes);
+    expect(new Headers(seen[0]?.headers).get('x-session')).toBe('pane-1');
   });
 
   test('useAppInfo() loads the build metadata once', async () => {

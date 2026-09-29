@@ -1,0 +1,21 @@
+[package]
+name = "genslate-storage"
+description = "Shared SQLite storage for GENSLATE apps: tuned connections, migrations, FTS5 helpers and the suite-wide AI memory."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+rusqlite.workspace = true
+rusqlite_migration.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+genslate-testing.workspace = true
+
+[lints]
+workspace = true

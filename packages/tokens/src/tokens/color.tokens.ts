@@ -123,6 +123,8 @@ export const DERIVED: Readonly<Record<DerivedColorKey, DerivedColor>> = {
   'nord-10-d08': derive('nord-10', darken(0.08), 'Primary accent (light) — white text ≥ 4.5:1.'),
   'nord-10-d10': derive('nord-10', darken(0.1), 'Primary accent hover (light).'),
   'nord-10-d12': derive('nord-10', darken(0.12), 'Primary accent pressed (light).'),
+  'nord-7-d24': derive('nord-7', darken(0.24), 'Terminal bright cyan (light).'),
+  'nord-8-d30': derive('nord-8', darken(0.3), 'Terminal cyan (light).'),
   // Aurora
   'nord-11-l16': derive('nord-11', lighten(0.16), 'Danger text (dark).'),
   'nord-11-d08': derive('nord-11', darken(0.08), 'Danger solid — white text ≥ 4.5:1.'),
@@ -135,6 +137,11 @@ export const DERIVED: Readonly<Record<DerivedColorKey, DerivedColor>> = {
   'nord-14-d08': derive('nord-14', darken(0.08), 'Success solid (light).'),
   'nord-14-d12': derive('nord-14', darken(0.12), 'Success hover (light).'),
   'nord-14-d28': derive('nord-14', darken(0.28), 'Success text (light).'),
+  'nord-12-d12': derive('nord-12', darken(0.12), 'Orange accent (light).'),
+  'nord-13-d28': derive('nord-13', darken(0.28), 'Terminal bright yellow (light).'),
+  'nord-14-d20': derive('nord-14', darken(0.2), 'Terminal bright green (light).'),
+  'nord-15-d12': derive('nord-15', darken(0.12), 'Terminal bright magenta (light).'),
+  'nord-15-d20': derive('nord-15', darken(0.2), 'Terminal magenta (light).'),
 };
 
 /** Every primitive a theme may reference, resolved to hex. */

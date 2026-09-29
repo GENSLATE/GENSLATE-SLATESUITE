@@ -19,6 +19,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { workspace = true }
 
 [dependencies]
+dirs.workspace = true
 genslate-core-terminal.workspace = true
 genslate-design-tokens.workspace = true
 genslate-paths.workspace = true
@@ -31,6 +32,9 @@ tauri-plugin-os.workspace = true
 tauri-plugin-single-instance.workspace = true
 tauri-plugin-window-state.workspace = true
 thiserror.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
 
 [lints]
 workspace = true

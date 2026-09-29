@@ -55,6 +55,13 @@ export const DERIVED_COLOR_KEYS = [
   'nord-14-d08',
   'nord-14-d12',
   'nord-14-d28',
+  'nord-7-d24',
+  'nord-8-d30',
+  'nord-13-d28',
+  'nord-14-d20',
+  'nord-15-d12',
+  'nord-15-d20',
+  'nord-12-d12',
 ] as const;
 
 /** T1 semantic colour roles → `--gs-color-{key}` → Tailwind `bg-{key}`, `text-{key}`, … */
@@ -165,6 +172,35 @@ export const CHROME_COLOR_KEYS = [
   'scrollbar-thumb',
   'scrollbar-thumb-hover',
   'scrollbar-thumb-active',
+  // Terminal: surface, text, cursor and the 16 ANSI colours (xterm.js theme)
+  'terminal-bg',
+  'terminal-fg',
+  'terminal-cursor',
+  'terminal-cursor-text',
+  'terminal-selection',
+  'terminal-black',
+  'terminal-red',
+  'terminal-green',
+  'terminal-yellow',
+  'terminal-blue',
+  'terminal-magenta',
+  'terminal-cyan',
+  'terminal-white',
+  'terminal-bright-black',
+  'terminal-bright-red',
+  'terminal-bright-green',
+  'terminal-bright-yellow',
+  'terminal-bright-blue',
+  'terminal-bright-magenta',
+  'terminal-bright-cyan',
+  'terminal-bright-white',
+  // Profile and tab accents (a shell's colour in tabs, menus and the sessions list)
+  'profile-frost',
+  'profile-red',
+  'profile-orange',
+  'profile-yellow',
+  'profile-green',
+  'profile-purple',
 ] as const;
 
 /** Elevation: control(1) · card(2) · popover(3) · dialog(4) · inset (fields). */

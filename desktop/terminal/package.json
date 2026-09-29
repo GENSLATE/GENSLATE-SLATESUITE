@@ -2,7 +2,7 @@
   "name": "@genslate/terminal",
   "version": "0.1.0",
   "private": true,
-  "description": "GENSLATE Terminal: A fast, modern terminal with tabs and splits.",
+  "description": "GENSLATE Terminal: a fast, modern, AI-native terminal with tabs, splits and shell integration.",
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
@@ -14,6 +14,16 @@
   "dependencies": {
     "@genslate/design-system": "workspace:*",
     "@genslate/tauri-bridge": "workspace:*",
+    "@genslate/tokens": "workspace:*",
+    "@xterm/addon-clipboard": "catalog:",
+    "@xterm/addon-fit": "catalog:",
+    "@xterm/addon-image": "catalog:",
+    "@xterm/addon-search": "catalog:",
+    "@xterm/addon-serialize": "catalog:",
+    "@xterm/addon-unicode11": "catalog:",
+    "@xterm/addon-web-links": "catalog:",
+    "@xterm/addon-webgl": "catalog:",
+    "@xterm/xterm": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

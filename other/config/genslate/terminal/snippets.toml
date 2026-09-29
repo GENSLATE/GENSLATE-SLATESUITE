@@ -1,0 +1,38 @@
+# GENSLATE Terminal — snippets. Edit them in the app (Command palette → Snippets) or here.
+# Each [[snippet]]: name, command, description (optional), run = true to press Enter after
+# pasting. `id` is written by the app; keep it stable.
+
+[[snippet]]
+id = "git-status"
+name = "Git status"
+command = "git status --short --branch"
+description = "Current branch and changed files, one line each"
+run = true
+
+[[snippet]]
+id = "git-log"
+name = "Git log (graph)"
+command = "git log --oneline --graph --decorate -20"
+description = "The last 20 commits as a graph"
+run = true
+
+[[snippet]]
+id = "listening-ports"
+name = "Listening ports"
+command = "netstat -an | grep LISTEN"
+description = "Ports programs listen on (Windows: netstat -an | findstr LISTENING)"
+run = true
+
+[[snippet]]
+id = "disk-usage"
+name = "Disk usage here"
+command = "du -sh * | sort -h"
+description = "Size of each item in this folder, largest last (PowerShell: gci | sort Length)"
+run = true
+
+[[snippet]]
+id = "update-bun-deps"
+name = "Update bun dependencies"
+command = "bun update --interactive"
+description = "Pick which dependencies to upgrade"
+run = false

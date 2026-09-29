@@ -8,6 +8,7 @@
 | [Design system](./design-system.md) | You're building UI — tokens, themes, components, the contract. |
 | [Context menus](./context-menus.md) | You're changing what a right-click shows in an app (titlebar, fields, content, status bar) or on the launcher's tray icon. |
 | [Explorer](./explorer.md) | You're working on the file explorer: features, AI previews, how it's built. |
+| [Terminal](./terminal.md) | You're working on the terminal: features, AI previews, storage, how it's built. |
 | [IPC](./ipc.md) | You're adding a Rust command or calling Tauri from React. |
 | [Portability](./portability.md) | You care where config and logs live (dev / portable / installed). |
 | [Testing](./testing.md) | You're writing or running TS, React, Rust or e2e tests. |

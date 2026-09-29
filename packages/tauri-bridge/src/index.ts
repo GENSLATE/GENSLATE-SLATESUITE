@@ -4,9 +4,16 @@
  */
 export { useAppInfo } from './ipc/app-info.hook';
 export type { AppInfo } from './ipc/app-info.types';
+export { channelBytes, createChannel, type IpcChannel } from './ipc/channel';
 export { type CommandError, isCommandError } from './ipc/command-error.types';
 export { commands } from './ipc/commands';
-export { customSchemeUrl, invokeCommand, listenEvent, UNAVAILABLE } from './ipc/invoke';
+export {
+  customSchemeUrl,
+  invokeBytes,
+  invokeCommand,
+  listenEvent,
+  UNAVAILABLE,
+} from './ipc/invoke';
 export { detectPlatform, type Platform } from './platform/platform.detect';
 export { isTauri } from './runtime/runtime.detect';
 export { type NativeTheme, setNativeTheme } from './theme/native-theme';

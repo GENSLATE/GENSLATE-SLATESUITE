@@ -7,10 +7,11 @@ tags: ['desktop-app']
 
 project:
   title: 'GENSLATE Terminal'
-  description: 'GENSLATE Terminal desktop app.'
+  description: 'GENSLATE Terminal: tabs, splits, shell integration, history and snippets.'
 
 dependsOn:
   - 'design-system'
+  - 'tokens'
   - 'tauri-bridge'
   - id: 'config-vite'
     scope: 'development'
