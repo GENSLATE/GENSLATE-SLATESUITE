@@ -101,6 +101,33 @@
   --color-scrollbar-thumb: var(--gs-scrollbar-thumb);
   --color-scrollbar-thumb-hover: var(--gs-scrollbar-thumb-hover);
   --color-scrollbar-thumb-active: var(--gs-scrollbar-thumb-active);
+  --color-terminal-bg: var(--gs-terminal-bg);
+  --color-terminal-fg: var(--gs-terminal-fg);
+  --color-terminal-cursor: var(--gs-terminal-cursor);
+  --color-terminal-cursor-text: var(--gs-terminal-cursor-text);
+  --color-terminal-selection: var(--gs-terminal-selection);
+  --color-terminal-black: var(--gs-terminal-black);
+  --color-terminal-red: var(--gs-terminal-red);
+  --color-terminal-green: var(--gs-terminal-green);
+  --color-terminal-yellow: var(--gs-terminal-yellow);
+  --color-terminal-blue: var(--gs-terminal-blue);
+  --color-terminal-magenta: var(--gs-terminal-magenta);
+  --color-terminal-cyan: var(--gs-terminal-cyan);
+  --color-terminal-white: var(--gs-terminal-white);
+  --color-terminal-bright-black: var(--gs-terminal-bright-black);
+  --color-terminal-bright-red: var(--gs-terminal-bright-red);
+  --color-terminal-bright-green: var(--gs-terminal-bright-green);
+  --color-terminal-bright-yellow: var(--gs-terminal-bright-yellow);
+  --color-terminal-bright-blue: var(--gs-terminal-bright-blue);
+  --color-terminal-bright-magenta: var(--gs-terminal-bright-magenta);
+  --color-terminal-bright-cyan: var(--gs-terminal-bright-cyan);
+  --color-terminal-bright-white: var(--gs-terminal-bright-white);
+  --color-profile-frost: var(--gs-profile-frost);
+  --color-profile-red: var(--gs-profile-red);
+  --color-profile-orange: var(--gs-profile-orange);
+  --color-profile-yellow: var(--gs-profile-yellow);
+  --color-profile-green: var(--gs-profile-green);
+  --color-profile-purple: var(--gs-profile-purple);
 
   /* Typography */
   --font-*: initial;

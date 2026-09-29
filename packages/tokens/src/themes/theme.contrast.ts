@@ -37,4 +37,6 @@ export const STANDARD_CONTRAST: readonly ContrastRequirement[] = [
   { fg: 'statusbar-fg', bg: 'statusbar-bg', min: 4.5 },
   { fg: 'statusbar-accent-fg', bg: 'statusbar-accent-bg', min: 4.5 },
   { fg: 'tooltip-fg', bg: 'tooltip-bg', min: 4.5 },
+  { fg: 'terminal-fg', bg: 'terminal-bg', min: 4.5 },
+  { fg: 'terminal-fg', bg: 'terminal-selection', min: 4.5 },
 ];
