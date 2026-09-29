@@ -20,9 +20,14 @@ pub const BUSY_TIMEOUT: Duration = Duration::from_secs(5);
 ///   two apps on a shared database) can use the file at the same time;
 /// - `synchronous=NORMAL`: durable across app crashes, the safe choice with WAL;
 /// - `foreign_keys=ON`: `ON DELETE CASCADE` and references are enforced;
+/// - `secure_delete=ON`: deleted rows (cleared history, forgotten memories) are overwritten
+///   with zeros instead of lingering in free pages;
 /// - `busy_timeout` of [`BUSY_TIMEOUT`];
 /// - write transactions start `IMMEDIATE`, so a transaction never fails half-way when it
 ///   upgrades from a read to a write lock.
+///
+/// On Unix a new file is readable by its owner only (`0600`, and `0700` for folders it
+/// creates): databases hold command lines and conversations.
 ///
 /// `rusqlite::Connection` is `Send` but not `Sync`: share a `Database` behind a `Mutex`.
 #[derive(Debug)]
@@ -39,12 +44,17 @@ impl Database {
             .parent()
             .filter(|parent| !parent.as_os_str().is_empty())
         {
-            fs::create_dir_all(parent).map_err(|source| StorageError::Io {
+            create_private_dir(parent).map_err(|source| StorageError::Io {
                 action: "could not create",
                 path: parent.to_path_buf(),
                 source,
             })?;
         }
+        create_private_file(path).map_err(|source| StorageError::Io {
+            action: "could not create",
+            path: path.to_path_buf(),
+            source,
+        })?;
         let open_error = |source| StorageError::Open {
             path: path.to_path_buf(),
             source,
@@ -102,6 +112,26 @@ impl Database {
     }
 }
 
+/// Creates `dir` and its missing parents; on Unix the new folders are owner-only.
+fn create_private_dir(dir: &Path) -> std::io::Result<()> {
+    let mut builder = fs::DirBuilder::new();
+    builder.recursive(true);
+    #[cfg(unix)]
+    std::os::unix::fs::DirBuilderExt::mode(&mut builder, 0o700);
+    builder.create(dir)
+}
+
+/// Creates `path` if it is missing (SQLite accepts an empty file), so it never exists with
+/// looser permissions; on Unix it is owner-only. SQLite gives its `-wal` and `-shm` files the
+/// same permissions.
+fn create_private_file(path: &Path) -> std::io::Result<()> {
+    let mut options = fs::OpenOptions::new();
+    options.write(true).create(true).truncate(false);
+    #[cfg(unix)]
+    std::os::unix::fs::OpenOptionsExt::mode(&mut options, 0o600);
+    options.open(path).map(drop)
+}
+
 /// Applies the connection pragmas (see [`Database`]).
 fn configure(conn: &mut Connection) -> rusqlite::Result<()> {
     conn.busy_timeout(BUSY_TIMEOUT)?;
@@ -110,6 +140,7 @@ fn configure(conn: &mut Connection) -> rusqlite::Result<()> {
         conn.pragma_update_and_check(None, "journal_mode", "WAL", |row| row.get(0))?;
     conn.pragma_update(None, "synchronous", "NORMAL")?;
     conn.pragma_update(None, "foreign_keys", true)?;
+    conn.pragma_update(None, "secure_delete", true)?;
     conn.set_transaction_behavior(TransactionBehavior::Immediate);
     Ok(())
 }
@@ -190,6 +221,32 @@ mod tests {
             .conn()
             .query_row("PRAGMA synchronous", [], |row| row.get(0))?;
         assert_eq!(synchronous, 1, "NORMAL");
+        Ok(())
+    }
+
+    #[test]
+    fn deleted_rows_are_overwritten() -> TestResult {
+        let db = Database::open_in_memory(&migrations())?;
+        let secure: i64 = db
+            .conn()
+            .query_row("PRAGMA secure_delete", [], |row| row.get(0))?;
+        assert_eq!(secure, 1);
+        Ok(())
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn new_files_are_owner_only() -> TestResult {
+        use std::os::unix::fs::PermissionsExt;
+
+        let tree = TempTree::new()?;
+        let path = tree.join("private/app.sqlite");
+        let _db = Database::open(&path, &migrations())?;
+        let mode = |path: &Path| -> std::io::Result<u32> {
+            Ok(fs::metadata(path)?.permissions().mode() & 0o777)
+        };
+        assert_eq!(mode(&path)?, 0o600);
+        assert_eq!(mode(&tree.join("private"))?, 0o700);
         Ok(())
     }
 
