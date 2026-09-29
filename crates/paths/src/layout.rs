@@ -309,6 +309,16 @@ mod tests {
         let layout = detect_layout(&env_for_exe(exe))?;
         assert_eq!(layout.mode, Mode::Fallback);
         assert_eq!(layout.root, PathBuf::from("/os-data/GENSLATE"));
+        let paths = layout.app("explorer")?;
+        assert_eq!(
+            paths.shared_data_dir,
+            layout.other.join("databases/genslate/shared")
+        );
+        assert_eq!(
+            paths.data_dir.parent(),
+            paths.shared_data_dir.parent(),
+            "shared data sits next to the app data"
+        );
         Ok(())
     }
 

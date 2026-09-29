@@ -11,6 +11,7 @@
 //!
 //! Inside `other/`: `config/genslate/<app>/{config,keybindings}.toml`,
 //! `config/appdata/metadata/`, `logs/app-logs/<app>/`, `databases/genslate/<app>/`,
+//! `databases/genslate/shared/` (suite-wide databases every app shares, e.g. the AI memory),
 //! `cache/genslate/<app>/`.
 //!
 //! [`resolve`] reads the real environment; [`resolve_with`] / [`detect_layout`] take an
@@ -29,4 +30,4 @@ pub use layout::{
     Layout, Mode, SHARED_PROFILE, bundle_dir, detect_layout, fallback_layout, find_install_dir,
 };
 pub use repo::find_repo_root;
-pub use resolve::{AppPaths, resolve, resolve_with};
+pub use resolve::{AppPaths, SHARED_DATA, resolve, resolve_with};
