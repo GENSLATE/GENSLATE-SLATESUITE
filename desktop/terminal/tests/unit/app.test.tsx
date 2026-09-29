@@ -5,12 +5,33 @@ import { App } from '../../src/app/app.component';
 import { APP } from '../../src/app/app.meta';
 import { AppProviders } from '../../src/app/app.providers';
 
+/**
+ * happy-dom has no canvas; xterm only measures glyphs with a 2D context here (the WebGL
+ * renderer falls back on its own), so a context that measures every glyph 8px wide is enough.
+ */
+const fakeContext = new Proxy(
+  { measureText: (text: string) => ({ width: text.length * 8 }), canvas: {} },
+  {
+    get: (target, key) => (key in target ? target[key as keyof typeof target] : () => undefined),
+  },
+);
+HTMLCanvasElement.prototype.getContext = function getContext(kind: string) {
+  return kind === '2d' ? fakeContext : null;
+} as typeof HTMLCanvasElement.prototype.getContext;
+
 function renderApp() {
   return render(
     <AppProviders>
       <App />
     </AppProviders>,
   );
+}
+
+/** The first tab opens once the shells and settings have loaded. */
+async function tabStrip() {
+  const tabs = await screen.findByRole('tablist', { name: 'Terminal tabs' });
+  await within(tabs).findByRole('tab', { name: /PowerShell/ });
+  return tabs;
 }
 
 beforeEach(() => {
@@ -20,20 +41,13 @@ beforeEach(() => {
 });
 
 describe('GENSLATE Terminal', () => {
-  test('renders the titlebar, the app name and version, and the status bar', () => {
+  test('opens a tab with the default shell, the titlebar and the status bar', async () => {
     renderApp();
-    const banner = screen.getByRole('banner');
-    expect(banner).toHaveAttribute('data-tauri-drag-region');
-    expect(within(banner).getByText(APP.name)).toBeInTheDocument();
-
-    const main = screen.getByRole('main', { name: APP.name });
-    expect(within(main).getByRole('heading', { level: 1, name: APP.name })).toBeInTheDocument();
-    expect(within(main).getByText(`Version ${APP.version}`)).toBeInTheDocument();
-
+    await tabStrip();
+    expect(screen.getByRole('banner')).toHaveAttribute('data-tauri-drag-region');
     const status = screen.getByRole('contentinfo', { name: 'Status bar' });
-    expect(within(status).getByText(APP.productName)).toBeInTheDocument();
     expect(within(status).getByText(`v${APP.version}`)).toBeInTheDocument();
-    expect(within(status).getByText('Browser')).toBeInTheDocument();
+    expect(within(status).getByText('Polar Night')).toBeInTheDocument();
   });
 
   test('names the app consistently with its package', () => {
@@ -41,21 +55,22 @@ describe('GENSLATE Terminal', () => {
     expect(APP.productName).toEndWith(APP.name);
   });
 
-  test('the titlebar theme toggle flips data-theme', async () => {
+  test('keyboard: Ctrl+Shift+T opens a tab and Ctrl+Shift+L switches the theme', async () => {
     const user = userEvent.setup();
     renderApp();
-    expect(document.documentElement).toHaveAttribute('data-theme', 'polar-night');
-    await user.click(screen.getByRole('button', { name: 'Switch to Snow Storm' }));
-    expect(document.documentElement).toHaveAttribute('data-theme', 'snow-storm');
-    await user.click(screen.getByRole('button', { name: 'Switch to Polar Night' }));
-    expect(document.documentElement).toHaveAttribute('data-theme', 'polar-night');
-  });
-
-  test('keyboard: mod+shift+L toggles the theme', async () => {
-    const user = userEvent.setup();
-    renderApp();
-    // happy-dom's user agent is Linux, so `mod` is Control.
+    const tabs = await tabStrip();
+    await user.keyboard('{Control>}{Shift>}t{/Shift}{/Control}');
+    expect(await within(tabs).findAllByRole('tab')).toHaveLength(2);
     await user.keyboard('{Control>}{Shift>}l{/Shift}{/Control}');
     expect(document.documentElement).toHaveAttribute('data-theme', 'snow-storm');
+  });
+
+  test('the assistant is a preview in the side panel', async () => {
+    const user = userEvent.setup();
+    renderApp();
+    await tabStrip();
+    await user.click(screen.getByRole('tab', { name: /Assistant/ }));
+    expect(await screen.findByText('Terminal assistant')).toBeInTheDocument();
+    expect(screen.getAllByText('Coming soon').length).toBeGreaterThan(0);
   });
 });

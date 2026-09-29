@@ -1,5 +1,6 @@
 /* Tailwind v4 + GENSLATE tokens and components (design-system.css imports tailwindcss). */
 @import '@genslate/design-system/design-system.css';
+@import '@xterm/xterm/css/xterm.css';
 
 /* This app's own sources. */
 @source '../';
@@ -8,4 +9,88 @@ html,
 body,
 #root {
   height: 100%;
+}
+
+/*
+ * The box each terminal lives in: a gutter on the left for the command marks, a little air
+ * above and below. FitAddon subtracts this padding when it sizes the grid.
+ */
+.gs-term-host {
+  position: absolute;
+  inset: 0;
+  padding: 6px 2px 4px 14px;
+  background: var(--gs-terminal-bg);
+}
+
+.gs-term-host .xterm {
+  height: 100%;
+}
+
+.gs-term-host .xterm-viewport {
+  background: var(--gs-terminal-bg) !important;
+}
+
+.gs-term-host .xterm-screen {
+  cursor: var(--gs-cursor-text, text);
+}
+
+/* Links under Ctrl/⌘ use the hand, like everywhere else. */
+.gs-term-host .xterm-cursor-pointer,
+.gs-term-host .xterm-cursor-pointer .xterm-screen {
+  cursor: var(--gs-cursor-pointer, pointer);
+}
+
+/* A command's mark in the gutter: a short bar in the left padding, coloured by outcome. */
+.gs-cmd-mark {
+  margin-left: -10px;
+  width: 3px !important;
+  border-radius: 2px;
+  background: var(--gs-color-fg-disabled);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.gs-cmd-mark[data-status='running'] {
+  background: var(--gs-color-accent);
+}
+
+.gs-cmd-mark[data-status='success'] {
+  background: var(--gs-color-success);
+}
+
+.gs-cmd-mark[data-status='failure'] {
+  background: var(--gs-color-danger);
+}
+
+/* "Explain" at the end of a failed command's prompt line (a preview of the assistant). */
+.gs-explain-chip {
+  pointer-events: auto;
+  /* Right-anchored, so a margin can't move it: clear the overview ruler with a transform. */
+  transform: translateX(-12px);
+  border-radius: 999px;
+  font: 500 11px / 1 var(--gs-font-sans);
+  white-space: nowrap;
+  color: var(--gs-color-accent-fg);
+  background: var(--gs-color-accent-subtle);
+  box-shadow: inset 0 0 0 0.5px var(--gs-color-accent-border);
+  cursor: var(--gs-cursor-interactive, pointer);
+  opacity: 0.85;
+  transition: opacity var(--gs-duration-fast) ease;
+}
+
+.gs-explain-chip-label {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.gs-explain-chip:hover {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-explain-chip {
+    transition: none;
+  }
 }
