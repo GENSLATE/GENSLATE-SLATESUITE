@@ -11,6 +11,11 @@ if [[ -n "${__genslate_loaded-}" || $- != *i* ]]; then
 fi
 __genslate_loaded=1
 
+# The terminal's secret for this shell: appended to each command report so it can't be forged
+# by program output. Hidden from everything the shell starts.
+__genslate_nonce=${GENSLATE_NONCE-}
+builtin unset GENSLATE_NONCE
+
 # 1. The user's startup files (`--rcfile` replaces them, and bash ignores it for login shells).
 if [[ "${GENSLATE_SHELL_LOGIN-}" == 1 ]]; then
   builtin unset GENSLATE_SHELL_LOGIN
@@ -35,16 +40,22 @@ __genslate_hist_ready=
 __genslate_last_hist=
 __genslate_ps1_wrapped=
 
-# VS Code's escaping for OSC 633;E: `\` → `\\`, `;` → `\x3b`, control characters → `\xHH`.
+# VS Code's escaping for OSC 633;E: `\` → `\\`, `;` → `\x3b`, control characters → `\xHH`
+# (every one, C1 included in UTF-8 locales, so none can end the sequence early).
 __genslate_escape() {
-  local s=$1
+  local s=$1 out= c i
   s=${s//\\/\\\\}
   s=${s//;/\\x3b}
-  s=${s//$'\n'/\\x0a}
-  s=${s//$'\r'/\\x0d}
-  s=${s//$'\t'/\\x09}
-  s=${s//$'\e'/\\x1b}
-  s=${s//$'\a'/\\x07}
+  if [[ $s == *[[:cntrl:]]* ]]; then
+    for (( i = 0; i < ${#s}; i++ )); do
+      c=${s:i:1}
+      if [[ $c == [[:cntrl:]] ]]; then
+        builtin printf -v c '\\x%02x' "'$c"
+      fi
+      out+=$c
+    done
+    s=$out
+  fi
   REPLY=$s
 }
 
@@ -111,7 +122,7 @@ __genslate_prompt_end() {
 # A command is about to run: report its command line (OSC 633;E) and mark the output (133;C).
 __genslate_command_start() {
   __genslate_escape "$1"
-  builtin printf '\e]633;E;%s\a\e]133;C\a' "$REPLY"
+  builtin printf '\e]633;E;%s;%s\a\e]133;C\a' "$REPLY" "$__genslate_nonce"
   __genslate_running=1
 }
 

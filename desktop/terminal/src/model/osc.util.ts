@@ -37,13 +37,33 @@ export function unescapeCommandLine(value: string): string {
   );
 }
 
-/** The command line from an `OSC 633` payload (`E;<command>[;<nonce>]`), else `null`. */
-export function parseCommandLine(data: string): string | null {
+/** A command line reported with `OSC 633 ; E`, and the nonce that proves it came from our scripts. */
+export interface CommandReport {
+  readonly command: string;
+  readonly nonce: string | null;
+}
+
+/** The report in an `OSC 633` payload (`E;<command>[;<nonce>]`), else `null`. */
+export function parseCommandLine(data: string): CommandReport | null {
   if (!data.startsWith('E;')) return null;
   const rest = data.slice(2);
-  // A nonce may follow after an unescaped `;` (escaped ones are `\x3b`).
+  // The nonce follows an unescaped `;` (escaped ones are `\x3b`).
   const end = rest.indexOf(';');
-  return unescapeCommandLine(end === -1 ? rest : rest.slice(0, end));
+  return {
+    command: printable(unescapeCommandLine(end === -1 ? rest : rest.slice(0, end))),
+    nonce: end === -1 ? null : rest.slice(end + 1),
+  };
+}
+
+// biome-ignore lint/suspicious/noControlCharactersInRegex: matching control characters is the point
+const CONTROL = /[\x00-\x08\x0a-\x1f\x7f-\x9f]/g;
+
+/**
+ * `text` without control characters (tabs become spaces): a command line may be pasted back
+ * into a shell, where an escape or a carriage return would act.
+ */
+export function printable(text: string): string {
+  return text.replaceAll('\t', ' ').replace(CONTROL, '');
 }
 
 /**

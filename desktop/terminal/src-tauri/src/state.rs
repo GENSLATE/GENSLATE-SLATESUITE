@@ -57,8 +57,17 @@ impl Terminal {
         lock(&self.config)
     }
 
-    pub fn set_config(&self, config: Config) {
-        *lock(&self.config) = config;
+    /// Runs `update` (a read-modify-write of `config.toml`) while holding the config lock, so
+    /// two setting changes never interleave, then keeps the config it returns.
+    pub fn update_config<E>(
+        &self,
+        update: impl FnOnce() -> Result<Config, E>,
+    ) -> Result<TerminalSettings, E> {
+        let mut config = lock(&self.config);
+        let updated = update()?;
+        let settings = updated.terminal.clone();
+        *config = updated;
+        Ok(settings)
     }
 
     /// The `[terminal]` settings in effect.

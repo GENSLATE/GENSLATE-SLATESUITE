@@ -209,6 +209,7 @@ export function parseSpawnInfo(value: unknown): SpawnInfo {
     profileId: text(raw['profileId'], 'profile id'),
     shellName: text(raw['shellName'], 'shell name'),
     cwd: text(raw['cwd'], 'cwd'),
+    nonce: nullableText(raw['nonce'], 'nonce'),
   };
 }
 
@@ -289,4 +290,34 @@ export function parseGitInfo(value: unknown): GitInfo | null {
 
 export function parseStrings(value: unknown, what: string): readonly string[] {
   return array(value, what).map((item) => text(item, what));
+}
+
+/** `terminal://exit`: a session's shell ended. */
+export function parseExitEvent(value: unknown): {
+  readonly id: string;
+  readonly code: number | null;
+} {
+  const raw = object(value, 'exit event');
+  return { id: text(raw['id'], 'session id'), code: nullableNum(raw['code'], 'exit code') };
+}
+
+/** `terminal://command`: a session finished a command. */
+export function parseCommandEvent(value: unknown): {
+  readonly id: string;
+  readonly entry: HistoryEntry;
+} {
+  const raw = object(value, 'command event');
+  return { id: text(raw['id'], 'session id'), entry: parseHistoryEntry(raw['entry']) };
+}
+
+/** `terminal://open`: a second launch asked for a tab. */
+export function parseOpenRequest(value: unknown): {
+  readonly cwd: string | null;
+  readonly profileId: string | null;
+} {
+  const raw = object(value, 'open request');
+  return {
+    cwd: nullableText(raw['cwd'], 'cwd'),
+    profileId: nullableText(raw['profileId'], 'profile id'),
+  };
 }

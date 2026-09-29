@@ -1,6 +1,13 @@
 import { describe, expect, test } from 'bun:test';
 
-import { baseName, isInside, parentOf, quotePath, tildify } from '../../../src/model/path.util';
+import {
+  anyInside,
+  baseName,
+  isInside,
+  parentOf,
+  quotePath,
+  tildify,
+} from '../../../src/model/path.util';
 import { cdCommand, shellPath, wslPath } from '../../../src/model/shell.util';
 
 describe('paths', () => {
@@ -17,6 +24,12 @@ describe('paths', () => {
     expect(isInside('c:\\users\\YOU\\src', 'C:\\Users\\you')).toBe(true);
     expect(isInside('/home/You/src', '/home/you')).toBe(false);
     expect(isInside('/home/youth', '/home/you')).toBe(false);
+  });
+
+  test('a change matters only inside the repository', () => {
+    expect(anyInside(['/home/you/app/src', '/tmp/build'], '/home/you/app')).toBe(true);
+    expect(anyInside(['/tmp/build', '/home/you/other'], '/home/you/app')).toBe(false);
+    expect(anyInside([], '/home/you/app')).toBe(false);
   });
 
   test('home shows as ~', () => {

@@ -60,6 +60,7 @@ tauri-plugin-window-state = "2.4.1"
 # ── Core ─────────────────────────────────────────────────────────────
 dirs = "7.0.0"
 dunce = "1.0.5"
+getrandom = "0.4.3"
 gix = { version = "0.88.0", default-features = false, features = ["sha1", "status"] }
 ico = "0.5.0"
 ignore = "0.4.33"

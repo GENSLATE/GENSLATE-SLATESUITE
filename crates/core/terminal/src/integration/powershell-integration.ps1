@@ -9,6 +9,10 @@ if (-not $Global:__GenslateLoaded) {
     $Global:__GenslateLoaded = $true
     $Global:__GenslateEsc = [string][char]0x1b
     $Global:__GenslateBel = [string][char]0x07
+    # The terminal's secret for this shell: appended to each command report so it can't be
+    # forged by program output. Hidden from everything the shell starts.
+    $Global:__GenslateNonce = $env:GENSLATE_NONCE
+    Remove-Item Env:GENSLATE_NONCE -ErrorAction SilentlyContinue
     # Unknown until the first prompt: the startup command itself is in the history by then.
     $Global:__GenslateLastHistoryId = $null
     $Global:__GenslateCommandSent = $false
@@ -22,7 +26,7 @@ if (-not $Global:__GenslateLoaded) {
             $code = [int] $char
             if ($code -eq 0x5c) { [void] $builder.Append('\\') }
             elseif ($code -eq 0x3b) { [void] $builder.Append('\x3b') }
-            elseif ($code -lt 0x20 -or $code -eq 0x7f) { [void] $builder.Append('\x' + $code.ToString('x2')) }
+            elseif ($code -lt 0x20 -or ($code -ge 0x7f -and $code -le 0x9f)) { [void] $builder.Append('\x' + $code.ToString('x2')) }
             else { [void] $builder.Append($char) }
         }
         $builder.ToString()
@@ -45,7 +49,7 @@ if (-not $Global:__GenslateLoaded) {
             $Global:__GenslateLastHistoryId = $lastId
             if (-not $Global:__GenslateCommandSent) {
                 # Without PSReadLine nothing reported the command as it started: do it now.
-                $marks += "$esc]633;E;$(__GenslateEscape $last.CommandLine)$bel$esc]133;C$bel"
+                $marks += "$esc]633;E;$(__GenslateEscape $last.CommandLine);$Global:__GenslateNonce$bel$esc]133;C$bel"
             }
             $code = 0
             if (-not $succeeded) {
@@ -78,7 +82,7 @@ if (-not $Global:__GenslateLoaded) {
             $Global:__GenslateCommandSent = $true
             $esc = $Global:__GenslateEsc
             $bel = $Global:__GenslateBel
-            [Console]::Write("$esc]633;E;$(__GenslateEscape $line)$bel$esc]133;C$bel")
+            [Console]::Write("$esc]633;E;$(__GenslateEscape $line);$Global:__GenslateNonce$bel$esc]133;C$bel")
             $line
         }
     }

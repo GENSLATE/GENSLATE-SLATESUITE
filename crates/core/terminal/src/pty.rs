@@ -60,6 +60,9 @@ pub struct SpawnInfo {
     pub profile_id: String,
     pub shell_name: String,
     pub cwd: String,
+    /// The secret the shell integration appends to its command reports (`633;E`); `None` when
+    /// the shell reports nothing or on its own. The webview checks it too.
+    pub nonce: Option<String>,
 }
 
 /// A session's state (`SessionInfo`).
@@ -107,6 +110,7 @@ impl std::fmt::Debug for SessionManager {
 struct Session {
     pid: Option<u32>,
     spawn_cwd: String,
+    nonce: Option<String>,
     alive: AtomicBool,
     writer: Mutex<Option<Box<dyn Write + Send>>>,
     master: Mutex<Option<Box<dyn MasterPty + Send>>>,
@@ -158,7 +162,22 @@ impl SessionManager {
         let (child, reader, session) = open(&request, size, &cwd)?;
         let pid = session.pid;
         let spawn_cwd = session.spawn_cwd.clone();
-        lock(&self.sessions).insert(request.id.clone(), Arc::clone(&session));
+        let nonce = session.nonce.clone();
+        {
+            // Checked again under the same lock as the insert: two spawns of one id may both
+            // have passed the check above while their shells started.
+            let mut sessions = lock(&self.sessions);
+            if sessions
+                .get(&request.id)
+                .is_some_and(|existing| existing.alive.load(Ordering::SeqCst))
+            {
+                drop(sessions);
+                let _ = lock(&session.killer).kill();
+                session.close();
+                return Err(TerminalError::SessionExists(request.id));
+            }
+            sessions.insert(request.id.clone(), Arc::clone(&session));
+        }
 
         let (drained_tx, drained_rx) = mpsc::channel::<()>();
         let reading = Arc::clone(&session);
@@ -219,6 +238,7 @@ impl SessionManager {
             profile_id: request.profile.id,
             shell_name: request.profile.name,
             cwd: spawn_cwd,
+            nonce,
         })
     }
 
@@ -338,7 +358,7 @@ type Opened = (
 
 /// Opens the pseudo terminal and starts the shell in it.
 fn open(request: &SpawnRequest, size: PtySize, cwd: &Path) -> Result<Opened, TerminalError> {
-    let command = build_command(request, cwd);
+    let (command, nonce) = build_command(request, cwd);
     let pair = native_pty_system()
         .openpty(size)
         .map_err(|error| TerminalError::pty("could not open a terminal")(&error))?;
@@ -362,6 +382,7 @@ fn open(request: &SpawnRequest, size: PtySize, cwd: &Path) -> Result<Opened, Ter
     let session = Arc::new(Session {
         pid: child.process_id(),
         spawn_cwd: cwd.to_string_lossy().into_owned(),
+        nonce,
         alive: AtomicBool::new(true),
         writer: Mutex::new(Some(writer)),
         master: Mutex::new(Some(pair.master)),
@@ -374,7 +395,11 @@ fn open(request: &SpawnRequest, size: PtySize, cwd: &Path) -> Result<Opened, Ter
 /// Waits for the shell to end; its exit code, or `None` when a signal ended it.
 fn wait_for_exit(child: &mut (dyn Child + Send + Sync), id: &str) -> Option<i32> {
     match child.wait() {
-        Ok(status) if status.signal().is_none() => i32::try_from(status.exit_code()).ok(),
+        // Windows exit codes are u32 and crashes are NTSTATUS values above `i32::MAX`
+        // (0xC0000005 is -1073741819, as shells print it): keep the bits, not the range.
+        Ok(status) if status.signal().is_none() => {
+            Some(i32::from_ne_bytes(status.exit_code().to_ne_bytes()))
+        }
         Ok(_) => None,
         Err(error) => {
             log::debug!("waiting for {id}: {error}");
@@ -390,7 +415,7 @@ fn read_loop(
     on_output: &mut OutputSink,
     on_event: &(dyn Fn(&str, SessionEvent) + Send + Sync),
 ) {
-    let mut tracker = Tracker::new();
+    let mut tracker = Tracker::with_nonce(cfg!(windows), session.nonce.clone());
     let mut buffer = vec![0; READ_CHUNK];
     loop {
         let read = match reader.read(&mut buffer) {
@@ -421,7 +446,8 @@ fn read_loop(
     }
 }
 
-fn build_command(request: &SpawnRequest, cwd: &Path) -> CommandBuilder {
+/// The command that starts the shell, and the nonce its integration will prove reports with.
+fn build_command(request: &SpawnRequest, cwd: &Path) -> (CommandBuilder, Option<String>) {
     let profile = &request.profile;
     let mut command = CommandBuilder::new(&profile.command);
     let inherited = |name: &str| {
@@ -440,6 +466,17 @@ fn build_command(request: &SpawnRequest, cwd: &Path) -> CommandBuilder {
         }
     } else {
         None
+    };
+    // Without a secret the scripts' reports could be forged by any output: no integration.
+    let (prepared, nonce) = match prepared {
+        Some(prepared) if prepared.reports_commands => match new_nonce() {
+            Ok(nonce) => (Some(prepared), Some(nonce)),
+            Err(error) => {
+                log::warn!("shell integration is off for {}: {error}", profile.name);
+                (None, None)
+            }
+        },
+        other => (other, None),
     };
     let leaked = env::leaked_names(
         command
@@ -474,6 +511,9 @@ fn build_command(request: &SpawnRequest, cwd: &Path) -> CommandBuilder {
         }
         None => command.args(&profile.args),
     }
+    if let Some(nonce) = &nonce {
+        command.env(integration::NONCE_VAR, nonce);
+    }
     for (name, value) in &request.env {
         command.env(name, value);
     }
@@ -483,7 +523,19 @@ fn build_command(request: &SpawnRequest, cwd: &Path) -> CommandBuilder {
         command.env("PWD", cwd);
     }
     command.cwd(cwd);
-    command
+    (command, nonce)
+}
+
+/// 128 random bits as hex: unguessable by anything printing to the terminal.
+fn new_nonce() -> Result<String, getrandom::Error> {
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let mut bytes = [0_u8; 16];
+    getrandom::fill(&mut bytes)?;
+    Ok(bytes
+        .iter()
+        .flat_map(|byte| [HEX[usize::from(byte >> 4)], HEX[usize::from(byte & 0xf)]])
+        .map(char::from)
+        .collect())
 }
 
 /// The requested folder if it exists, else the profile's, else home.
@@ -801,6 +853,18 @@ mod tests {
         assert_eq!(finished.cwd.as_deref().map(Path::new), Some(cwd.as_path()));
         let state = manager.info(&["bash".to_owned()], &mut ProcessProbe::new());
         assert_eq!(state[0].last_command.as_deref(), Some("echo one; false"));
+
+        // Programs never see the nonce, and their fake reports are not recorded.
+        manager.write(
+            "bash",
+            b"echo \"[${GENSLATE_NONCE-hidden}]\"; printf '\\e]633;E;rm -rf ~\\a'\n",
+        )?;
+        let (_, event) = recorder.events.recv_timeout(Duration::from_secs(10))?;
+        let SessionEvent::Command(finished) = event else {
+            return Err(format!("unexpected {event:?}").into());
+        };
+        assert_eq!(finished.output_tail, "[hidden]");
+        assert!(finished.command.starts_with("echo"), "{}", finished.command);
         manager.kill_all();
         assert!(manager.ids().is_empty());
         Ok(())

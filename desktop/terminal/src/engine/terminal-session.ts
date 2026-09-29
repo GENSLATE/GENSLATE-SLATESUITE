@@ -8,7 +8,7 @@
  * failed ones a small "Explain" chip (an AI preview).
  */
 import type { ThemeId } from '@genslate/tokens';
-import { ClipboardAddon } from '@xterm/addon-clipboard';
+import { ClipboardAddon, type IClipboardProvider } from '@xterm/addon-clipboard';
 import { FitAddon } from '@xterm/addon-fit';
 import { ImageAddon } from '@xterm/addon-image';
 import { SearchAddon } from '@xterm/addon-search';
@@ -19,8 +19,16 @@ import { WebglAddon } from '@xterm/addon-webgl';
 import { type IDecoration, type IMarker, type ITerminalOptions, Terminal } from '@xterm/xterm';
 import type { TerminalBackend } from '../ipc/terminal.client';
 import type { CursorStyle, HostPlatform, Profile } from '../ipc/terminal.types';
+import { binaryBytes, concatBytes, utf8Bytes } from '../model/bytes.util';
 import { formatDuration } from '../model/format.util';
-import { parseCommandLine, parseCwdUri, parseOsc9Cwd, parsePromptMark } from '../model/osc.util';
+import {
+  parseCommandLine,
+  parseCwdUri,
+  parseOsc9Cwd,
+  parsePromptMark,
+  printable,
+} from '../model/osc.util';
+import { withoutControlCharacters } from '../model/paste.util';
 import { type FinishedCommand, initialPaneState, type PaneStore } from './pane-store';
 import { findPaths } from './path-links.util';
 import { MONO_FONT_STACK, markColors, xtermTheme } from './xterm-theme.util';
@@ -43,8 +51,8 @@ export interface SessionHost {
   readonly platform: HostPlatform;
   /** Keys the app handles (its shortcuts) instead of the shell. */
   isAppShortcut(event: KeyboardEvent): boolean;
-  /** Typed input: the host decides which panes it goes to (broadcast). */
-  onInput(paneId: string, data: string): void;
+  /** Typed input as bytes: the host decides which panes it goes to (broadcast). */
+  onInput(paneId: string, bytes: Uint8Array): void;
   /** A paste the host may want to review first. */
   onPaste(paneId: string, text: string): void;
   onCommandFinished(paneId: string, command: FinishedCommand): void;
@@ -76,6 +84,8 @@ interface DoneBlock {
 }
 
 const MAX_BLOCKS = 500;
+/** The most text a program may put on the clipboard at once (OSC 52). */
+const MAX_CLIPBOARD_WRITE = 1024 * 1024;
 
 export class TerminalSession {
   readonly id: string;
@@ -142,7 +152,7 @@ export class TerminalSession {
     this.term.loadAddon(this.#serialize);
     this.term.loadAddon(new Unicode11Addon());
     this.term.unicode.activeVersion = '11';
-    this.term.loadAddon(new ClipboardAddon());
+    this.term.loadAddon(new ClipboardAddon(undefined, this.#clipboard()));
     this.term.loadAddon(new ImageAddon({ sixelSupport: true, iipSupport: true }));
     this.term.loadAddon(
       new WebLinksAddon((event, uri) => {
@@ -197,12 +207,8 @@ export class TerminalSession {
     this.#observer?.disconnect();
     cancelAnimationFrame(this.#fitFrame);
     clearTimeout(this.#bellTimer);
-    const status = this.#host.store.get(this.id)?.status;
-    if (status === 'running' || status === 'starting') {
-      this.#host.backend.kill(this.id).catch((error: unknown) => {
-        console.warn('could not end the shell', error);
-      });
-    }
+    // Always: the store may already say exited while the backend still holds the session.
+    this.#endShell();
     this.#element.remove();
     this.term.dispose();
     this.#host.store.delete(this.id);
@@ -233,6 +239,7 @@ export class TerminalSession {
 
   #start(): void {
     this.#started = true;
+    this.#nonce = null;
     const { cols, rows } = this.term;
     this.#host.backend
       .spawn(
@@ -241,9 +248,14 @@ export class TerminalSession {
       )
       .then(
         (info) => {
-          if (this.#disposed) return;
+          // Closed while the shell was starting: nothing will ever end it otherwise.
+          if (this.#disposed) {
+            this.#endShell();
+            return;
+          }
           const current = this.#host.store.get(this.id);
           if (current?.status !== 'starting') return;
+          this.#nonce = info.nonce;
           this.#host.store.update(this.id, {
             status: 'running',
             pid: info.pid,
@@ -268,6 +280,12 @@ export class TerminalSession {
       );
   }
 
+  #endShell(): void {
+    this.#host.backend.kill(this.id).catch((error: unknown) => {
+      console.warn('could not end the shell', error);
+    });
+  }
+
   // ── Output, input and marks ────────────────────────────────────────────────────────────
 
   #onOutput(bytes: Uint8Array): void {
@@ -287,9 +305,9 @@ export class TerminalSession {
         return;
       }
       if (this.#inPrompt && data !== '') this.#atEmptyPrompt = false;
-      this.#host.onInput(this.id, data);
+      this.#host.onInput(this.id, utf8Bytes(data));
     });
-    term.onBinary((data) => this.#host.onInput(this.id, data));
+    term.onBinary((data) => this.#host.onInput(this.id, binaryBytes(data)));
     term.onResize(({ cols, rows }) => {
       this.#host.store.update(this.id, { cols, rows });
       this.#resizeBackend(cols, rows);
@@ -347,20 +365,23 @@ export class TerminalSession {
       return true;
     });
     term.parser.registerOscHandler(633, (data) => {
-      const command = parseCommandLine(data);
-      if (command === null) return false;
-      this.#echo = command;
+      const report = parseCommandLine(data);
+      if (report === null) return false;
+      // With our integration, only reports carrying the session's nonce are the shell's own.
+      if (this.#nonce !== null && report.nonce !== this.#nonce) return true;
+      this.#echo = report.command;
       this.#explicitCommand = true;
       return true;
     });
+    // Shells report the folder at the prompt; while a command runs, it's program output.
     term.parser.registerOscHandler(7, (data) => {
       const cwd = parseCwdUri(data);
-      if (cwd !== null) this.#host.store.update(this.id, { cwd });
+      if (cwd !== null && this.#block === null) this.#host.store.update(this.id, { cwd });
       return cwd !== null;
     });
     term.parser.registerOscHandler(9, (data) => {
       const cwd = parseOsc9Cwd(data);
-      if (cwd !== null) this.#host.store.update(this.id, { cwd });
+      if (cwd !== null && this.#block === null) this.#host.store.update(this.id, { cwd });
       return cwd !== null;
     });
   }
@@ -368,6 +389,23 @@ export class TerminalSession {
   #promptMarker: IMarker | null = null;
   #echoStart: { line: number; x: number } | null = null;
   #explicitCommand = false;
+  /** The secret our integration appends to command reports (`null`: the shell reports none). */
+  #nonce: string | null = null;
+
+  /**
+   * OSC 52 for programs: they may set the clipboard (vim or tmux over SSH) while their pane
+   * has focus, but never read it, since the text would go back to whatever is running.
+   */
+  #clipboard(): IClipboardProvider {
+    return {
+      readText: () => '',
+      writeText: (_selection, text) => {
+        const focused = this.#container?.contains(document.activeElement) === true;
+        if (!focused || text.length > MAX_CLIPBOARD_WRITE) return;
+        return navigator.clipboard?.writeText(text);
+      },
+    };
+  }
 
   /** The command line as echoed after the prompt (for shells without OSC 633). */
   #readEcho(): string {
@@ -388,7 +426,9 @@ export class TerminalSession {
   #startBlock(): void {
     const prompt = this.#promptMarker ?? this.term.registerMarker(0);
     if (prompt === undefined) return;
-    const command = this.#explicitCommand ? this.#echo.trim() : this.#readEcho();
+    // Our integration always reports the line; echoed text could be anything's output.
+    const echoed = this.#nonce === null ? printable(this.#readEcho()) : '';
+    const command = this.#explicitCommand ? this.#echo.trim() : echoed;
     this.#explicitCommand = false;
     this.#inPrompt = false;
     this.#atEmptyPrompt = false;
@@ -584,32 +624,40 @@ export class TerminalSession {
    * Writes to the shell (typed input, a snippet, a path). Writes go one at a time, in order:
    * while one is in flight, later input is batched into the next.
    */
-  send(data: string): void {
-    if (this.#host.store.get(this.id)?.status !== 'running' || data === '') return;
-    this.#queued += data;
+  send(text: string): void {
+    this.sendBytes(utf8Bytes(text));
+  }
+
+  /** Writes raw bytes to the shell, in order with {@link send}. */
+  sendBytes(bytes: Uint8Array): void {
+    if (this.#host.store.get(this.id)?.status !== 'running' || bytes.length === 0) return;
+    this.#queued.push(bytes);
     if (!this.#writing) this.#flush();
   }
 
-  #queued = '';
+  #queued: Uint8Array[] = [];
   #writing = false;
 
   #flush(): void {
-    const data = this.#queued;
-    this.#queued = '';
-    if (data === '' || this.#disposed) {
+    const chunks = this.#queued;
+    this.#queued = [];
+    if (chunks.length === 0 || this.#disposed) {
       this.#writing = false;
       return;
     }
     this.#writing = true;
     this.#host.backend
-      .write(this.id, data)
+      .write(this.id, concatBytes(chunks))
       .catch((error: unknown) => console.warn('terminal write failed', error))
       .finally(() => this.#flush());
   }
 
-  /** Pastes as if typed, honouring bracketed paste. */
+  /**
+   * Pastes as if typed, honouring bracketed paste. Control characters are dropped: an
+   * embedded `ESC [201~` would end the bracketed paste early and run the rest.
+   */
   paste(text: string): void {
-    this.term.paste(text);
+    this.term.paste(withoutControlCharacters(text));
   }
 
   focus(): void {

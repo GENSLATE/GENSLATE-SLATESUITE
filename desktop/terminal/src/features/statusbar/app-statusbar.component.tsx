@@ -13,7 +13,7 @@ import { useTerminal } from '../../app/terminal.context';
 import { usePaneState } from '../../engine/pane-store';
 import type { GitInfo } from '../../ipc/terminal.types';
 import { formatDuration } from '../../model/format.util';
-import { tildify } from '../../model/path.util';
+import { anyInside, tildify } from '../../model/path.util';
 import { profileIcon } from '../tabs/profile-visual.util';
 
 const THEME_NAME = { 'polar-night': 'Polar Night', 'snow-storm': 'Snow Storm' } as const;
@@ -143,9 +143,18 @@ export function AppStatusBar({ info }: AppStatusBarProps) {
 function useGitInfo(cwd: string | null): GitInfo | null {
   const api = useTerminal();
   const [git, setGit] = useState<GitInfo | null>(null);
-  const version = api.changedFolders.version;
+  // Files change constantly during builds: ask git again only for changes in the repository
+  // (or the folder, before there is one).
+  const changed = api.changedFolders;
+  const [seen, setSeen] = useState(changed);
+  const [version, setVersion] = useState(0);
+  if (seen !== changed) {
+    setSeen(changed);
+    const scope = git?.root ?? cwd;
+    if (scope !== null && anyInside(changed.folders, scope)) setVersion(version + 1);
+  }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: version is the refetch signal (files changed on disk)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: version is the refetch signal (the repository changed on disk)
   useEffect(() => {
     if (cwd === null) {
       setGit(null);

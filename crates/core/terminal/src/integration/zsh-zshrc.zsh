@@ -12,6 +12,10 @@ fi
 
 if [[ -o interactive && -z ${__genslate_loaded-} ]]; then
   __genslate_loaded=1
+  # The terminal's secret for this shell: appended to each command report so it can't be
+  # forged by program output. Hidden from everything the shell starts.
+  __genslate_nonce=${GENSLATE_NONCE-}
+  builtin unset GENSLATE_NONCE
   __genslate_status=0
   __genslate_running=
   __genslate_ps1_wrapped=
@@ -70,7 +74,7 @@ if [[ -o interactive && -z ${__genslate_loaded-} ]]; then
   # A command is about to run: report its command line (633;E) and mark the output (133;C).
   __genslate_preexec() {
     __genslate_escape "${1:-${3-}}"
-    builtin printf '\e]633;E;%s\a\e]133;C\a' "$REPLY"
+    builtin printf '\e]633;E;%s;%s\a\e]133;C\a' "$REPLY" "$__genslate_nonce"
     __genslate_running=1
   }
 

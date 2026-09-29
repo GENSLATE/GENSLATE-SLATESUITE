@@ -14,8 +14,26 @@ import type { PasteReview, PasteRisk } from '../../model/paste.util';
 
 const RISKS: Readonly<Record<PasteRisk, string>> = {
   multiline: 'Several lines: each may run as soon as it arrives',
+  'runs-now': 'Ends with a new line: it may run as soon as it arrives',
+  hidden: 'Contains invisible control characters (they’ll be removed)',
   elevated: 'Runs as administrator (sudo, runas)',
   destructive: 'Deletes or overwrites (rm -rf, format, del /s)',
+};
+
+const RISK_BADGE: Readonly<Record<PasteRisk, string>> = {
+  multiline: 'Lines',
+  'runs-now': 'Runs',
+  hidden: 'Hidden',
+  elevated: 'Admin',
+  destructive: 'Destructive',
+};
+
+const RISK_TONE: Readonly<Record<PasteRisk, 'warning' | 'danger'>> = {
+  multiline: 'warning',
+  'runs-now': 'warning',
+  hidden: 'danger',
+  elevated: 'danger',
+  destructive: 'danger',
 };
 
 const PREVIEW_LINES = 8;
@@ -42,8 +60,8 @@ export function PasteDialog({
           <ul className="flex flex-col gap-1">
             {review.risks.map((risk) => (
               <li key={risk} className="flex items-center gap-2 text-sm">
-                <Badge tone={risk === 'multiline' ? 'warning' : 'danger'} size="sm" dot>
-                  {risk === 'multiline' ? 'Lines' : risk === 'elevated' ? 'Admin' : 'Destructive'}
+                <Badge tone={RISK_TONE[risk]} size="sm" dot>
+                  {RISK_BADGE[risk]}
                 </Badge>
                 <span className="text-fg-secondary">{RISKS[risk]}</span>
               </li>

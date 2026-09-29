@@ -6,6 +6,7 @@
 import {
   channelBytes,
   createChannel,
+  invokeBytes,
   invokeCommand,
   isTauri,
   listenEvent,
@@ -13,11 +14,13 @@ import {
 
 import { createMockBackend } from './terminal.mock';
 import {
+  parseCommandEvent,
   parseContext,
   parseDirListing,
+  parseExitEvent,
   parseGitInfo,
   parseHistory,
-  parseHistoryEntry,
+  parseOpenRequest,
   parseSessionInfos,
   parseSettings,
   parseSnippets,
@@ -39,6 +42,9 @@ import type {
 } from './terminal.types';
 import { SETTING_KEYS } from './terminal.types';
 
+/** Names the session of a `pty_write`, whose body is the raw input bytes. */
+const SESSION_HEADER = 'x-session-id';
+
 export interface SpawnRequest {
   /** The pane's id; every later call names the session by it. */
   readonly id: string;
@@ -53,7 +59,8 @@ export interface TerminalBackend {
   context(): Promise<TerminalContext>;
   /** Starts a shell in a pseudo-terminal; its output streams to `onData` as raw bytes. */
   spawn(request: SpawnRequest, onData: (bytes: Uint8Array) => void): Promise<SpawnInfo>;
-  write(id: string, data: string): Promise<void>;
+  /** Sends input bytes to a session, exactly as given. */
+  write(id: string, bytes: Uint8Array): Promise<void>;
   resize(id: string, cols: number, rows: number): Promise<void>;
   kill(id: string): Promise<void>;
   sessions(ids: readonly string[]): Promise<readonly SessionInfo[]>;
@@ -84,7 +91,7 @@ function createTauriBackend(): TerminalBackend {
       });
       return parseSpawnInfo(await invokeCommand('pty_spawn', { ...request, output }));
     },
-    write: (id, data) => invokeCommand('pty_write', { id, data }),
+    write: (id, bytes) => invokeBytes('pty_write', bytes, { [SESSION_HEADER]: id }),
     resize: (id, cols, rows) => invokeCommand('pty_resize', { id, cols, rows }),
     kill: (id) => invokeCommand('pty_kill', { id }),
     sessions: async (ids) => parseSessionInfos(await invokeCommand('sessions_info', { ids })),
@@ -108,27 +115,51 @@ function createTauriBackend(): TerminalBackend {
     setSetting: async (key, value) =>
       parseSettings(await invokeCommand('set_setting', { key: SETTING_KEYS[key], value })),
     subscribe: async (events) => {
-      const unsubscribers = await Promise.all([
-        listenEvent<{ id: string; code: number | null }>('terminal://exit', (payload) =>
-          events.exit(payload.id, payload.code),
+      const results = await Promise.allSettled([
+        listenEvent<unknown>('terminal://exit', (payload) =>
+          guarded('exit', () => {
+            const { id, code } = parseExitEvent(payload);
+            events.exit(id, code);
+          }),
         ),
-        listenEvent<{ id: string; entry: unknown }>('terminal://command', (payload) =>
-          events.command(payload.id, parseHistoryEntry(payload.entry)),
+        listenEvent<unknown>('terminal://command', (payload) =>
+          guarded('command', () => {
+            const { id, entry } = parseCommandEvent(payload);
+            events.command(id, entry);
+          }),
         ),
         listenEvent<unknown>('terminal://files-changed', (payload) =>
-          events.filesChanged(parseStrings(payload, 'changed folders')),
+          guarded('files-changed', () =>
+            events.filesChanged(parseStrings(payload, 'changed folders')),
+          ),
         ),
-        listenEvent<{ cwd: string | null; profileId: string | null }>(
-          'terminal://open',
-          (payload) =>
-            events.open({ cwd: payload.cwd ?? null, profileId: payload.profileId ?? null }),
+        listenEvent<unknown>('terminal://open', (payload) =>
+          guarded('open', () => events.open(parseOpenRequest(payload))),
         ),
       ]);
+      const unsubscribers = results.flatMap((result) =>
+        result.status === 'fulfilled' ? [result.value] : [],
+      );
+      const failed = results.find((result) => result.status === 'rejected');
+      if (failed !== undefined) {
+        // One listener failed: drop the ones that worked, or they'd leak.
+        for (const unsubscribe of unsubscribers) unsubscribe();
+        throw failed.reason;
+      }
       return () => {
         for (const unsubscribe of unsubscribers) unsubscribe();
       };
     },
   };
+}
+
+/** Runs an event handler, logging (not throwing) a payload that doesn't parse. */
+function guarded(event: string, handle: () => void): void {
+  try {
+    handle();
+  } catch (error) {
+    console.warn(`terminal: ignored a malformed ${event} event`, error);
+  }
 }
 
 /** The real shell in the desktop app; the simulated one in a browser. */

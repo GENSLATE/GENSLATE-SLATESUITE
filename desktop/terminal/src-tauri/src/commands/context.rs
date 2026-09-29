@@ -29,6 +29,9 @@ pub struct TerminalContext {
 
 #[tauri::command(async)]
 pub fn get_context(terminal: State<'_, Terminal>) -> TerminalContext {
+    // The page asks once per load. Shells from before a reload have lost their terminals and
+    // output channels, and restored tabs reuse their ids, so end them.
+    terminal.sessions.kill_all();
     let settings = terminal.settings();
     let profiles = terminal.profiles();
     let default_profile_id = terminal
@@ -61,8 +64,7 @@ pub fn set_setting(
     key: String,
     value: SettingValue,
 ) -> Result<TerminalSettings, AppError> {
-    let updated = config::write_setting(&terminal.paths.config_file, &key, &value)?;
-    let settings = updated.terminal.clone();
-    terminal.set_config(updated);
-    Ok(settings)
+    terminal
+        .update_config(|| config::write_setting(&terminal.paths.config_file, &key, &value))
+        .map_err(AppError::from)
 }

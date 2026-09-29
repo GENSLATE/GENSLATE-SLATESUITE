@@ -2,9 +2,12 @@ import { describe, expect, test } from 'bun:test';
 
 import {
   PayloadError,
+  parseCommandEvent,
   parseContext,
+  parseExitEvent,
   parseGitInfo,
   parseHistory,
+  parseOpenRequest,
   parseSettings,
 } from '../../../src/ipc/terminal.parse';
 import { DEFAULT_SETTINGS } from '../../../src/ipc/terminal.types';
@@ -63,5 +66,14 @@ describe('IPC payloads', () => {
       head: 'abc1234',
       changes: 0,
     });
+  });
+
+  test('event payloads', () => {
+    expect(parseExitEvent({ id: 'p1', code: null })).toEqual({ id: 'p1', code: null });
+    expect(() => parseExitEvent({ code: 1 })).toThrow(PayloadError);
+    expect(parseOpenRequest({ cwd: '/srv' })).toEqual({ cwd: '/srv', profileId: null });
+    const entry = { id: 3, command: 'ls', cwd: null, exitCode: 0, startedAt: 1, durationMs: 2 };
+    expect(parseCommandEvent({ id: 'p1', entry }).entry.command).toBe('ls');
+    expect(() => parseCommandEvent({ id: 'p1', entry: null })).toThrow(PayloadError);
   });
 });

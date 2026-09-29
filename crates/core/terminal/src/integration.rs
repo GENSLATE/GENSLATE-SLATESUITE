@@ -29,6 +29,10 @@ const POWERSHELL: &str = include_str!("integration/powershell-integration.ps1");
 /// Folder inside the app's cache folder that holds the scripts.
 pub const SCRIPTS_DIR: &str = "shell-integration";
 
+/// Carries the session's secret to the scripts, which read it, unset it and append it to each
+/// `633;E` so the [`tracker`](crate::tracker) can tell their reports from program output.
+pub const NONCE_VAR: &str = "GENSLATE_NONCE";
+
 /// How to start a shell with the integration.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Integration {
@@ -36,6 +40,9 @@ pub struct Integration {
     pub args: Vec<String>,
     /// Variables to add to the shell's environment.
     pub env: Vec<(String, String)>,
+    /// The scripts report each command line with the nonce from [`NONCE_VAR`] (all but
+    /// Command Prompt, which can only mark its prompt).
+    pub reports_commands: bool,
 }
 
 /// Prepares the integration for a `kind` shell started with `args`: writes the scripts under
@@ -79,6 +86,7 @@ fn bash(args: &[String], dir: &Path, windows: bool) -> io::Result<Option<Integra
             "-i".to_owned(),
         ],
         env,
+        reports_commands: true,
     }))
 }
 
@@ -123,6 +131,7 @@ fn zsh(
     Ok(Some(Integration {
         args: args.to_vec(),
         env,
+        reports_commands: true,
     }))
 }
 
@@ -171,6 +180,7 @@ fn powershell(args: &[String]) -> Option<Integration> {
     Some(Integration {
         args: kept,
         env: Vec::new(),
+        reports_commands: true,
     })
 }
 
@@ -216,6 +226,7 @@ fn cmd(args: &[String], inherited: &impl Fn(&str) -> Option<String>) -> Option<I
     Some(Integration {
         args: args.to_vec(),
         env: vec![("PROMPT".to_owned(), prompt)],
+        reports_commands: false,
     })
 }
 
@@ -227,7 +238,16 @@ fn write_if_changed(path: &Path, contents: &str) -> io::Result<PathBuf> {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)?;
     }
-    fs::write(path, contents)?;
+    // Written aside and renamed, so a shell starting in another window never reads half a
+    // script.
+    let mut temp_name = path.file_name().unwrap_or_default().to_os_string();
+    temp_name.push(format!(".{}.tmp", std::process::id()));
+    let temp = path.with_file_name(temp_name);
+    fs::write(&temp, contents)?;
+    if let Err(error) = fs::rename(&temp, path) {
+        let _ = fs::remove_file(&temp);
+        return Err(error);
+    }
     Ok(path.to_path_buf())
 }
 

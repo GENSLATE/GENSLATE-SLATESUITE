@@ -25,6 +25,7 @@ import {
 } from './terminal.types';
 
 const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 
 function slug(name: string): string {
   const base = name
@@ -60,9 +61,11 @@ export function createMockBackend(): TerminalBackend {
       mockCanonical(request.cwd ?? profile.cwd ?? MOCK_PROJECT) ??
       mockCanonical(MOCK_PROJECT) ??
       MOCK_HOME;
+    const nonce = crypto.randomUUID();
     const shell = new MockShell({
       profile,
       cwd,
+      nonce,
       cols: request.cols,
       emit: (text) => onData(encoder.encode(text)),
       onCommand: (result) => {
@@ -96,6 +99,7 @@ export function createMockBackend(): TerminalBackend {
       profileId: profile.id,
       shellName: profile.name,
       cwd,
+      nonce,
     });
   };
 
@@ -112,8 +116,8 @@ export function createMockBackend(): TerminalBackend {
         historyEnabled: true,
       }),
     spawn,
-    write: (id, data) => {
-      shells.get(id)?.write(data);
+    write: (id, bytes) => {
+      shells.get(id)?.write(decoder.decode(bytes));
       return Promise.resolve();
     },
     resize: (id, cols) => {

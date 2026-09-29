@@ -15,7 +15,7 @@ import { useTerminal } from '../../app/terminal.context';
 import { usePaneState } from '../../engine/pane-store';
 import type { FileNode, GitInfo } from '../../ipc/terminal.types';
 import { fileIcon, GIT_LETTER, GIT_TONE } from '../../model/file-icon.util';
-import { baseName, isInside, parentOf, samePath, tildify } from '../../model/path.util';
+import { anyInside, baseName, isInside, parentOf, samePath, tildify } from '../../model/path.util';
 
 type Listing =
   | { readonly status: 'loading' }
@@ -90,7 +90,9 @@ export function FilesPanel() {
         load(path);
       }
     }
-    if (root !== null && folders.some((folder) => isInside(folder, root))) {
+    // Git status is only worth asking again when the change is in the repository.
+    const scope = git?.root ?? root;
+    if (root !== null && scope !== null && anyInside(folders, scope)) {
       api.backend.gitInfo(root).then(setGit, () => setGit(null));
     }
   });

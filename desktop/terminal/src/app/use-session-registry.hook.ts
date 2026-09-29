@@ -16,7 +16,7 @@ import { allPanes, type LayoutState } from '../model/layout.reducer';
 /** What the sessions call back into; read through a ref so it is always current. */
 export interface SessionCallbacks {
   isAppShortcut(event: KeyboardEvent): boolean;
-  onInput(paneId: string, data: string): void;
+  onInput(paneId: string, bytes: Uint8Array): void;
   onPaste(paneId: string, text: string): void;
   onCommandFinished(paneId: string, command: FinishedCommand): void;
   onNaturalLanguage(paneId: string): void;
@@ -54,7 +54,7 @@ export function useSessionRegistry(
           backend,
           platform,
           isAppShortcut: (event) => callbacks.current?.isAppShortcut(event) ?? false,
-          onInput: (paneId, data) => callbacks.current?.onInput(paneId, data),
+          onInput: (paneId, bytes) => callbacks.current?.onInput(paneId, bytes),
           onPaste: (paneId, text) => callbacks.current?.onPaste(paneId, text),
           onCommandFinished: (paneId, command) =>
             callbacks.current?.onCommandFinished(paneId, command),

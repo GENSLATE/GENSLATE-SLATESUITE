@@ -28,7 +28,7 @@ describe('browser backend', () => {
     await wait(120);
     expect(output).toContain('\x1b]133;A');
 
-    await backend.write('p1', 'bun --version\r');
+    await backend.write('p1', new TextEncoder().encode('bun --version\r'));
     await wait(300);
     expect(output).toContain('1.4.2');
     expect(commands.map((entry) => entry.command)).toEqual(['bun --version']);

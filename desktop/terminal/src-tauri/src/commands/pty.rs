@@ -10,11 +10,14 @@ use genslate_core_terminal::history::{HistoryEntry, NewCommand};
 use genslate_core_terminal::pty::{SessionEvent, SessionInfo, SpawnInfo, SpawnRequest};
 use genslate_core_terminal::tracker::FinishedCommand;
 use serde::Serialize;
-use tauri::ipc::{Channel, InvokeResponseBody};
+use tauri::ipc::{Channel, InvokeBody, InvokeResponseBody, Request};
 use tauri::{AppHandle, Manager, State};
 
 use crate::state::Terminal;
 use crate::{AppError, events};
+
+/// The header naming the session of a `pty_write`.
+const SESSION_HEADER: &str = "x-session-id";
 
 /// The most sessions one `sessions_info` call reports on.
 const MAX_INFO_IDS: usize = 256;
@@ -130,7 +133,9 @@ fn record(app: &AppHandle, shell: &str, finished: &FinishedCommand) -> HistoryEn
             exit_code: finished.exit_code,
             started_at: finished.started_at,
             duration_ms: Some(finished.duration_ms),
-            output_tail: &finished.output_tail,
+            // Output can hold secrets (tokens printed by a login, `cat .env`), so it stays in
+            // memory until the assistant exists and the user opts in to keeping it.
+            output_tail: "",
         });
         match stored {
             Ok(Some(entry)) => return entry,
@@ -149,14 +154,23 @@ fn record(app: &AppHandle, shell: &str, finished: &FinishedCommand) -> HistoryEn
     }
 }
 
-/// Sends input (keys, pastes) to a session.
+/// Sends input (keys, pastes, mouse reports) to a session: the raw body is the bytes, exactly
+/// as the shell should get them, and the `x-session-id` header names the session.
 #[tauri::command(async)]
-#[expect(
-    clippy::needless_pass_by_value,
-    reason = "Tauri commands receive owned arguments"
-)]
-pub fn pty_write(terminal: State<'_, Terminal>, id: String, data: String) -> Result<(), AppError> {
-    Ok(terminal.sessions.write(&id, data.as_bytes())?)
+pub fn pty_write(terminal: State<'_, Terminal>, request: Request<'_>) -> Result<(), AppError> {
+    let id = request
+        .headers()
+        .get(SESSION_HEADER)
+        .and_then(|value| value.to_str().ok())
+        .ok_or_else(|| {
+            AppError::InvalidArgument(format!("the {SESSION_HEADER} header is required"))
+        })?;
+    let InvokeBody::Raw(bytes) = request.body() else {
+        return Err(AppError::InvalidArgument(
+            "the input must be sent as raw bytes".to_owned(),
+        ));
+    };
+    Ok(terminal.sessions.write(id, bytes)?)
 }
 
 /// Resizes a session's terminal (in cells).

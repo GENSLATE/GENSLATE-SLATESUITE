@@ -147,9 +147,17 @@ struct Collected {
     changed_files: HashSet<PathBuf>,
 }
 
+/// Settings that can run programs (filter drivers, credential helpers) are only read from the
+/// user's and the system's git config, never from the repository's own `.git/config`: listing a
+/// folder that came from an archive or a USB stick must not run what it names.
+fn outside_repository(meta: &gix::config::file::Metadata) -> bool {
+    meta.source.kind() != gix::config::source::Kind::Repository
+}
+
 fn discover(path: &Path) -> Option<gix::Repository> {
     let path = dunce::canonicalize(path).ok()?;
-    gix::discover(&path).ok()
+    let options = gix::open::Options::default().filter_config_section(outside_repository);
+    gix::discover_opts(&path, gix::discover::upwards::Options::default(), options).ok()
 }
 
 fn collect(
@@ -440,6 +448,30 @@ mod tests {
         let found = info(tree.path())?.ok_or("no repo")?;
         assert_eq!(found.branch, None);
         assert!(id.to_string().starts_with(&found.head));
+        Ok(())
+    }
+
+    /// A downloaded repository must not run programs named in its own `.git/config` (filter
+    /// drivers run while git compares a changed file) just because we listed its folder.
+    #[cfg(unix)]
+    #[test]
+    fn repository_filter_drivers_never_run() -> TestResult {
+        let (tree, repo) = repo_with(&[("a.txt", "one\n")])?;
+        let marker = tree.join("driver-ran");
+        let config = repo.git_dir().join("config");
+        let text = format!(
+            "{}[filter \"x\"]\n\tclean = touch '{}'; cat\n\trequired = true\n",
+            std::fs::read_to_string(&config)?,
+            marker.display()
+        );
+        std::fs::write(&config, text)?;
+        tree.write(".gitattributes", "* filter=x\n")?;
+        // Same size, new content: git has to read the file (through the filter) to compare it.
+        tree.write("a.txt", "two\n")?;
+        let root = dunce::canonicalize(tree.path())?;
+        let _ = statuses(&root)?;
+        let _ = info(&root)?;
+        assert!(!marker.exists(), "the repository's filter driver ran");
         Ok(())
     }
 

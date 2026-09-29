@@ -15,7 +15,7 @@ import {
   TextField,
   useTheme,
 } from '@genslate/design-system';
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { useTerminal } from '../../app/terminal.context';
 import type { CursorStyle, Settings } from '../../ipc/terminal.types';
@@ -95,16 +95,9 @@ export function SettingsDialog() {
                   if (value !== settings.fontFamily) updateSetting('fontFamily', value);
                 }}
               />
-              <NumberField
-                label="Size"
-                min={8}
-                max={32}
-                step={1}
-                value={settings.fontSize}
-                onValueChange={(value) =>
-                  value === null ? undefined : updateSetting('fontSize', value)
-                }
-                className="w-28"
+              <FontSizeField
+                saved={settings.fontSize}
+                onCommit={(size) => updateSetting('fontSize', size)}
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -210,5 +203,39 @@ function Group({ title, children }: { readonly title: string; readonly children:
       <h3 className="font-semibold text-2xs text-fg-muted uppercase tracking-wider">{title}</h3>
       {children}
     </section>
+  );
+}
+
+/**
+ * The font size: typing edits a draft and the size is saved when it is committed (blur,
+ * arrows, stepper release), not on every keystroke.
+ */
+function FontSizeField({
+  saved,
+  onCommit,
+}: {
+  readonly saved: number;
+  readonly onCommit: (size: number) => void;
+}) {
+  const [draft, setDraft] = useState(saved);
+  // Zooming (Ctrl + / -) changes the saved size while the dialog is open.
+  const [seen, setSeen] = useState(saved);
+  if (seen !== saved) {
+    setSeen(saved);
+    setDraft(saved);
+  }
+  return (
+    <NumberField
+      label="Size"
+      min={8}
+      max={32}
+      step={1}
+      value={draft}
+      onValueChange={(value) => (value === null ? undefined : setDraft(value))}
+      onValueCommitted={(value) =>
+        value === null || value === saved ? undefined : onCommit(value)
+      }
+      className="w-28"
+    />
   );
 }

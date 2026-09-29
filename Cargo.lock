@@ -1790,6 +1790,7 @@ dependencies = [
  "genslate-app-common",
  "genslate-storage",
  "genslate-testing",
+ "getrandom 0.4.3",
  "gix",
  "ignore",
  "log",

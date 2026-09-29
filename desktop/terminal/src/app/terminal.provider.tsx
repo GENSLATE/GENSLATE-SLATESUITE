@@ -26,6 +26,7 @@ import {
 } from '../model/layout.reducer';
 import { findLeaf, leaves, type PaneLeaf, type SplitDirection } from '../model/pane-tree.util';
 import { reviewPaste } from '../model/paste.util';
+import { baseName, isRunnable } from '../model/path.util';
 import { cdCommand, shellPath } from '../model/shell.util';
 import { commandFor, isEnabled } from './commands.registry';
 import { errorMessage } from './error-message.util';
@@ -179,13 +180,27 @@ export function TerminalProvider({ backend, context, children }: TerminalProvide
     }
   };
 
+  // Settings save optimistically. Answers can arrive out of order, so only the latest
+  // request's answer is applied, and a failure rolls its key back to the last saved value.
+  const settingRequests = useRef({ latest: 0, byKey: new Map<keyof Settings, number>() });
+  const savedSettings = useRef(context.settings);
   const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
-    const previous = settings;
-    setSettings({ ...settings, [key]: value });
-    backend.setSetting(key, value).then(setSettings, (error: unknown) => {
-      setSettings(previous);
-      report('Couldn’t save the setting', error);
-    });
+    const requests = settingRequests.current;
+    const request = ++requests.latest;
+    requests.byKey.set(key, request);
+    setSettings((current) => ({ ...current, [key]: value }));
+    backend.setSetting(key, value).then(
+      (saved) => {
+        savedSettings.current = saved;
+        if (requests.latest === request) setSettings(saved);
+      },
+      (error: unknown) => {
+        if (requests.byKey.get(key) === request) {
+          setSettings((current) => ({ ...current, [key]: savedSettings.current[key] }));
+        }
+        report('Couldn’t save the setting', error);
+      },
+    );
   };
 
   const activeProfileKind = () => {
@@ -425,18 +440,27 @@ export function TerminalProvider({ backend, context, children }: TerminalProvide
         const entry = commandFor(event, platform);
         return entry !== undefined && isEnabled(entry, api);
       },
-      onInput: (paneId, data) => {
+      onInput: (paneId, bytes) => {
         const owner = tabOfPane(layout, paneId);
         const targets =
           owner?.broadcast === true ? leaves(owner.root).map((leaf) => leaf.id) : [paneId];
-        for (const id of targets) registry.get(id)?.send(data);
+        for (const id of targets) registry.get(id)?.sendBytes(bytes);
       },
       onPaste: (paneId, text) => api.paste(text, paneId),
       onCommandFinished: (paneId, command: FinishedCommand) => notifyWhenDone(paneId, command),
       onNaturalLanguage: (paneId) => setCommandBarPane(paneId),
       onExplain: (paneId, command) => api.askAssistant({ paneId, command }),
       onOpenUrl: (url) => api.openUrl(url),
-      onOpenPath: (paneId, path) => api.openPath(resolvePath(path, cwdOf(paneId), context.home)),
+      onOpenPath: (paneId, path) => {
+        const target = resolvePath(path, cwdOf(paneId), context.home);
+        // A link in output is anyone's text: show programs and scripts, never run them.
+        if (!isRunnable(target)) {
+          api.openPath(target);
+          return;
+        }
+        api.revealPath(target);
+        toast.add({ title: `Showing ${baseName(target)} instead of running it`, type: 'info' });
+      },
       onFocus: (paneId) => {
         if (paneId !== activePaneId) dispatch({ type: 'focus-pane', paneId });
       },

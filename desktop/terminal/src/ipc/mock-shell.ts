@@ -60,6 +60,7 @@ export class MockShell {
   readonly #emit: (text: string) => void;
   readonly #onCommand: (result: MockCommandResult) => void;
   readonly #onExit: (code: number) => void;
+  readonly #nonce: string;
   #cwd: string;
   #line = '';
   #busy = false;
@@ -74,6 +75,8 @@ export class MockShell {
     readonly profile: Profile;
     readonly cwd: string;
     readonly cols: number;
+    /** Appended to command reports, as the real integration scripts do. */
+    readonly nonce: string;
     readonly emit: (text: string) => void;
     readonly onCommand: (result: MockCommandResult) => void;
     readonly onExit: (code: number) => void;
@@ -84,6 +87,7 @@ export class MockShell {
     this.#emit = options.emit;
     this.#onCommand = options.onCommand;
     this.#onExit = options.onExit;
+    this.#nonce = options.nonce;
   }
 
   get busy(): boolean {
@@ -190,7 +194,8 @@ export class MockShell {
     const outcome = this.#run(command);
     const startedAt = Date.now();
     this.#busy = true;
-    this.#emit(osc(633, `E;${command.replaceAll('\\', '\\\\').replaceAll(';', '\\x3b')}`));
+    const escaped = command.replaceAll('\\', '\\\\').replaceAll(';', '\\x3b');
+    this.#emit(osc(633, `E;${escaped};${this.#nonce}`));
     this.#emit(osc(133, 'C'));
     if (outcome.clear === true) this.#emit(`${ESC}[2J${ESC}[3J${ESC}[H`);
     let elapsed = 0;

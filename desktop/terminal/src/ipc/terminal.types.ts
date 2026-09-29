@@ -151,6 +151,8 @@ export interface SpawnInfo {
   readonly profileId: string;
   readonly shellName: string;
   readonly cwd: string;
+  /** The secret our shell integration appends to command reports; `null` when it sends none. */
+  readonly nonce: string | null;
 }
 
 /** The program running in a pane right now. */
