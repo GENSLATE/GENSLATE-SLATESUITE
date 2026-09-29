@@ -4,6 +4,7 @@
  */
 export { useAppInfo } from './ipc/app-info.hook';
 export type { AppInfo } from './ipc/app-info.types';
+export { channelBytes, createChannel, type IpcChannel } from './ipc/channel';
 export { type CommandError, isCommandError } from './ipc/command-error.types';
 export { commands } from './ipc/commands';
 export { customSchemeUrl, invokeCommand, listenEvent, UNAVAILABLE } from './ipc/invoke';
