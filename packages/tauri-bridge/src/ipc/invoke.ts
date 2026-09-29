@@ -24,6 +24,20 @@ export async function invokeCommand<T>(
 }
 
 /**
+ * Calls an app-defined Rust command with `bytes` as its raw body (`tauri::ipc::Request::body`
+ * on the Rust side) and `headers` for anything else it needs. The bytes skip JSON, so they
+ * arrive exactly as sent. Outside Tauri it rejects with {@link UNAVAILABLE}.
+ */
+export async function invokeBytes<T>(
+  command: string,
+  bytes: Uint8Array,
+  headers: Readonly<Record<string, string>>,
+): Promise<T> {
+  if (!isTauri()) throw UNAVAILABLE;
+  return await invoke<T>(command, bytes, { headers: { ...headers } });
+}
+
+/**
  * Subscribes to an event emitted by the Rust side. Resolves to an unsubscribe function;
  * outside Tauri nothing is ever emitted and unsubscribing is a no-op.
  */
