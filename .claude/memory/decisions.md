@@ -92,3 +92,5 @@ Short ADR log. Newest last. Format: **Decision** — context → consequence. Ad
 36. **Edits are a recipe, saved as a copy.** The UI previews the recipe with a CSS transform and an SVG colour matrix whose maths match `edit::apply` (tested against each other); saving decodes the original in the core and writes `<name> (edited).<ext>` beside it. The original is never written, so there is no edit history to store.
 
 37. **`nom-exif` instead of `kamadak-exif`.** One crate reads EXIF from JPEG, PNG, WebP, TIFF, HEIC and RAW and the track data (date, length, GPS) from MP4/MOV/MKV, where kamadak-exif covers images only. Places come from `reverse_geocoder`'s embedded city list, so no lookups leave the machine. HEIC, AVIF and RAW get placeholder thumbnails until a decoder is picked.
+
+38. **Shared app patterns live in the design system.** The AI-preview teaser and the icon-tab side panel were copied into Explorer, Terminal and Gallery; they are now `FeatureTeaser` / `FeatureTeaserSample` and `SidebarTabs` (registries are `SidebarTab<Id>[]`), shown in the Design Kit. New apps build their side panels and previews from these instead of copying.
