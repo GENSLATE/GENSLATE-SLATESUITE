@@ -1,6 +1,6 @@
 # Active context
 
-_Last updated: 2026-09-29. Update this file at the end of any multi-session task: what changed, what's next, what's blocked._
+_Last updated: 2026-09-30. Update this file at the end of any multi-session task: what changed, what's next, what's blocked._
 
 ## Current focus: GENSLATE Launcher (`desktop/launcher`)
 Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
@@ -44,6 +44,11 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
 - New shared crate `crates/storage` (rusqlite bundled + migrations): every app's databases go in `other/databases/genslate/<app>/`, suite-wide ones (the AI memory) in `other/databases/genslate/shared/` (`AppPaths::shared_data_dir`).
 - **Next:** run it natively on Windows (ConPTY shutdown, WSL list decoding, Git Bash registry lookup, PowerShell 5.1 script, cmd `9;9` folder reporting) and macOS; tab tear-out; the real assistant (genai / llama-cpp-2) on top of `genslate_storage::ai_memory`.
 - **Gotcha:** a full `cargo test --workspace` build can fill a cloud container's disk (~27 GB `target/`); test the changed crates with `CARGO_PROFILE_TEST_DEBUG=0`.
+
+## Gallery (2026-09-30, branch `feat/gallery-app-0lpj7p`)
+- Photo and video library in `desktop/gallery` + `crates/core/gallery`: folders scanned (ignore + rayon) and watched (notify-debouncer-full), `library.sqlite` via genslate-storage (albums, tags, Trash, FTS5), metadata (nom-exif), offline places (reverse_geocoder), thumbnails (image, jxl-oxide, resvg, fast_image_resize), duplicates (blake3 + image_hasher), non-destructive edits saved as copies, export without metadata. UI: timeline/grid/details, viewer, compare, slideshow, editor, info panel, palette, menus, settings. AI features are previews. Docs: `other/documents/gallery.md`.
+- New tokens `media-shade` / `on-media` (badges over photos); `setFullscreen` in the bridge.
+- **Next:** run it natively on Windows/macOS (schemes, watcher, Trash, video ranges); HEIC/AVIF/RAW decoding; the real AI on top of `genslate_storage::ai_memory`.
 
 ## Open questions
 - Code signing / notarisation for macOS and Windows (secrets not configured yet; release workflow builds unsigned drafts).
