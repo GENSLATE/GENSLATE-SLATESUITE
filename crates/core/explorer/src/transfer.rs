@@ -3,12 +3,18 @@
 //! A transfer first measures its sources (so progress has a total), then works item by item.
 //! Files are copied in chunks so a cancel stops within one chunk; the partly written file is
 //! removed. What finished before a cancel stays, and is reported so it can be undone.
+//!
+//! On file systems with copy-on-write clones (APFS, Btrfs, XFS, Windows Dev Drives) a file is
+//! first cloned with `reflink-copy`, which is instant and shares the data blocks; anywhere else
+//! the chunked copy runs. Either way the copy keeps the original's dates and permissions.
 
 use std::fs::{self, File};
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
+use filetime::FileTime;
+use ignore::{WalkBuilder, WalkState};
 use serde::{Deserialize, Serialize};
 
 use crate::ExplorerError;
@@ -255,6 +261,18 @@ impl<F: FnMut(&Progress)> Job<'_, F> {
         target: &Path,
         meta: &fs::Metadata,
     ) -> Result<bool, ExplorerError> {
+        if try_clone(source, target) {
+            self.progress.done_bytes += meta.len();
+            self.report();
+        } else if !self.copy_bytes(source, target)? {
+            return Ok(false);
+        }
+        keep_metadata(target, meta);
+        Ok(true)
+    }
+
+    /// The chunked copy: progress after every chunk, and a cancel removes the partial file.
+    fn copy_bytes(&mut self, source: &Path, target: &Path) -> Result<bool, ExplorerError> {
         let mut reader = File::open(source).map_err(ExplorerError::io("could not open", source))?;
         let mut writer =
             File::create_new(target).map_err(ExplorerError::io("could not create", target))?;
@@ -283,20 +301,48 @@ impl<F: FnMut(&Progress)> Job<'_, F> {
             self.progress.done_bytes += read as u64;
             self.report();
         }
-        // Keep the original's timestamps and read-only flag, like the OS file managers do.
-        if let Ok(modified) = meta.modified()
-            && let Err(error) = writer.set_modified(modified)
-        {
-            log::debug!("could not keep the date of {}: {error}", target.display());
-        }
-        drop(writer);
-        if let Err(error) = fs::set_permissions(target, meta.permissions()) {
-            log::debug!(
-                "could not keep the permissions of {}: {error}",
-                target.display()
-            );
-        }
         Ok(true)
+    }
+}
+
+/// Clones `source` to the new file `target` copy-on-write. `false` (with nothing left at
+/// `target`) when the file system can't, the two are on different drives, or anything else
+/// fails: the caller then copies the bytes, which reports the real error if there is one.
+fn try_clone(source: &Path, target: &Path) -> bool {
+    match reflink_copy::reflink(source, target) {
+        Ok(()) => true,
+        // Someone else's file: never remove it (the byte copy refuses it too).
+        Err(error) if error.kind() == io::ErrorKind::AlreadyExists => false,
+        Err(error) => {
+            log::trace!("no clone for {}: {error}", target.display());
+            // `reflink-copy` cleans up after itself on Linux and Windows; macOS's clonefile
+            // is atomic. This covers any platform that leaves a partial file behind.
+            match fs::remove_file(target) {
+                Ok(()) => log::debug!("removed partial clone {}", target.display()),
+                Err(error) if error.kind() == io::ErrorKind::NotFound => {}
+                Err(error) => log::warn!(
+                    "could not remove partial clone {}: {error}",
+                    target.display()
+                ),
+            }
+            false
+        }
+    }
+}
+
+/// Keeps the original's modified and accessed times and read-only flag, like the OS file
+/// managers do. Times go first: a read-only file can't have its times set on Windows.
+fn keep_metadata(target: &Path, meta: &fs::Metadata) {
+    let accessed = FileTime::from_last_access_time(meta);
+    let modified = FileTime::from_last_modification_time(meta);
+    if let Err(error) = filetime::set_file_times(target, accessed, modified) {
+        log::debug!("could not keep the dates of {}: {error}", target.display());
+    }
+    if let Err(error) = fs::set_permissions(target, meta.permissions()) {
+        log::debug!(
+            "could not keep the permissions of {}: {error}",
+            target.display()
+        );
     }
 }
 
@@ -322,25 +368,56 @@ fn copy_symlink(source: &Path, target: &Path) -> Result<(), ExplorerError> {
 }
 
 /// Total bytes and items (files, folders and links) under `paths`. Unreadable parts count as
-/// zero: the total is only for the progress bar.
+/// zero: the total is only for the progress bar. Folders are walked in parallel; links are
+/// counted, not followed.
 pub fn measure(paths: &[PathBuf]) -> (u64, u64) {
     let mut bytes = 0;
     let mut items = 0;
-    let mut stack: Vec<PathBuf> = paths.to_vec();
-    while let Some(path) = stack.pop() {
-        let Ok(meta) = fs::symlink_metadata(&path) else {
+    let mut folders = Vec::new();
+    // The walker would follow a linked top-level folder, so top-level items are sorted here.
+    for path in paths {
+        let Ok(meta) = fs::symlink_metadata(path) else {
             continue;
         };
-        items += 1;
         if meta.is_dir() {
-            if let Ok(children) = fs::read_dir(&path) {
-                stack.extend(children.flatten().map(|child| child.path()));
+            folders.push(path);
+        } else {
+            items += 1;
+            if meta.is_file() {
+                bytes += meta.len();
             }
-        } else if meta.is_file() {
-            bytes += meta.len();
         }
     }
-    (bytes, items)
+    let Some((first, rest)) = folders.split_first() else {
+        return (bytes, items);
+    };
+    let (walked_bytes, walked_items) = (AtomicU64::new(0), AtomicU64::new(0));
+    let mut builder = WalkBuilder::new(first);
+    for folder in rest {
+        builder.add(folder);
+    }
+    builder
+        .standard_filters(false)
+        .hidden(false)
+        .follow_links(false);
+    builder.build_parallel().run(|| {
+        Box::new(|result| {
+            let Ok(entry) = result else {
+                return WalkState::Continue;
+            };
+            walked_items.fetch_add(1, Ordering::Relaxed);
+            if entry.file_type().is_some_and(|kind| kind.is_file())
+                && let Ok(meta) = entry.metadata()
+            {
+                walked_bytes.fetch_add(meta.len(), Ordering::Relaxed);
+            }
+            WalkState::Continue
+        })
+    });
+    (
+        bytes + walked_bytes.into_inner(),
+        items + walked_items.into_inner(),
+    )
 }
 
 #[cfg(test)]
@@ -483,11 +560,35 @@ mod tests {
     }
 
     #[test]
+    fn copies_keep_their_dates() -> Result<(), Box<dyn std::error::Error>> {
+        let tree = TempTree::new()?.file("a.txt", "abc")?.dir("dst")?;
+        let past = FileTime::from_unix_time(1_600_000_000, 0);
+        filetime::set_file_times(tree.join("a.txt"), past, past)?;
+        run(
+            &copy(
+                vec![tree.join("a.txt")],
+                tree.join("dst"),
+                ConflictPolicy::KeepBoth,
+            ),
+            &AtomicBool::new(false),
+            |_| {},
+        )?;
+        let copied = fs::metadata(tree.join("dst/a.txt"))?;
+        assert_eq!(FileTime::from_last_modification_time(&copied), past);
+        assert_eq!(tree.read("dst/a.txt")?, "abc");
+        Ok(())
+    }
+
+    #[test]
     fn measures_trees() -> Result<(), Box<dyn std::error::Error>> {
         let tree = TempTree::new()?
             .file("x/a.txt", "abc")?
             .file("x/y/b.txt", "de")?;
         assert_eq!(measure(&[tree.join("x")]), (5, 4));
+        assert_eq!(
+            measure(&[tree.join("x/y"), tree.join("x/a.txt"), tree.join("gone")]),
+            (5, 3)
+        );
         Ok(())
     }
 }

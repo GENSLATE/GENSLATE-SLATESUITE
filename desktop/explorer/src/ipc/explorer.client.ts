@@ -71,6 +71,11 @@ export interface ExplorerBackend {
   cancelTask(id: string): Promise<void>;
   /** URL the preview pane loads a file from (images, audio, video). */
   previewUrl(path: string): string;
+  /**
+   * URL of a small cached rendering of an image, its long edge at most `edge` pixels.
+   * `modified` busts the webview's cache when the file changes.
+   */
+  thumbnailUrl(path: string, edge: number, modified: number | null): string;
   /** Subscribes to every event; resolves to an unsubscribe function. */
   subscribe(events: ExplorerEvents): Promise<() => void>;
 }
@@ -109,6 +114,8 @@ function createTauriBackend(): ExplorerBackend {
       parseFolderSize(await invokeCommand('folder_size', { id, path })),
     cancelTask: (id) => invokeCommand('cancel_task', { id }),
     previewUrl: (path) => customSchemeUrl('explorer-file', [path]),
+    thumbnailUrl: (path, edge, modified) =>
+      `${customSchemeUrl('explorer-thumb', [String(edge), path])}?v=${modified ?? 0}`,
     subscribe: async (events) => {
       const unsubscribers = await Promise.all([
         listenEvent<{ id: string; progress: Progress }>('explorer://progress', (payload) =>

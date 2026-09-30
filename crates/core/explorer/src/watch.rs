@@ -1,19 +1,21 @@
 //! Live refresh: watches the folders the tabs show (not recursively) and reports which of
 //! them changed once a burst of events has settled.
+//!
+//! `notify-debouncer-full` does the settling (and pairs the two halves of a rename), like the
+//! Gallery's library watcher; this module only maps changed paths to their folders.
 
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
-use std::sync::mpsc::{self, RecvTimeoutError};
-use std::thread;
 use std::time::Duration;
 
-use notify::{EventKind, RecommendedWatcher, RecursiveMode, Watcher};
+use notify_debouncer_full::notify::{EventKind, RecommendedWatcher, RecursiveMode};
+use notify_debouncer_full::{DebounceEventResult, Debouncer, RecommendedCache, new_debouncer};
 
 use crate::ExplorerError;
 
 /// Watches a changing set of folders; dropping it stops watching.
 pub struct FolderWatcher {
-    watcher: RecommendedWatcher,
+    debouncer: Debouncer<RecommendedWatcher, RecommendedCache>,
     watched: BTreeSet<PathBuf>,
 }
 
@@ -32,51 +34,34 @@ impl FolderWatcher {
         settle: Duration,
         on_change: impl Fn(BTreeSet<PathBuf>) + Send + 'static,
     ) -> Result<Self, ExplorerError> {
-        let (tx, rx) = mpsc::channel::<PathBuf>();
-        let watcher = notify::recommended_watcher(move |event: notify::Result<notify::Event>| {
-            let Ok(event) = event else {
-                return;
-            };
-            if !matches!(
-                event.kind,
-                EventKind::Create(_) | EventKind::Modify(_) | EventKind::Remove(_)
-            ) {
-                return;
-            }
-            for path in event.paths {
-                // A changed item means its folder's listing changed.
-                let folder = path
-                    .parent()
-                    .map_or_else(|| path.clone(), Path::to_path_buf);
-                // The receiver only disappears when the watcher is being dropped.
-                if tx.send(folder).is_err() {
+        let debouncer = new_debouncer(settle, None, move |result: DebounceEventResult| {
+            let events = match result {
+                Ok(events) => events,
+                Err(errors) => {
+                    for error in errors {
+                        log::debug!("watch: {error}");
+                    }
                     return;
                 }
+            };
+            let folders: BTreeSet<PathBuf> = events
+                .iter()
+                .filter(|event| {
+                    matches!(
+                        event.kind,
+                        EventKind::Create(_) | EventKind::Modify(_) | EventKind::Remove(_)
+                    )
+                })
+                // A rename carries both paths; each one's folder changed.
+                .flat_map(|event| event.paths.iter())
+                .map(|path| folder_of(path))
+                .collect();
+            if !folders.is_empty() {
+                on_change(folders);
             }
         })?;
-        thread::Builder::new()
-            .name("explorer-watch".to_owned())
-            .spawn(move || {
-                while let Ok(first) = rx.recv() {
-                    let mut batch = BTreeSet::from([first]);
-                    loop {
-                        match rx.recv_timeout(settle) {
-                            Ok(path) => {
-                                batch.insert(path);
-                            }
-                            Err(RecvTimeoutError::Timeout) => break,
-                            Err(RecvTimeoutError::Disconnected) => return,
-                        }
-                    }
-                    on_change(batch);
-                }
-            })
-            .map_err(ExplorerError::io(
-                "could not start watching",
-                "explorer-watch",
-            ))?;
         Ok(Self {
-            watcher,
+            debouncer,
             watched: BTreeSet::new(),
         })
     }
@@ -86,7 +71,7 @@ impl FolderWatcher {
     pub fn set_folders(&mut self, folders: impl IntoIterator<Item = PathBuf>) {
         let wanted: BTreeSet<PathBuf> = folders.into_iter().collect();
         for gone in self.watched.difference(&wanted) {
-            if let Err(error) = self.watcher.unwatch(gone) {
+            if let Err(error) = self.debouncer.unwatch(gone) {
                 log::debug!("unwatch {}: {error}", gone.display());
             }
         }
@@ -96,7 +81,7 @@ impl FolderWatcher {
                 watched.insert(folder);
                 continue;
             }
-            match self.watcher.watch(&folder, RecursiveMode::NonRecursive) {
+            match self.debouncer.watch(&folder, RecursiveMode::NonRecursive) {
                 Ok(()) => {
                     watched.insert(folder);
                 }
@@ -112,11 +97,18 @@ impl FolderWatcher {
     }
 }
 
+/// A changed item means its folder's listing changed.
+fn folder_of(path: &Path) -> PathBuf {
+    path.parent()
+        .map_or_else(|| path.to_path_buf(), Path::to_path_buf)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use genslate_testing::TempTree;
     use std::sync::mpsc::channel;
+    use std::thread;
 
     #[test]
     fn reports_changed_folders() -> Result<(), Box<dyn std::error::Error>> {
@@ -134,6 +126,25 @@ mod tests {
             batch.iter().any(|folder| folder.ends_with("a")),
             "{batch:?}"
         );
+        Ok(())
+    }
+
+    #[test]
+    fn renames_report_both_folders() -> Result<(), Box<dyn std::error::Error>> {
+        let tree = TempTree::new()?.file("a/old.txt", "x")?.dir("b")?;
+        let (tx, rx) = channel();
+        let mut watcher = FolderWatcher::new(Duration::from_millis(100), move |folders| {
+            let _ = tx.send(folders);
+        })?;
+        watcher.set_folders([tree.join("a"), tree.join("b")]);
+        thread::sleep(Duration::from_millis(100));
+        std::fs::rename(tree.join("a/old.txt"), tree.join("b/new.txt"))?;
+        let mut seen = BTreeSet::new();
+        while !(seen.iter().any(|f: &PathBuf| f.ends_with("a"))
+            && seen.iter().any(|f: &PathBuf| f.ends_with("b")))
+        {
+            seen.extend(rx.recv_timeout(Duration::from_secs(5))?);
+        }
         Ok(())
     }
 

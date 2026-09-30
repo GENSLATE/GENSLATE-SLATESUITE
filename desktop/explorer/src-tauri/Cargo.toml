@@ -24,6 +24,7 @@ genslate-core-explorer.workspace = true
 genslate-design-tokens.workspace = true
 genslate-paths.workspace = true
 log.workspace = true
+rayon.workspace = true
 serde.workspace = true
 tauri = { workspace = true, features = ["common-controls-v6", "compression", "dbus", "dynamic-acl", "wry", "x11"] }
 tauri-plugin-log.workspace = true

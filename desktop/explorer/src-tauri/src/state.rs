@@ -6,6 +6,7 @@ use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
 
 use genslate_core_explorer::Config;
+use genslate_core_explorer::thumbnail::ThumbnailCache;
 use genslate_core_explorer::undo::UndoAction;
 use genslate_core_explorer::watch::FolderWatcher;
 use genslate_paths::AppPaths;
@@ -17,6 +18,8 @@ const UNDO_DEPTH: usize = 50;
 #[derive(Debug)]
 pub struct Explorer {
     pub paths: AppPaths,
+    /// Thumbnails for the `explorer-thumb` scheme, in `<cache dir>/thumbnails`.
+    pub thumbnails: ThumbnailCache,
     config: Mutex<Config>,
     /// Folders the user has opened this session. The preview protocol only serves files that
     /// sit directly in one of them, so a page can't read arbitrary files by URL.
@@ -30,6 +33,7 @@ pub struct Explorer {
 impl Explorer {
     pub fn new(paths: AppPaths, config: Config) -> Self {
         Self {
+            thumbnails: ThumbnailCache::new(paths.cache_dir.join("thumbnails")),
             paths,
             config: Mutex::new(config),
             browsed: Mutex::new(HashSet::new()),
