@@ -69,6 +69,8 @@ describe('in a plain browser', () => {
       await result.current.minimize();
       await result.current.toggleMaximize();
       await result.current.startDragging();
+      // Already out of fullscreen: nothing to leave.
+      await result.current.setFullscreen(false);
       await result.current.close();
     });
     expect(result.current.isMaximized).toBe(false);

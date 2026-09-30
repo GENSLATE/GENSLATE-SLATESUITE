@@ -1,21 +1,30 @@
-import { useToast, WindowContextMenu } from '@genslate/design-system';
+import {
+  ContextMenuItem,
+  ContextMenuSeparator,
+  usePlatform,
+  WindowContextMenu,
+} from '@genslate/design-system';
 import { commands, useWindowControls } from '@genslate/tauri-bridge';
 import type { ReactNode } from 'react';
 
-const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
+import { command } from '../../app/commands.registry';
+import { useGallery } from '../../app/gallery.context';
+import { galleryMenuItems } from './gallery-menu-items.component';
 
 /**
- * Right-click menus for the whole window: window commands and Theme on the titlebar, Edit
- * commands in text boxes, Copy / Select All and links in the content, Copy on status items.
+ * Right-click menus for the whole window: photo commands on photos and in the viewer, view
+ * and library commands on the background, album and folder commands in the side panel, Edit
+ * commands in text boxes, Theme and window commands on the titlebar, Copy on status items.
  * Dev builds keep the webview's own menu (Inspect) on Shift+right-click.
  */
 export function AppContextMenu({ children }: { readonly children: ReactNode }) {
+  const api = useGallery();
+  const platform = usePlatform();
   const { minimize, toggleMaximize, close } = useWindowControls();
-  const toast = useToast();
-  const report = (error: unknown) =>
-    toast.add({ title: 'Clipboard unavailable', description: messageOf(error), type: 'error' });
   const openLink = (href: string) => {
-    commands.openExternal(href).catch(report);
+    commands
+      .openExternal(href)
+      .catch((error: unknown) => api.report('Couldn’t open the link', error));
   };
 
   return (
@@ -25,7 +34,28 @@ export function AppContextMenu({ children }: { readonly children: ReactNode }) {
       onToggleMaximize={() => void toggleMaximize()}
       onClose={() => void close()}
       onOpenLink={openLink}
-      onError={report}
+      onError={(error) => api.report('Clipboard unavailable', error)}
+      items={(target) => {
+        if (target.kind !== 'titlebar') return galleryMenuItems(target, api, platform);
+        return (
+          <>
+            {(['add-folder', 'palette', 'settings'] as const).map((id) => {
+              const entry = command(id);
+              return (
+                <ContextMenuItem
+                  key={id}
+                  icon={entry.icon}
+                  shortcut={entry.shortcut}
+                  onClick={() => entry.run(api)}
+                >
+                  {entry.label}
+                </ContextMenuItem>
+              );
+            })}
+            <ContextMenuSeparator />
+          </>
+        );
+      }}
     >
       {children}
     </WindowContextMenu>

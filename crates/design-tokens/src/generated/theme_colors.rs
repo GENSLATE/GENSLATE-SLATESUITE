@@ -17,6 +17,8 @@ pub struct ThemeColors {
     pub surface_sunken: Rgb,
     pub field: Rgb,
     pub scrim: Rgb,
+    pub media_shade: Rgb,
+    pub on_media: Rgb,
     pub border_subtle: Rgb,
     pub border: Rgb,
     pub border_strong: Rgb,

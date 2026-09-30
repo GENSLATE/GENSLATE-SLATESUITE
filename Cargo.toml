@@ -50,6 +50,7 @@ genslate-core-toolbox = { path = "crates/core/toolbox" }
 tauri = { version = "2.11.6", default-features = false }
 tauri-build = "2.6.3"
 tauri-plugin-autostart = "2.5.1"
+tauri-plugin-dialog = "2.8.0"
 tauri-plugin-global-shortcut = "2.3.2"
 tauri-plugin-log = "2.9.2"
 tauri-plugin-opener = "2.5.5"
@@ -58,31 +59,43 @@ tauri-plugin-single-instance = "2.4.5"
 tauri-plugin-window-state = "2.4.1"
 
 # ── Core ─────────────────────────────────────────────────────────────
+blake3 = "1.8.7"
+chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
 dirs = "7.0.0"
 dunce = "1.0.5"
+fast_image_resize = { version = "6.1.0", features = ["image"] }
 getrandom = "0.4.3"
 gix = { version = "0.88.0", default-features = false, features = ["sha1", "status"] }
 ico = "0.5.0"
 ignore = "0.4.33"
+image = { version = "0.25.10", default-features = false, features = ["bmp", "gif", "ico", "jpeg", "png", "rayon", "tiff", "webp"] }
+image_hasher = "3.1.1"
+imagesize = "0.15.0"
+jxl-oxide = { version = "0.12.6", features = ["image"] }
 log = "0.4.34"
+nom-exif = "3.8.0"
 notify = "8.2.0"
+notify-debouncer-full = "0.7.0"
 nucleo-matcher = "0.3.1"
 nvml-wrapper = "0.13.0"
 pelite = "0.10.0"
 portable-pty = "0.9.0"
+rayon = "1.12.0"
+resvg = { version = "0.48.1", default-features = false }
+reverse_geocoder = "4.1.1"
 rusqlite = { version = "0.40.2", features = ["bundled"] }
 rusqlite_migration = "2.6.0"
 rust-ini = "0.21.3"
-sysinfo = { version = "0.39.6", default-features = false, features = ["component", "disk", "network", "system"] }
-toml_edit = "0.25.15"
-trash = "5.2.9"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
-thiserror = "2.0.21"
+sysinfo = { version = "0.39.6", default-features = false, features = ["component", "disk", "network", "system"] }
 tempfile = "3.27.0"
+thiserror = "2.0.21"
 toml = "1.1.6"
+toml_edit = "0.25.15"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+trash = "5.2.9"
 vte = "0.15.0"
 which = "8.0.6"
 winreg = "0.56.0"

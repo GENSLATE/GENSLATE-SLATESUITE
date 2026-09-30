@@ -22,9 +22,11 @@ tauri-build = { workspace = true }
 genslate-core-gallery.workspace = true
 genslate-design-tokens.workspace = true
 genslate-paths.workspace = true
+dirs.workspace = true
 log.workspace = true
 serde.workspace = true
 tauri = { workspace = true, features = ["common-controls-v6", "compression", "dbus", "dynamic-acl", "wry", "x11"] }
+tauri-plugin-dialog.workspace = true
 tauri-plugin-log.workspace = true
 tauri-plugin-opener.workspace = true
 tauri-plugin-os.workspace = true

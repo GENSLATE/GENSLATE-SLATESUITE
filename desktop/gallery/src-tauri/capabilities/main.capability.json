@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main",
-  "description": "Least-privilege permissions for the main window: custom titlebar controls, native theme, OS info, logging, window state and opening https links.",
+  "description": "Least privilege for the main window: its own typed library commands (items named by id, every path checked in Rust), custom titlebar controls, full screen for slideshows, native theme, OS info, logging, window state and opening https links. No fs, dialog or shell plugin access from the webview.",
   "windows": ["main"],
   "permissions": [
     "core:default",
@@ -14,12 +14,52 @@
     "core:window:allow-is-maximized",
     "core:window:allow-is-fullscreen",
     "core:window:allow-is-focused",
+    "core:window:allow-set-fullscreen",
     "os:default",
     "log:default",
     "window-state:default",
+    "allow-get-app-info",
+    "allow-get-context",
+    "allow-get-summary",
+    "allow-query-media",
+    "allow-get-details",
+    "allow-add-folder",
+    "allow-add-folder-path",
+    "allow-remove-folder",
+    "allow-rescan",
+    "allow-open-paths",
+    "allow-set-favorite",
+    "allow-set-rating",
+    "allow-add-tag",
+    "allow-remove-tag",
+    "allow-create-album",
+    "allow-rename-album",
+    "allow-delete-album",
+    "allow-add-to-album",
+    "allow-remove-from-album",
+    "allow-set-setting",
+    "allow-rename-media",
+    "allow-move-media",
+    "allow-copy-media",
+    "allow-trash-media",
+    "allow-restore-media",
+    "allow-forget-media",
+    "allow-undo",
+    "allow-open-media",
+    "allow-reveal-media",
+    "allow-save-edit",
+    "allow-find-duplicates",
+    "allow-export-media",
+    "allow-cancel-task",
+    "allow-refresh-watcher",
+    "allow-start-scan",
     {
       "identifier": "opener:allow-open-url",
-      "allow": [{ "url": "https://*" }]
+      "allow": [
+        {
+          "url": "https://*"
+        }
+      ]
     }
   ]
 }

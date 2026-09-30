@@ -18,6 +18,8 @@ export const twMergeConfig = {
         "surface-sunken",
         "field",
         "scrim",
+        "media-shade",
+        "on-media",
         "border-subtle",
         "border",
         "border-strong",

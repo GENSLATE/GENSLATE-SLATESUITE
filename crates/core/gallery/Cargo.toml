@@ -1,6 +1,6 @@
 [package]
 name = "genslate-core-gallery"
-description = "Core logic for GENSLATE Gallery (config), independent of Tauri."
+description = "GENSLATE Gallery logic: config and settings, library scanning, photo and video metadata, thumbnails, the library database (albums, tags, places, search), duplicates, edits, exports and folder watching, independent of Tauri."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -10,8 +10,29 @@ publish.workspace = true
 repository.workspace = true
 
 [dependencies]
+blake3.workspace = true
+chrono.workspace = true
+fast_image_resize.workspace = true
 genslate-app-common.workspace = true
+genslate-storage.workspace = true
+ignore.workspace = true
+image.workspace = true
+image_hasher.workspace = true
+imagesize.workspace = true
+jxl-oxide.workspace = true
+log.workspace = true
+nom-exif.workspace = true
+notify-debouncer-full.workspace = true
+rayon.workspace = true
+resvg.workspace = true
+reverse_geocoder.workspace = true
 serde.workspace = true
+thiserror.workspace = true
+toml_edit.workspace = true
+trash.workspace = true
+
+[dev-dependencies]
+genslate-testing.workspace = true
 
 [lints]
 workspace = true
