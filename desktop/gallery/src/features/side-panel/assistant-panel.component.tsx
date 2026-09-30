@@ -1,9 +1,16 @@
-import { Badge, cn, Icon, IconButton, ScrollArea } from '@genslate/design-system';
+import {
+  Badge,
+  cn,
+  FeatureTeaser,
+  FeatureTeaserSample,
+  Icon,
+  IconButton,
+  ScrollArea,
+} from '@genslate/design-system';
 
 import { useGallery } from '../../app/gallery.context';
 import { collectionTitle } from '../../model/collection.util';
 import { plural } from '../../model/format.util';
-import { TeaserHero, TeaserSample } from './teaser.component';
 
 const PROMPTS = [
   { icon: 'codicon:search-sparkle', text: 'Show sunsets from last summer' },
@@ -28,10 +35,10 @@ export function AssistantPanel() {
   return (
     <div data-slot="assistant-panel" className="flex min-h-0 flex-1 flex-col">
       <ScrollArea className="min-h-0 flex-1" aria-label="Assistant">
-        <TeaserHero icon="codicon:sparkle" title="Photo assistant">
+        <FeatureTeaser icon="codicon:sparkle" title="Photo assistant">
           Find photos by describing them, build albums, clean up look-alikes and write captions,
           with a local model that never uploads your pictures.
-        </TeaserHero>
+        </FeatureTeaser>
 
         <div className="flex flex-col gap-1.5 px-4 pb-4">
           <p className="font-semibold text-2xs text-fg-muted uppercase tracking-wider">
@@ -51,7 +58,7 @@ export function AssistantPanel() {
           ))}
         </div>
 
-        <TeaserSample label="Example">
+        <FeatureTeaserSample label="Example">
           <div className="flex flex-col gap-2 pb-4">
             <Bubble from="you">Find the photos of the lake at sunset from our trip.</Bubble>
             <Bubble from="assistant">
@@ -67,7 +74,7 @@ export function AssistantPanel() {
               </span>
             </div>
           </div>
-        </TeaserSample>
+        </FeatureTeaserSample>
       </ScrollArea>
 
       <div className="hairline-t flex flex-col gap-1.5 p-2">
