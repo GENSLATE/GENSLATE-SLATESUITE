@@ -36,6 +36,9 @@ export const snowStorm: ThemeDefinition = {
     'surface-sunken': c('nord-5'),
     field: c('white'),
     scrim: c('nord-0', 0.32),
+    // Badges and checks drawn over photos read the same in both themes.
+    'media-shade': c('black', 0.5),
+    'on-media': c('white'),
     // Borders
     'border-subtle': c('nord-0', 0.08),
     border: c('nord-0', 0.14),

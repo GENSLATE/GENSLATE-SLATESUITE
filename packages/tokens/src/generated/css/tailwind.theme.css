@@ -16,6 +16,8 @@
   --color-surface-sunken: var(--gs-color-surface-sunken);
   --color-field: var(--gs-color-field);
   --color-scrim: var(--gs-color-scrim);
+  --color-media-shade: var(--gs-color-media-shade);
+  --color-on-media: var(--gs-color-on-media);
   --color-border-subtle: var(--gs-color-border-subtle);
   --color-border: var(--gs-color-border);
   --color-border-strong: var(--gs-color-border-strong);

@@ -77,6 +77,9 @@ export const SEMANTIC_COLOR_KEYS = [
   'surface-sunken',
   'field',
   'scrim',
+  // Over photos and video (the same in every theme)
+  'media-shade',
+  'on-media',
   // Borders
   'border-subtle',
   'border',

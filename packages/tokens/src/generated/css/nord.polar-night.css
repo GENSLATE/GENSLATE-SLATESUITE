@@ -14,6 +14,8 @@
   --gs-color-surface-sunken: var(--gs-nord-0-d03);
   --gs-color-field: var(--gs-nord-0-d03);
   --gs-color-scrim: rgb(0 0 0 / 0.45);
+  --gs-color-media-shade: rgb(0 0 0 / 0.5);
+  --gs-color-on-media: white;
   --gs-color-border-subtle: rgb(236 239 244 / 0.07);
   --gs-color-border: rgb(236 239 244 / 0.12);
   --gs-color-border-strong: var(--gs-nord-3-bright);

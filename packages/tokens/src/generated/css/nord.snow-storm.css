@@ -13,6 +13,8 @@
   --gs-color-surface-sunken: var(--gs-nord-5);
   --gs-color-field: white;
   --gs-color-scrim: rgb(46 52 64 / 0.32);
+  --gs-color-media-shade: rgb(0 0 0 / 0.5);
+  --gs-color-on-media: white;
   --gs-color-border-subtle: rgb(46 52 64 / 0.08);
   --gs-color-border: rgb(46 52 64 / 0.14);
   --gs-color-border-strong: rgb(46 52 64 / 0.3);
@@ -172,6 +174,8 @@
     --gs-color-surface-sunken: var(--gs-nord-5);
     --gs-color-field: white;
     --gs-color-scrim: rgb(46 52 64 / 0.32);
+    --gs-color-media-shade: rgb(0 0 0 / 0.5);
+    --gs-color-on-media: white;
     --gs-color-border-subtle: rgb(46 52 64 / 0.08);
     --gs-color-border: rgb(46 52 64 / 0.14);
     --gs-color-border-strong: rgb(46 52 64 / 0.3);

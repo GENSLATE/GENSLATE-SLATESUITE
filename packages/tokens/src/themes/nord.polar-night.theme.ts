@@ -36,6 +36,9 @@ export const polarNight: ThemeDefinition = {
     'surface-sunken': c('nord-0-d03'),
     field: c('nord-0-d03'),
     scrim: c('black', 0.45),
+    // Badges and checks drawn over photos read the same in both themes.
+    'media-shade': c('black', 0.5),
+    'on-media': c('white'),
     // Borders
     'border-subtle': c('nord-6', 0.07),
     border: c('nord-6', 0.12),
