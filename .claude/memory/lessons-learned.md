@@ -19,6 +19,7 @@ Things that cost time once. Add a bullet when something surprising bites; keep e
 - **13 Tauri test binaries fill a small disk:** a full debug `cargo test --workspace` needs ~30 GB (ld dies with SIGBUS when the disk is full). CI's rust job sets `CARGO_PROFILE_DEV_DEBUG=0` (~4 GB); do the same locally (plus `CARGO_INCREMENTAL=0`) when disk is tight.
 - **`bun x tauri` outside an app folder fetches an unrelated npm package** — run the CLI as `bun run tauri …` inside `desktop/<app>` (the `tauri` script uses the app's own `@tauri-apps/cli`).
 - **`cargo clippy` errors can vanish behind the progress bar** in captured output — run with `CARGO_TERM_PROGRESS_WHEN=never` and `--color never`.
+- **Tauri's `freezePrototype: true` blanks the Terminal window**: `@xterm/addon-webgl` assigns `toString` on an object when its module loads, which throws once `Object.prototype` is frozen, so nothing renders (a plain browser hides it). `desktop/terminal` keeps it `false`; reproduce with a Playwright init script `Object.freeze(Object.prototype)` against `vite:dev`.
 
 ## Claude Code
 - Hooks run with `$CLAUDE_PROJECT_DIR`; exit 2 blocks and feeds stderr to Claude; any other failure should exit 0 (fail open).
