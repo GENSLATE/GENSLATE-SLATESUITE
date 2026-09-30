@@ -11,6 +11,8 @@ export interface WindowControls {
   close(): Promise<void>;
   /** Starts a native window drag; call from `pointerdown` on a drag region. */
   startDragging(): Promise<void>;
+  /** Enters or leaves fullscreen (the document's fullscreen in a browser). */
+  setFullscreen(fullscreen: boolean): Promise<void>;
   isMaximized: boolean;
   isFocused: boolean;
   isFullscreen: boolean;
@@ -35,6 +37,16 @@ const actions = {
   },
   startDragging: async (): Promise<void> => {
     if (isTauri()) await getCurrentWindow().startDragging();
+  },
+  setFullscreen: async (fullscreen: boolean): Promise<void> => {
+    if (isTauri()) {
+      await getCurrentWindow().setFullscreen(fullscreen);
+      return;
+    }
+    const doc = globalThis.document as Document | undefined;
+    if (doc === undefined || fullscreen === (doc.fullscreenElement != null)) return;
+    if (fullscreen) await doc.documentElement.requestFullscreen?.();
+    else await doc.exitFullscreen?.();
   },
 } as const;
 
