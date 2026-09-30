@@ -13,3 +13,26 @@ remember-state = true
 [logging]
 # "off" | "error" | "warn" | "info" | "debug" | "trace"
 level = "info"
+
+[gallery]
+# How a collection is laid out: "timeline" (justified rows by date) | "grid" | "details"
+view = "timeline"
+# How the timeline groups photos: "day" | "month" | "year"
+group-by = "month"
+# "taken" (date taken, else modified) | "added" | "name" | "size"
+sort-by = "taken"
+sort-descending = true
+# "small" | "medium" | "large"
+thumbnail-size = "medium"
+# List videos next to photos (the Videos collection always shows them).
+show-videos = true
+# Scan hidden files and folders.
+include-hidden = false
+# Ask before moving items to the Trash.
+confirm-trash = true
+# Seconds per photo in a slideshow, 1 to 60.
+slideshow-seconds = 4
+# Show the info panel next to the photos.
+info-panel = true
+# Offer the Pictures folder when the library is empty.
+suggest-pictures = true
