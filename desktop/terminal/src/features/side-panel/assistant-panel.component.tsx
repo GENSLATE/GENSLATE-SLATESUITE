@@ -1,11 +1,18 @@
-import { Badge, cn, Icon, IconButton, ScrollArea } from '@genslate/design-system';
+import {
+  Badge,
+  cn,
+  FeatureTeaser,
+  FeatureTeaserSample,
+  Icon,
+  IconButton,
+  ScrollArea,
+} from '@genslate/design-system';
 
 import type { ReactNode } from 'react';
 
 import { useTerminal } from '../../app/terminal.context';
 import { usePaneState } from '../../engine/pane-store';
 import { baseName } from '../../model/path.util';
-import { TeaserHero, TeaserSample } from './teaser.component';
 
 const PROMPTS = [
   { icon: 'codicon:lightbulb-autofix', text: 'Why did the last command fail?' },
@@ -30,10 +37,10 @@ export function AssistantPanel() {
   return (
     <div data-slot="assistant-panel" className="flex min-h-0 flex-1 flex-col">
       <ScrollArea className="min-h-0 flex-1" aria-label="Assistant">
-        <TeaserHero icon="codicon:chat-sparkle" title="Terminal assistant">
+        <FeatureTeaser icon="codicon:chat-sparkle" title="Terminal assistant">
           Ask in plain words. It sees the output you see, explains errors, writes commands for{' '}
           {shell} and shows each one before it runs.
-        </TeaserHero>
+        </FeatureTeaser>
 
         {failed !== null && failed.exitCode !== null && failed.exitCode !== 0 ? (
           <div className="mx-4 mb-4 flex flex-col gap-1.5 rounded-card bg-danger-subtle p-2.5 ring-1 ring-danger-border">
@@ -66,7 +73,7 @@ export function AssistantPanel() {
           ))}
         </div>
 
-        <TeaserSample label="Example">
+        <FeatureTeaserSample label="Example">
           <div className="flex flex-col gap-2 pb-4">
             <Bubble from="you">Why does cargo test fail?</Bubble>
             <Bubble from="assistant">
@@ -87,9 +94,9 @@ export function AssistantPanel() {
               </div>
             </div>
           </div>
-        </TeaserSample>
+        </FeatureTeaserSample>
 
-        <TeaserSample label="Remembers">
+        <FeatureTeaserSample label="Remembers">
           <ul className="flex flex-col gap-1 pb-4 text-fg-secondary text-xs">
             <li className="flex items-center gap-1.5">
               <Icon name="codicon:database" size={12} className="text-accent-fg" />
@@ -104,7 +111,7 @@ export function AssistantPanel() {
               Stored in your portable folder, never uploaded
             </li>
           </ul>
-        </TeaserSample>
+        </FeatureTeaserSample>
       </ScrollArea>
 
       <div className="hairline-t flex flex-col gap-1.5 p-2">
