@@ -2,6 +2,7 @@
 export * from './badge';
 export * from './banner';
 export * from './empty-state';
+export * from './feature-teaser';
 export * from './progress-bar';
 export * from './skeleton';
 export * from './spinner';
