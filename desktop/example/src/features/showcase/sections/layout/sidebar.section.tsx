@@ -1,11 +1,14 @@
 import {
   Badge,
+  FeatureTeaser,
   IconButton,
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarItem,
   SidebarSection,
+  type SidebarTab,
+  SidebarTabs,
 } from '@genslate/design-system';
 import { useState } from 'react';
 import { DemoWindow } from '../../components/demo-window.component';
@@ -63,6 +66,54 @@ function SourceList({ label }: { label: string }) {
   );
 }
 
+type ModuleId = 'files' | 'search' | 'assistant';
+
+function FilesModule() {
+  return (
+    <SidebarContent>
+      <SidebarItem icon="codicon:folder">src</SidebarItem>
+      <SidebarItem icon="codicon:files">README.md</SidebarItem>
+    </SidebarContent>
+  );
+}
+
+function SearchModule() {
+  return (
+    <SidebarContent>
+      <SidebarItem icon="codicon:search">Recent searches</SidebarItem>
+    </SidebarContent>
+  );
+}
+
+function AssistantModule() {
+  return (
+    <FeatureTeaser icon="codicon:sparkle" title="Assistant">
+      Ask about your files in plain words.
+    </FeatureTeaser>
+  );
+}
+
+const MODULES: readonly SidebarTab<ModuleId>[] = [
+  { id: 'files', title: 'Files', icon: 'codicon:files', component: FilesModule },
+  { id: 'search', title: 'Search', icon: 'codicon:search', component: SearchModule },
+  {
+    id: 'assistant',
+    title: 'Assistant',
+    icon: 'codicon:sparkle',
+    preview: true,
+    component: AssistantModule,
+  },
+];
+
+function ModuleSidebar({ header }: { header: boolean }) {
+  const [module, setModule] = useState<ModuleId>(header ? 'files' : 'assistant');
+  return (
+    <Sidebar aria-label={header ? 'Modules with header' : 'Modules'}>
+      <SidebarTabs tabs={MODULES} value={module} onValueChange={setModule} header={header} />
+    </Sidebar>
+  );
+}
+
 export function SidebarSectionPage() {
   return (
     <>
@@ -76,6 +127,19 @@ export function SidebarSectionPage() {
         </DemoWindow>
         <DemoWindow height={380} inactive label="Background window">
           <SourceList label="Background sidebar" />
+        </DemoWindow>
+      </Specimen>
+
+      <Specimen
+        title="Module tabs"
+        description="SidebarTabs: one icon tab per module, only the active view mounted. Previews of coming features are named “(coming soon)”."
+        stageClassName="grid grid-cols-2 gap-8 bg-surface-sunken p-8"
+      >
+        <DemoWindow height={260} label="With the active title">
+          <ModuleSidebar header />
+        </DemoWindow>
+        <DemoWindow height={260} label="A preview module">
+          <ModuleSidebar header={false} />
         </DemoWindow>
       </Specimen>
 
