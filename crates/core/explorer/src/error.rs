@@ -3,7 +3,7 @@
 use std::io;
 use std::path::PathBuf;
 
-/// Errors from listing, file operations, search and watching.
+/// Errors from listing, file operations, search, thumbnails and watching.
 #[derive(Debug, thiserror::Error)]
 #[non_exhaustive]
 pub enum ExplorerError {
@@ -34,8 +34,16 @@ pub enum ExplorerError {
     Unsupported(&'static str),
     #[error("config.toml: {0}")]
     Config(String),
+    /// A picture could not be decoded, resized or encoded (a thumbnail).
+    #[error("{} can't be shown as a thumbnail: {message}", path.display())]
+    Image {
+        /// The picture.
+        path: PathBuf,
+        /// What the image library reported.
+        message: String,
+    },
     #[error("file watching failed: {0}")]
-    Watch(#[from] notify::Error),
+    Watch(#[from] notify_debouncer_full::notify::Error),
 }
 
 impl ExplorerError {
@@ -58,6 +66,7 @@ impl ExplorerError {
             Self::Trash(_) => "trash",
             Self::Unsupported(_) => "unsupported",
             Self::Config(_) => "config",
+            Self::Image { .. } => "image",
             Self::Watch(_) => "watch",
         }
     }

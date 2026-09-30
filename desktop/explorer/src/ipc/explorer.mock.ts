@@ -455,6 +455,7 @@ export function createMockBackend(now = Date.now()): ExplorerBackend {
       cancelled.add(id);
     },
     previewUrl: (path) => mockImage(path),
+    thumbnailUrl: (path) => mockImage(path),
     subscribe: async (events) => {
       listeners.add(events);
       return () => listeners.delete(events);

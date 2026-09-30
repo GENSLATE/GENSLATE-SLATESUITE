@@ -4,8 +4,9 @@
 use std::fs::{self, File};
 use std::io::Read;
 use std::path::Path;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
+use ignore::{WalkBuilder, WalkState};
 use serde::Serialize;
 
 use crate::ExplorerError;
@@ -73,33 +74,45 @@ pub struct FolderSize {
     pub cancelled: bool,
 }
 
-/// Adds up everything under `dir` (links are counted, not followed).
+/// Adds up everything under `dir` in parallel (links are counted, not followed; nothing is
+/// filtered out, hidden and git-ignored files included).
 pub fn folder_size(dir: &Path, cancel: &AtomicBool) -> Result<FolderSize, ExplorerError> {
     let dir = require_absolute(dir)?;
-    let mut size = FolderSize::default();
-    let mut stack = vec![dir];
-    while let Some(dir) = stack.pop() {
-        let Ok(children) = fs::read_dir(&dir) else {
-            continue;
-        };
-        for child in children.flatten() {
-            if cancel.load(Ordering::Relaxed) {
-                size.cancelled = true;
-                return Ok(size);
-            }
-            let Ok(meta) = child.path().symlink_metadata() else {
-                continue;
-            };
-            if meta.is_dir() {
-                size.folders += 1;
-                stack.push(child.path());
-            } else {
-                size.files += 1;
-                size.bytes += meta.len();
-            }
-        }
-    }
-    Ok(size)
+    let (bytes, files, folders) = (AtomicU64::new(0), AtomicU64::new(0), AtomicU64::new(0));
+    let cancelled = AtomicBool::new(false);
+    WalkBuilder::new(&dir)
+        .standard_filters(false)
+        .hidden(false)
+        .follow_links(false)
+        .build_parallel()
+        .run(|| {
+            Box::new(|result| {
+                if cancel.load(Ordering::Relaxed) {
+                    cancelled.store(true, Ordering::Relaxed);
+                    return WalkState::Quit;
+                }
+                // Unreadable entries are skipped; the folder itself is not counted.
+                let Ok(entry) = result else {
+                    return WalkState::Continue;
+                };
+                if entry.depth() == 0 {
+                    return WalkState::Continue;
+                }
+                if entry.file_type().is_some_and(|kind| kind.is_dir()) {
+                    folders.fetch_add(1, Ordering::Relaxed);
+                } else if let Ok(meta) = entry.metadata() {
+                    files.fetch_add(1, Ordering::Relaxed);
+                    bytes.fetch_add(meta.len(), Ordering::Relaxed);
+                }
+                WalkState::Continue
+            })
+        });
+    Ok(FolderSize {
+        bytes: bytes.into_inner(),
+        files: files.into_inner(),
+        folders: folders.into_inner(),
+        cancelled: cancelled.into_inner(),
+    })
 }
 
 /// Everything the Properties dialog shows.
@@ -224,6 +237,8 @@ mod tests {
                 cancelled: false
             }
         );
+        let cancelled = folder_size(&tree.join("x"), &AtomicBool::new(true))?;
+        assert!(cancelled.cancelled);
         Ok(())
     }
 

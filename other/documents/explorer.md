@@ -48,6 +48,15 @@ desktop/explorer/src/
 - **Long work runs as tasks.** Copy/move, search and folder size take an id, report through
   `explorer://progress`, `explorer://search-results`, `explorer://task-done` and
   `explorer://search-done`, and stop with `cancel_task`.
+- **Crates do the heavy lifting.** Search walks folders in parallel with `ignore` (skipping
+  what `.gitignore` / `.ignore` exclude), matches names with `globset` and file contents with
+  `grep-searcher`; results are sorted like a folder as they stream in. Live refresh uses
+  `notify-debouncer-full`. Copies are copy-on-write clones via `reflink-copy` where the file
+  system supports it (APFS, Btrfs, XFS, Dev Drives), else a chunked copy with progress; both
+  keep dates (`filetime`) and permissions. Folder sizes use the same parallel walk.
+- **Thumbnails** come from `explorer-thumb://<edge>/<path>`: decoded with `image`, resized with
+  `fast_image_resize`, cached as small JPEG/PNG files in the app's cache folder (keyed by path,
+  size and date, so it is always safe to delete). SVGs are drawn by the webview.
 - **Undo** covers create, rename, move, copy and Trash (not delete permanently). Restoring from
   the Trash isn't available on macOS, so Trash isn't undoable there.
 

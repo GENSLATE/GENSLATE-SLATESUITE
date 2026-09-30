@@ -9,6 +9,7 @@
 //! - [`undo`]: how to reverse each finished operation.
 //! - [`search`]: recursive name, glob and text search.
 //! - [`preview`]: text previews, folder sizes and properties.
+//! - [`thumbnail`]: picture thumbnails and their on-disk cache.
 //! - [`places`]: standard folders and drives for the sidebar.
 //! - [`watch`]: live refresh of the folders on screen.
 //!
@@ -24,6 +25,7 @@ pub mod ops;
 pub mod places;
 pub mod preview;
 pub mod search;
+pub mod thumbnail;
 pub mod transfer;
 pub mod undo;
 pub mod watch;

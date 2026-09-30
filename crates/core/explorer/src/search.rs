@@ -1,20 +1,34 @@
 //! Recursive search from a folder: names by substring or glob (`*.pdf`, `IMG_????.jpg`), and
-//! optionally the text inside small text files. Results stream out in batches.
+//! optionally the text inside files. Results stream out in batches.
+//!
+//! The walk is `ignore`'s parallel walker (one thread per core), so it honours `.gitignore`,
+//! `.ignore` and `.git/info/exclude` the way developers expect; names are matched with
+//! `globset` and contents with ripgrep's `grep-searcher`, which streams each file, stops at the
+//! first hit and gives up on binary files at their first NUL byte.
 
-use std::fs;
-use std::io::Read;
-use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::io;
+use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
+use std::sync::mpsc::{self, RecvTimeoutError};
+use std::thread;
+use std::time::{Duration, Instant};
 
+use globset::{GlobBuilder, GlobMatcher};
+use grep_regex::{RegexMatcher, RegexMatcherBuilder};
+use grep_searcher::{BinaryDetection, Searcher, SearcherBuilder, Sink, SinkMatch};
+use ignore::{DirEntry, WalkBuilder, WalkState};
 use serde::{Deserialize, Serialize};
 
 use crate::ExplorerError;
 use crate::entry::{Entry, require_dir};
+use crate::kind::FileKind;
 
 /// Files larger than this are not searched for text.
 const CONTENT_LIMIT: u64 = 2 * 1024 * 1024;
 /// Results per batch sent to the UI.
 const BATCH: usize = 64;
+/// A partial batch is sent after this long, so slow searches still show results early.
+const FLUSH: Duration = Duration::from_millis(150);
 
 /// What to look for.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
@@ -40,11 +54,26 @@ const fn default_limit() -> usize {
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SearchSummary {
+    /// Entries visited. With the parallel walk this is exact for a finished search but only
+    /// approximate after a cancel or once `limit` is hit (other threads may still be counting).
     pub scanned: u64,
     pub matched: usize,
     /// Hit `limit` before the end.
     pub truncated: bool,
     pub cancelled: bool,
+}
+
+/// State the walker threads share.
+struct Shared<'a> {
+    query: &'a SearchQuery,
+    names: NameMatcher,
+    contents: Option<RegexMatcher>,
+    cancel: &'a AtomicBool,
+    scanned: AtomicU64,
+    /// Matches claimed so far (may run past `limit` by the losers of a race; those are dropped).
+    claimed: AtomicUsize,
+    truncated: AtomicBool,
+    cancelled: AtomicBool,
 }
 
 /// Searches under `query.root`, calling `on_batch` with matches as they are found.
@@ -54,121 +83,239 @@ pub fn search(
     mut on_batch: impl FnMut(Vec<Entry>),
 ) -> Result<SearchSummary, ExplorerError> {
     let root = require_dir(&query.root)?;
-    let matcher = Matcher::new(&query.text);
-    let mut summary = SearchSummary::default();
-    let mut batch = Vec::new();
-    let mut stack = vec![root];
+    let shared = Shared {
+        query,
+        names: NameMatcher::new(&query.text),
+        contents: query
+            .contents
+            .then(|| content_matcher(&query.text))
+            .flatten(),
+        cancel,
+        scanned: AtomicU64::new(0),
+        claimed: AtomicUsize::new(0),
+        truncated: AtomicBool::new(false),
+        cancelled: AtomicBool::new(false),
+    };
+    let mut builder = WalkBuilder::new(&root);
+    builder
+        .hidden(!query.show_hidden)
+        // Linked folders are listed but not entered (they can loop).
+        .follow_links(false)
+        // `.gitignore`, `.ignore` and `.git/info/exclude` (also from parent folders) are
+        // honoured: build output and `node_modules` would otherwise drown the results. The
+        // user's global git excludes are not: they are personal editor settings, and a file
+        // manager should not hide files because of them.
+        .parents(true)
+        .ignore(true)
+        .git_ignore(true)
+        .git_exclude(true)
+        .git_global(false);
+    let walker = builder.build_parallel();
 
-    'walk: while let Some(dir) = stack.pop() {
-        let Ok(children) = fs::read_dir(&dir) else {
-            continue;
-        };
-        for child in children.flatten() {
-            if cancel.load(Ordering::Relaxed) {
-                summary.cancelled = true;
-                break 'walk;
+    let (sender, receiver) = mpsc::channel::<Entry>();
+    let mut matched = 0;
+    thread::scope(|scope| {
+        let shared = &shared;
+        scope.spawn(move || {
+            walker.run(|| {
+                let sender = sender.clone();
+                let mut searcher = SearcherBuilder::new()
+                    .binary_detection(BinaryDetection::quit(0))
+                    .line_number(false)
+                    .build();
+                Box::new(move |result| visit(shared, &mut searcher, &sender, result))
+            });
+            // `sender` (and every clone) is dropped here, which ends the receiving loop.
+        });
+
+        let mut batch = Vec::new();
+        let mut flushed = Instant::now();
+        loop {
+            match receiver.recv_timeout(FLUSH) {
+                Ok(entry) => {
+                    batch.push(entry);
+                    matched += 1;
+                }
+                Err(RecvTimeoutError::Timeout) => {}
+                Err(RecvTimeoutError::Disconnected) => break,
             }
-            summary.scanned += 1;
-            let path = child.path();
-            let Ok(entry) = Entry::read(&path) else {
-                continue;
-            };
-            if entry.hidden && !query.show_hidden {
-                continue;
-            }
-            // Linked folders are listed but not entered (they can loop).
-            if entry.is_dir && !entry.symlink {
-                stack.push(path.clone());
-            }
-            let hit = matcher.matches_name(&entry.name)
-                || (query.contents && !entry.is_dir && matcher.matches_contents(&path, &entry));
-            if !hit {
-                continue;
-            }
-            batch.push(entry);
-            summary.matched += 1;
-            if batch.len() >= BATCH {
+            if batch.len() >= BATCH || (!batch.is_empty() && flushed.elapsed() >= FLUSH) {
                 on_batch(std::mem::take(&mut batch));
-            }
-            if summary.matched >= query.limit {
-                summary.truncated = true;
-                break 'walk;
+                flushed = Instant::now();
             }
         }
+        if !batch.is_empty() {
+            on_batch(batch);
+        }
+    });
+    Ok(SearchSummary {
+        scanned: shared.scanned.load(Ordering::Relaxed),
+        matched,
+        truncated: shared.truncated.load(Ordering::Relaxed),
+        cancelled: shared.cancelled.load(Ordering::Relaxed),
+    })
+}
+
+/// Handles one walked entry on a walker thread.
+fn visit(
+    shared: &Shared<'_>,
+    searcher: &mut Searcher,
+    sender: &mpsc::Sender<Entry>,
+    result: Result<DirEntry, ignore::Error>,
+) -> WalkState {
+    if shared.cancel.load(Ordering::Relaxed) {
+        shared.cancelled.store(true, Ordering::Relaxed);
+        return WalkState::Quit;
     }
-    if !batch.is_empty() {
-        on_batch(batch);
+    if shared.truncated.load(Ordering::Relaxed) {
+        return WalkState::Quit;
     }
-    Ok(summary)
+    // Unreadable folders and broken ignore files are skipped, as before.
+    let Ok(dent) = result else {
+        return WalkState::Continue;
+    };
+    // The root itself is not a result.
+    if dent.depth() == 0 {
+        return WalkState::Continue;
+    }
+    shared.scanned.fetch_add(1, Ordering::Relaxed);
+    // Names that are not Unicode can't cross IPC (see `entry`), so they can't be results.
+    let Some(name) = dent.file_name().to_str() else {
+        return WalkState::Continue;
+    };
+    let hit = shared.names.matches(name)
+        || shared
+            .contents
+            .as_ref()
+            .is_some_and(|matcher| contents_match(searcher, matcher, &dent, name));
+    if !hit {
+        return WalkState::Continue;
+    }
+    let entry = match Entry::read(dent.path()) {
+        Ok(entry) => entry,
+        Err(error) => {
+            log::debug!("search: skipping {}: {error}", dent.path().display());
+            return WalkState::Continue;
+        }
+    };
+    // `ignore` decides hidden-ness the same way `Entry` does (dot names, and the hidden
+    // attribute on Windows); this only guards a link whose target is hidden on Windows.
+    if entry.hidden && !shared.query.show_hidden {
+        return WalkState::Skip;
+    }
+    let claimed = shared.claimed.fetch_add(1, Ordering::Relaxed);
+    if claimed >= shared.query.limit {
+        shared.truncated.store(true, Ordering::Relaxed);
+        return WalkState::Quit;
+    }
+    // The receiver only goes away if the caller's thread panicked; stop walking then.
+    if sender.send(entry).is_err() {
+        return WalkState::Quit;
+    }
+    if claimed + 1 >= shared.query.limit {
+        shared.truncated.store(true, Ordering::Relaxed);
+        return WalkState::Quit;
+    }
+    WalkState::Continue
 }
 
 /// Case-insensitive name matching: a glob when the text has `*` or `?`, else a substring.
 #[derive(Debug)]
-struct Matcher {
-    needle: String,
-    glob: bool,
+enum NameMatcher {
+    Glob(GlobMatcher),
+    /// The lower-cased needle.
+    Substring(String),
 }
 
-impl Matcher {
+impl NameMatcher {
     fn new(text: &str) -> Self {
-        let needle = text.trim().to_lowercase();
-        let glob = needle.contains(['*', '?']);
-        Self { needle, glob }
+        let text = text.trim();
+        if text.contains(['*', '?']) {
+            match GlobBuilder::new(text)
+                .case_insensitive(true)
+                .literal_separator(false)
+                .build()
+            {
+                Ok(glob) => return Self::Glob(glob.compile_matcher()),
+                // An unfinished pattern (`[a-`) is looked for as plain text instead.
+                Err(error) => log::debug!("search: not a glob ({error}), matching as text"),
+            }
+        }
+        Self::Substring(text.to_lowercase())
     }
 
-    fn matches_name(&self, name: &str) -> bool {
-        let name = name.to_lowercase();
-        if self.glob {
-            glob_match(self.needle.as_bytes(), name.as_bytes())
-        } else {
-            name.contains(&self.needle)
+    fn matches(&self, name: &str) -> bool {
+        match self {
+            Self::Glob(glob) => glob.is_match(name),
+            Self::Substring(needle) => name.to_lowercase().contains(needle.as_str()),
         }
-    }
-
-    fn matches_contents(&self, path: &Path, entry: &Entry) -> bool {
-        if self.glob || self.needle.is_empty() || !entry.kind.is_textual() {
-            return false;
-        }
-        if entry.size.is_none_or(|size| size > CONTENT_LIMIT) {
-            return false;
-        }
-        let mut text = String::new();
-        let read = fs::File::open(path).and_then(|mut file| file.read_to_string(&mut text));
-        read.is_ok() && text.to_lowercase().contains(&self.needle)
     }
 }
 
-/// `*` matches any run, `?` one character (byte-wise; fine for the ASCII wildcards).
-fn glob_match(pattern: &[u8], text: &[u8]) -> bool {
-    let (mut p, mut t) = (0, 0);
-    let mut star: Option<(usize, usize)> = None;
-    while t < text.len() {
-        match pattern.get(p) {
-            Some(b'*') => {
-                star = Some((p, t));
-                p += 1;
-            }
-            Some(&c) if c == b'?' || c == text[t] => {
-                p += 1;
-                t += 1;
-            }
-            _ => match star {
-                Some((star_p, star_t)) => {
-                    p = star_p + 1;
-                    t = star_t + 1;
-                    star = Some((star_p, star_t + 1));
-                }
-                None => return false,
-            },
-        }
+/// A case-insensitive literal matcher for file contents; `None` when there is nothing to look
+/// for (an empty text, or a glob, which only applies to names).
+fn content_matcher(text: &str) -> Option<RegexMatcher> {
+    let needle = text.trim();
+    if needle.is_empty() || needle.contains(['*', '?']) {
+        return None;
     }
-    pattern[p..].iter().all(|&c| c == b'*')
+    RegexMatcherBuilder::new()
+        .case_insensitive(true)
+        .fixed_strings(true)
+        .build(needle)
+        .map_err(|error| log::debug!("search: no content matcher for {needle:?}: {error}"))
+        .ok()
+}
+
+/// `true` when the regular file `dent` contains the needle. Files over [`CONTENT_LIMIT`] and
+/// kinds that are known binary containers (images, media, archives, PDFs, Office files) are
+/// never opened. Every other kind, including unknown extensions (`Makefile`, `.env.local`), is
+/// searched: `grep-searcher` quits at the first NUL byte, so a binary file costs one buffer
+/// read, and the old "textual kinds only" gate would have missed plain-text files with
+/// unusual names.
+fn contents_match(
+    searcher: &mut Searcher,
+    matcher: &RegexMatcher,
+    dent: &DirEntry,
+    name: &str,
+) -> bool {
+    if !dent.file_type().is_some_and(|kind| kind.is_file()) {
+        return false;
+    }
+    let kind = FileKind::from_name(name);
+    if !(kind.is_textual() || kind == FileKind::Other) {
+        return false;
+    }
+    if dent
+        .metadata()
+        .map_or(true, |meta| meta.len() > CONTENT_LIMIT)
+    {
+        return false;
+    }
+    let mut sink = FirstMatch(false);
+    if let Err(error) = searcher.search_path(matcher, dent.path(), &mut sink) {
+        log::debug!("search: could not read {}: {error}", dent.path().display());
+    }
+    sink.0
+}
+
+/// A sink that records whether anything matched and stops at the first match.
+struct FirstMatch(bool);
+
+impl Sink for FirstMatch {
+    type Error = io::Error;
+
+    fn matched(&mut self, _: &Searcher, _: &SinkMatch<'_>) -> Result<bool, io::Error> {
+        self.0 = true;
+        Ok(false)
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use genslate_testing::TempTree;
+    use std::path::Path;
 
     fn query(root: &Path, text: &str, contents: bool) -> SearchQuery {
         SearchQuery {
@@ -243,10 +390,57 @@ mod tests {
 
     #[test]
     fn glob_edge_cases() {
-        assert!(glob_match(b"*", b""));
-        assert!(glob_match(b"a*b*c", b"axxbyyc"));
-        assert!(!glob_match(b"a*b", b"ac"));
-        assert!(glob_match(b"img_????.jpg", b"img_0042.jpg"));
-        assert!(!glob_match(b"img_????.jpg", b"img_042.jpg"));
+        let matches = |pattern: &str, name: &str| NameMatcher::new(pattern).matches(name);
+        assert!(matches("*", ""));
+        assert!(matches("a*b*c", "axxbyyc"));
+        assert!(!matches("a*b", "ac"));
+        assert!(matches("img_????.jpg", "IMG_0042.JPG"));
+        assert!(!matches("img_????.jpg", "img_042.jpg"));
+        // Not a valid glob: looked for as text.
+        assert!(matches("[a-*", "x[a-*y"));
+    }
+
+    #[test]
+    fn skips_gitignored_files() -> Result<(), Box<dyn std::error::Error>> {
+        let tree = TempTree::new()?
+            .dir(".git")?
+            .file(".gitignore", "target/\n*.log\n")?
+            .file(".ignore", "secret-*\n")?
+            .file("report.txt", "")?
+            .file("report.log", "")?
+            .file("secret-report.txt", "")?
+            .file("target/report.bin", "")?
+            .file("src/report.rs", "")?;
+        assert_eq!(
+            names(tree.path(), "report", false)?,
+            vec!["report.rs", "report.txt"]
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn contents_skip_binaries_and_large_files() -> Result<(), Box<dyn std::error::Error>> {
+        let large = "x".repeat(usize::try_from(CONTENT_LIMIT)? + 1) + "needle";
+        let tree = TempTree::new()?
+            .file("Makefile", "build: NEEDLE")?
+            .file("blob.dat", b"needle\0\0\0".as_slice())?
+            .file("photo.png", "needle")?
+            .file("big.txt", large)?;
+        assert_eq!(names(tree.path(), "needle", true)?, vec!["Makefile"]);
+        Ok(())
+    }
+
+    #[test]
+    fn counts_scanned_entries() -> Result<(), Box<dyn std::error::Error>> {
+        let tree = TempTree::new()?.file("a/b.txt", "")?.file("c.txt", "")?;
+        let summary = search(
+            &query(tree.path(), "zzz", false),
+            &AtomicBool::new(false),
+            |_| {},
+        )?;
+        assert_eq!(summary.scanned, 3);
+        assert_eq!(summary.matched, 0);
+        assert!(!summary.truncated && !summary.cancelled);
+        Ok(())
     }
 }
