@@ -182,17 +182,20 @@ function CropFrame({ crop, box, ratio, aspect, onCrop }: CropFrameProps) {
   return (
     <div className="absolute inset-0" data-slot="crop-frame">
       {/* Dim what the crop leaves out. */}
-      <div className="absolute inset-x-0 top-0 bg-scrim" style={{ height: percent(crop.y) }} />
       <div
-        className="absolute inset-x-0 bottom-0 bg-scrim"
+        className="absolute inset-x-0 top-0 bg-media-shade"
+        style={{ height: percent(crop.y) }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 bg-media-shade"
         style={{ height: percent(1 - crop.y - crop.height) }}
       />
       <div
-        className="absolute left-0 bg-scrim"
+        className="absolute left-0 bg-media-shade"
         style={{ top: percent(crop.y), height: percent(crop.height), width: percent(crop.x) }}
       />
       <div
-        className="absolute right-0 bg-scrim"
+        className="absolute right-0 bg-media-shade"
         style={{
           top: percent(crop.y),
           height: percent(crop.height),
