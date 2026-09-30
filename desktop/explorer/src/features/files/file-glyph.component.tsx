@@ -5,8 +5,10 @@ import { useExplorer } from '../../app/explorer.context';
 import type { Entry } from '../../ipc/explorer.types';
 import { entryIcon } from '../../model/file-icon.util';
 
-/** Images small enough to thumbnail without reading a huge file. */
-const THUMBNAIL_LIMIT = 24 * 1024 * 1024;
+/** The shell won't decode larger files (matches `thumbnail.rs`). */
+const THUMBNAIL_LIMIT = 256 * 1024 * 1024;
+/** Long edge of the cached thumbnail: sharp at 2× in the 64px icon frame. */
+const THUMBNAIL_EDGE = 128;
 
 interface FileGlyphProps {
   readonly entry: Entry;
@@ -28,7 +30,12 @@ export function FileGlyph({ entry, size }: FileGlyphProps) {
     return (
       <span data-slot="file-glyph" className={cn('grid shrink-0 place-items-center', frame)}>
         <img
-          src={backend.previewUrl(entry.path)}
+          src={
+            // The webview draws SVGs itself; everything else comes from the thumbnail cache.
+            entry.extension === 'svg'
+              ? backend.previewUrl(entry.path)
+              : backend.thumbnailUrl(entry.path, THUMBNAIL_EDGE, entry.modified)
+          }
           alt=""
           loading="lazy"
           decoding="async"

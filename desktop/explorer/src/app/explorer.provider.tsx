@@ -99,13 +99,15 @@ export function ExplorerProvider({ backend, context: initial, children }: Explor
   const tab = activeTab(tabs);
   const listing = listings.get(tab.path);
   const folderEntries = listing?.listing?.entries ?? [];
-  const visible = tab.search
-    ? tab.search.results
-    : sortEntries(filterEntries(folderEntries, tab.filter), {
-        by: tab.sortBy,
-        descending: tab.sortDescending,
-        foldersFirst: settings.foldersFirst,
-      });
+  // Search results arrive in walk order (parallel, so unordered): sort them like a folder.
+  const visible = sortEntries(
+    tab.search ? tab.search.results : filterEntries(folderEntries, tab.filter),
+    {
+      by: tab.sortBy,
+      descending: tab.sortDescending,
+      foldersFirst: settings.foldersFirst,
+    },
+  );
   const chosen = new Set(tab.selection.selected);
   const selected = visible.filter((entry) => chosen.has(entry.path));
 

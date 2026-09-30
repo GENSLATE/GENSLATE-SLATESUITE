@@ -1,15 +1,16 @@
 //! GENSLATE Explorer: the Tauri 2 shell.
 //!
 //! Startup order: resolve portable paths (`genslate-paths`) → load the TOML config
-//! (`genslate-core-explorer`) → register plugins, the preview scheme and the folder watcher →
-//! create the window (webview profile in the app's cache folder) → paint it with the Nord
-//! canvas colour (no white flash).
+//! (`genslate-core-explorer`) → register plugins, the preview and thumbnail schemes and the
+//! folder watcher → create the window (webview profile in the app's cache folder) → paint it
+//! with the Nord canvas colour (no white flash).
 
 mod commands;
 mod error;
 mod events;
 mod preview_scheme;
 mod state;
+mod thumb_scheme;
 mod window;
 
 use std::time::Duration;
@@ -66,6 +67,7 @@ fn try_run() -> Result<(), AppError> {
     builder
         .manage(explorer)
         .register_asynchronous_uri_scheme_protocol(preview_scheme::SCHEME, preview_scheme::handle)
+        .register_asynchronous_uri_scheme_protocol(thumb_scheme::SCHEME, thumb_scheme::handle)
         .setup(move |app| {
             log::info!(
                 "{} {} ({:?} mode, root {})",

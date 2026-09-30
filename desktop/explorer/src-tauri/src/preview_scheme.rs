@@ -114,7 +114,8 @@ fn parse_range(value: &str, len: u64) -> Option<(u64, u64)> {
     (start <= end).then_some((start, end))
 }
 
-fn percent_decode(text: &str) -> Option<String> {
+/// Decodes `%XX` escapes (the whole path arrives as one encoded segment).
+pub fn percent_decode(text: &str) -> Option<String> {
     let bytes = text.as_bytes();
     let mut out = Vec::with_capacity(bytes.len());
     let mut index = 0;
@@ -131,7 +132,8 @@ fn percent_decode(text: &str) -> Option<String> {
     String::from_utf8(out).ok()
 }
 
-fn status(code: StatusCode) -> Response<Body> {
+/// An empty response with `code`.
+pub fn status(code: StatusCode) -> Response<Body> {
     let mut response = Response::new(Cow::Borrowed(&[][..]));
     *response.status_mut() = code;
     response
