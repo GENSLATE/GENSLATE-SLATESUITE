@@ -990,6 +990,9 @@ mod tests {
         env
     }
 
+    // The fake Unix environments below use `/bin/…` paths, which are not absolute on a Windows
+    // host, so the tests that depend on `Path::is_absolute` only run where those paths are real.
+    #[cfg(unix)]
     #[test]
     fn unix_puts_the_login_shell_first_and_dedupes() {
         let env = linux().var("SHELL", "/bin/bash");
@@ -1021,6 +1024,7 @@ mod tests {
         assert!(profiles[3].args.is_empty(), "sh stays as is");
     }
 
+    #[cfg(unix)]
     #[test]
     fn unusual_login_shells_are_kept() {
         let env = linux()
@@ -1088,7 +1092,11 @@ mod tests {
         assert_eq!(dev.id, "custom-dev-server");
         assert_eq!(dev.command, "/opt/microsoft/powershell/7/pwsh");
         assert_eq!(dev.kind, ShellKind::Pwsh);
-        assert_eq!(dev.cwd.as_deref(), Some("/home/me/Projects"));
+        // `Path` equality ignores the separator the host joined with (`/` vs `\`).
+        assert_eq!(
+            dev.cwd.as_deref().map(Path::new),
+            Some(Path::new("/home/me/Projects"))
+        );
         assert_eq!(
             dev.env.get("NODE_ENV").map(String::as_str),
             Some("development")
@@ -1096,6 +1104,7 @@ mod tests {
         assert_eq!(dev.color, Some(NordColor::AuroraGreen));
     }
 
+    #[cfg(unix)]
     #[test]
     fn duplicate_config_names_get_a_counter() {
         let env = linux();
@@ -1152,7 +1161,10 @@ mod tests {
         assert_eq!(slug("!!!"), "profile");
         let home = Path::new("/home/me");
         assert_eq!(expand_home("~", Some(home)), "/home/me");
-        assert_eq!(expand_home("~/a/b", Some(home)), "/home/me/a/b");
+        assert_eq!(
+            Path::new(&expand_home("~/a/b", Some(home))),
+            Path::new("/home/me/a/b")
+        );
         assert_eq!(expand_home("~other", Some(home)), "~other");
         assert_eq!(expand_home("~/a", None), "~/a");
     }

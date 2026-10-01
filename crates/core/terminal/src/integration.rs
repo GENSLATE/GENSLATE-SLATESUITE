@@ -272,7 +272,10 @@ mod tests {
         let tree = TempTree::new()?;
         let plain = prepare(ShellKind::Bash, &[], tree.path(), none)?.ok_or("no integration")?;
         let script = tree.join("shell-integration/bash-integration.bash");
-        assert_eq!(plain.args, ["--rcfile", &script.to_string_lossy(), "-i"]);
+        assert_eq!(
+            plain.args,
+            ["--rcfile", &shell_path(&script, cfg!(windows)), "-i"]
+        );
         assert!(plain.env.is_empty());
         assert_eq!(fs::read_to_string(&script)?, BASH);
 
