@@ -34,7 +34,7 @@ Scopes: `tokens`, `design-system`, `tauri-bridge`, `config-typescript`, `config-
 |---|---|
 | pre-commit | Biome (auto-fix, re-stage), rustfmt on staged `.rs`, token drift check when token sources change, cspell on staged files |
 | commit-msg | commitlint, authorship check |
-| pre-push | authorship check on `origin/main..HEAD` and the branch name, then `bun run check --ts` and `bun run test` |
+| pre-push | authorship check on `origin/main..HEAD` and the branch name, then `bun run check --ts`. Tests are not part of the hook (it must stay fast for IDE Sync): CI runs them, and run `bun run test` yourself before a release |
 
 ## Authorship
 

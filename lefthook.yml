@@ -45,6 +45,9 @@ commit-msg:
     - name: authorship
       run: bun scripts/bun-commands/attribution.ts --message {1}
 
+# Keep this fast: IDE Sync (VS Code, GitHub Desktop) only shows "failed to push some refs" when
+# a push hook fails, and a slow hook looks like a hang. The full test suites (bun + cargo) run
+# in CI and with `bun run test`; run that before a release.
 pre-push:
   jobs:
     - name: authorship
@@ -53,5 +56,3 @@ pre-push:
     # bun/cargo directly otherwise (e.g. offline), so the hook works everywhere.
     - name: typecheck + lint
       run: bun run check --ts
-    - name: tests
-      run: bun run test

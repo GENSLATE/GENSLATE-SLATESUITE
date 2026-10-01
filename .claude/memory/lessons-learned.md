@@ -20,6 +20,9 @@ Things that cost time once. Add a bullet when something surprising bites; keep e
 - **`bun x tauri` outside an app folder fetches an unrelated npm package** — run the CLI as `bun run tauri …` inside `desktop/<app>` (the `tauri` script uses the app's own `@tauri-apps/cli`).
 - **`cargo clippy` errors can vanish behind the progress bar** in captured output — run with `CARGO_TERM_PROGRESS_WHEN=never` and `--color never`.
 - **Tauri's `freezePrototype: true` blanks the Terminal window**: `@xterm/addon-webgl` assigns `toString` on an object when its module loads, which throws once `Object.prototype` is frozen, so nothing renders (a plain browser hides it). `desktop/terminal` keeps it `false`; reproduce with a Playwright init script `Object.freeze(Object.prototype)` against `vite:dev`.
+- **IDE Sync hides hook output:** when a push hook fails, VS Code / GitHub Desktop show only `failed to push some refs`; the real reason is in the Git output log (VS Code: Git → Show Git Output). Keep hooks fast and read that log first.
+- **Git hooks are shared by every worktree** (`.git/hooks`): a `lefthook install` from a linked worktree bakes that worktree's path into the hooks. Run it from the main checkout only, and remove worktrees with `git worktree remove` (a deleted folder leaves a stale hook and gitdir behind).
+- **Windows-only Rust failures aren't caught by CI** (the rust job runs on ubuntu): run `cargo test -p <crate>` on Windows after touching path or separator logic.
 
 ## Claude Code
 - Hooks run with `$CLAUDE_PROJECT_DIR`; exit 2 blocks and feeds stderr to Claude; any other failure should exit 0 (fail open).
