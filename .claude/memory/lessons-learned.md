@@ -22,6 +22,7 @@ Things that cost time once. Add a bullet when something surprising bites; keep e
 - **Tauri's `freezePrototype: true` blanks the Terminal window**: `@xterm/addon-webgl` assigns `toString` on an object when its module loads, which throws once `Object.prototype` is frozen, so nothing renders (a plain browser hides it). `desktop/terminal` keeps it `false`; reproduce with a Playwright init script `Object.freeze(Object.prototype)` against `vite:dev`.
 - **IDE Sync hides hook output:** when a push hook fails, VS Code / GitHub Desktop show only `failed to push some refs`; the real reason is in the Git output log (VS Code: Git → Show Git Output). Keep hooks fast and read that log first.
 - **Git hooks are shared by every worktree** (`.git/hooks`): a `lefthook install` from a linked worktree bakes that worktree's path into the hooks. Run it from the main checkout only, and remove worktrees with `git worktree remove` (a deleted folder leaves a stale hook and gitdir behind).
+- **Doctests can't link in `cargo test --workspace` on Windows:** tauri-build writes a stub `msvcrt.lib` into every app's build `out` dir (static CRT) and rustdoc puts all of them on the link path, so the doctest fails with `LNK2001 __CxxFrameHandler3`. `genslate-testing` sets `doctest = false`; keep new doctests out of crates that the apps depend on, or use `text`/`no_run` fences.
 - **Windows-only Rust failures aren't caught by CI** (the rust job runs on ubuntu): run `cargo test -p <crate>` on Windows after touching path or separator logic.
 
 ## Claude Code

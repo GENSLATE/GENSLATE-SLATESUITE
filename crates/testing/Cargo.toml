@@ -9,6 +9,12 @@ license.workspace = true
 publish.workspace = true
 repository.workspace = true
 
+[lib]
+# `cargo test --workspace` links doctests with every app's build-output folder on the search
+# path, and tauri-build puts a stub `msvcrt.lib` there (static CRT), so the doctest cannot link
+# on Windows. `tree.rs` and `repo.rs` have unit tests; the lib.rs example is documentation only.
+doctest = false
+
 [dependencies]
 tempfile.workspace = true
 
