@@ -1396,8 +1396,10 @@ fn display_name(path: &str) -> String {
 
 /// The separator `path` uses (`\` for Windows paths, else `/`).
 fn separator_of(path: &str) -> char {
-    if path.contains('\\') && !path.contains('/') {
+    if path.contains('\\') {
         '\\'
+    } else if path.contains('/') {
+        '/'
     } else {
         MAIN_SEPARATOR
     }

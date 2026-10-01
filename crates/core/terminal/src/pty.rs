@@ -593,13 +593,9 @@ fn lock<T: ?Sized>(mutex: &Mutex<T>) -> MutexGuard<'_, T> {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::BTreeMap;
-    use std::time::Instant;
-
     use genslate_testing::TempTree;
 
     use super::*;
-    use crate::profiles::{ProfileIcon, ProfileSource, ShellKind};
 
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 

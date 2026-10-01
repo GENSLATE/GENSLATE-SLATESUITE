@@ -32,7 +32,18 @@ impl TempTree {
 
     /// `root/relative`.
     pub fn join(&self, relative: impl AsRef<Path>) -> PathBuf {
-        self.dir.path().join(relative)
+        let mut path = self.dir.path().to_path_buf();
+        for component in relative.as_ref().components() {
+            match component {
+                std::path::Component::Normal(part) => path.push(part),
+                std::path::Component::CurDir => {}
+                std::path::Component::ParentDir => {
+                    path.pop();
+                }
+                other => path.push(other.as_os_str()),
+            }
+        }
+        path
     }
 
     /// Writes `contents` to `relative`, creating parent folders.
