@@ -99,7 +99,7 @@ Every app keeps its SQLite databases in `other/databases/genslate/<app>/`; suite
 
 ## Settings
 
-`[terminal]` in `other/config/genslate/terminal/config.toml`: `default-profile`, `font-family`,
+`[terminal]` in `other/config/slatesuite/apps/terminal.config.toml`: `default-profile`, `font-family`,
 `font-size`, `line-height`, `cursor-style`, `cursor-blink`, `scrollback`, `copy-on-select`,
 `right-click`, `paste-warning`, `bell`, `shell-integration`, `restore-session`,
 `notify-when-done`, `confirm-close`, `history`. The settings dialog writes them back through

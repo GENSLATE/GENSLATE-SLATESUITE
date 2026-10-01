@@ -24,7 +24,7 @@ scripts/bun-commands/ one file per root `bun run <command>`
 webapps/            websites and servers: genslate-page (the GitHub Pages site, moon `genslate-page`), tauri-servers
 tests/e2e/          end-to-end tests
 release/            packaged installers `release/<app>/<version>/` (git-ignored)
-other/              documents/, config/{genslate/<app>,appdata/metadata}/*.toml, licenses/, logs/, databases/, cache/, resources/ (ships verbatim in the launcher suite)
+other/              documents/, config/slatesuite/{apps/<app>.<kind>.toml,metadata/*.toml}, licenses/, logs/, databases/, cache/, resources/ (ships verbatim in the launcher suite)
 ```
 
 ## Dependency rules (moon `tagRelationships`, enforced)

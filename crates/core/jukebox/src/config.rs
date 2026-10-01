@@ -45,7 +45,7 @@ mod tests {
     #[test]
     fn repo_config_parses() -> Result<(), ConfigError> {
         let path = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../../other/config/genslate/jukebox/config.toml");
+            .join("../../../other/config/slatesuite/apps/jukebox.config.toml");
         Config::load(&path)?;
         Ok(())
     }

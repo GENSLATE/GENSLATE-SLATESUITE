@@ -22,7 +22,7 @@ interface Metadata {
 
 const readMetadata = (id: string): Metadata =>
   Bun.TOML.parse(
-    readFileSync(join(repoRoot, 'other', 'config', 'appdata', 'metadata', `${id}.toml`), 'utf8'),
+    readFileSync(join(repoRoot, 'other', 'config', 'slatesuite', 'metadata', `${id}.toml`), 'utf8'),
   ) as Metadata;
 
 describe('the website app catalogue', () => {

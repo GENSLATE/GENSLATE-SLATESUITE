@@ -19,7 +19,7 @@ bun x moon run genslate-page:test         # markdown pipeline, router, catalogue
 |---|---|---|
 | Pages | `src/features/<page>/` | Home, apps, app detail, design, download, docs, 404 — one chunk each (`src/app/pages.registry.tsx`). |
 | Router | `src/app/router/` | Base-path aware, intercepts same-site links, loads the next page's chunk and data first, swaps inside a view transition, restores scroll, moves focus to `<main>`. |
-| App catalogue | `src/content/apps.content.ts` | Website copy per app. Name, tagline, category, colour and keywords must match `other/config/appdata/metadata/<app>.toml` — a test enforces it. |
+| App catalogue | `src/content/apps.content.ts` | Website copy per app. Name, tagline, category, colour and keywords must match `other/config/slatesuite/metadata/<app>.toml` — a test enforces it. |
 | App pictures | `src/features/mockups/` | Live, `inert` mockups built from design-system components at a fixed window size and scaled with CSS (`mockup.stage.css`). The Design Kit uses real screenshots from `other/resources/screenshots/`. |
 | Wiki | `content/wiki/*.md` | User guides with frontmatter (`title`, `description`, `section`, `order`, `icon`). |
 | Developer docs | `other/documents/*.md` | Rendered as-is (the list is `DEVELOPER_DOCS` in `plugins/content.plugin.ts`). Relative `.md` links become site links; other repo paths link to GitHub. |

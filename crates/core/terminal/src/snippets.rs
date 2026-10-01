@@ -1,5 +1,5 @@
 //! Snippets: saved commands the user pastes (and optionally runs) from the palette, kept in
-//! `snippets.toml` next to `config.toml`:
+//! `terminal.snippets.toml` next to `terminal.config.toml`:
 //!
 //! ```toml
 //! [[snippet]]
@@ -22,8 +22,8 @@ use serde::{Deserialize, Serialize};
 use crate::TerminalError;
 use crate::profiles::slug;
 
-/// File name inside the app's config folder.
-pub const FILE_NAME: &str = "snippets.toml";
+/// The file kind: `<app>.snippets.toml` in the config folder (`AppPaths::config_sibling`).
+pub const KIND: &str = "snippets";
 
 const HEADER: &str = "# GENSLATE Terminal — snippets. Edit them in the app (Command palette → Snippets) or here.\n\
 # Each [[snippet]]: name, command, description (optional), run = true to press Enter after\n\
@@ -198,6 +198,8 @@ mod tests {
 
     use super::*;
 
+    const FILE_NAME: &str = "terminal.snippets.toml";
+
     type TestResult = Result<(), Box<dyn std::error::Error>>;
 
     fn input(id: Option<&str>, name: &str, command: &str) -> SnippetInput {
@@ -305,7 +307,7 @@ mod tests {
     #[test]
     fn repo_snippets_parse() -> TestResult {
         let path = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../../other/config/genslate/terminal")
+            .join("../../../other/config/slatesuite/apps")
             .join(FILE_NAME);
         let snippets = load(&path)?;
         assert!(snippets.len() >= 4);

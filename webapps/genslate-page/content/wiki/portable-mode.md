@@ -18,7 +18,7 @@ GENSLATE/
 │  ├─ portableapps.com/    PortableApps.com apps you add yourself
 │  └─ portapps.io/         portapps apps you add yourself
 ├─ other/
-│  ├─ config/              settings: config.toml and keybindings.toml per app
+│  ├─ config/              settings: slatesuite/apps/<app>.config.toml and <app>.keybindings.toml
 │  ├─ logs/                log files
 │  ├─ databases/           window state, recents and other durable state
 │  └─ cache/               disposable data — safe to delete

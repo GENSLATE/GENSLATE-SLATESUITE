@@ -50,7 +50,7 @@ export function SettingsDialog() {
     <Dialog open onOpenChange={(open) => (open ? undefined : api.closeDialog())}>
       <DialogPopup size="md" showClose>
         <DialogTitle>Settings</DialogTitle>
-        <DialogDescription>Saved in Gallery’s config.toml.</DialogDescription>
+        <DialogDescription>Saved in Gallery’s gallery.config.toml.</DialogDescription>
         <DialogBody className="flex flex-col gap-5">
           <Group title="View">
             <div className="grid grid-cols-2 gap-3">

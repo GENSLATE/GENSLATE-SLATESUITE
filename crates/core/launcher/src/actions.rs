@@ -176,14 +176,14 @@ pub const ACTIONS: &[ActionSpec] = &[
     ActionSpec {
         id: "config",
         title: "Edit settings",
-        description: "Open config.toml",
+        description: "Open launcher.config.toml",
         params: &[],
         effect: Effect::Open,
     },
     ActionSpec {
         id: "keys",
         title: "Edit shortcuts",
-        description: "Open keybindings.toml",
+        description: "Open launcher.keybindings.toml",
         params: &[],
         effect: Effect::Open,
     },

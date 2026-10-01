@@ -29,7 +29,7 @@ export function EmptyTerminal() {
         </h1>
         <p className="mt-1 text-fg-secondary text-sm">
           {api.profiles.length === 0
-            ? 'Add one under [[profiles]] in the Terminal’s config.toml.'
+            ? 'Add one under [[profiles]] in the Terminal’s terminal.config.toml.'
             : 'Every tab is closed. Pick a shell to open a new one.'}
         </p>
         {api.profiles.length === 0 ? null : (

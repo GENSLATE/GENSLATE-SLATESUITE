@@ -15,8 +15,8 @@ Every mode uses the same shape, rooted at a different folder:
 │  ├─ portableapps.com/          PortableApps.com-format apps you add yourself
 │  └─ portapps.io/               portapps.io apps you add yourself
 ├─ other/
-│  ├─ config/genslate/<app>/     config.toml + keybindings.toml (hand-editable, hot-reloaded)
-│  ├─ config/appdata/metadata/   <app>.toml per-app metadata; genslate/portableapps/portapps.toml tab settings
+│  ├─ config/slatesuite/apps/    <app>.config.toml + <app>.keybindings.toml (hand-editable, hot-reloaded)
+│  ├─ config/slatesuite/metadata/   <app>.toml per-app metadata; genslate/portableapps/portapps.toml tab settings
 │  ├─ logs/app-logs/<app>/       log files
 │  ├─ databases/genslate/<app>/  durable app state (window state, recents, …)
 │  ├─ cache/genslate/<app>/      disposable state (webview profile, icon cache) — safe to delete

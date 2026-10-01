@@ -45,7 +45,7 @@ mod tests {
     #[test]
     fn repo_config_parses() -> Result<(), ConfigError> {
         let path = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../../other/config/genslate/browser/config.toml");
+            .join("../../../other/config/slatesuite/apps/browser.config.toml");
         Config::load(&path)?;
         Ok(())
     }

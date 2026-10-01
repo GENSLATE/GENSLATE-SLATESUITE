@@ -62,7 +62,7 @@ desktop/explorer/src/
 
 ## Settings
 
-`[explorer]` in `other/config/genslate/explorer/config.toml`: `view`, `sort-by`, `sort-descending`,
+`[explorer]` in `other/config/slatesuite/apps/explorer.config.toml`: `view`, `sort-by`, `sort-descending`,
 `folders-first`, `show-hidden`, `confirm-trash`, `start-folder`, `restore-tabs`, `preview-pane`.
 The settings dialog writes them back through `set_setting`. Open tabs, favorites, the side-panel
 tab and column widths are remembered in the webview's storage.

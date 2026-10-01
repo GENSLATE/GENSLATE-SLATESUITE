@@ -7,12 +7,12 @@ icon: codicon:settings
 ---
 
 GENSLATE has no hidden settings database. Each app keeps two plain-text files in
-`other/config/genslate/<app>/`:
+`other/config/slatesuite/apps/`, named after the app (here for the Terminal):
 
 | File | Holds |
 |---|---|
-| `config.toml` | Appearance, behaviour and app-specific options |
-| `keybindings.toml` | Keyboard shortcuts |
+| `terminal.config.toml` | Appearance, behaviour and app-specific options |
+| `terminal.keybindings.toml` | Keyboard shortcuts |
 
 Open them from the Launcher with `/config` and `/keys`, or with any text editor.
 
@@ -47,7 +47,7 @@ level = "info"          # off · error · warn · info · debug · trace
 
 ## App lists and overrides
 
-The Launcher's tabs are configured in `other/config/appdata/metadata/`: `genslate.toml`,
+The Launcher's tabs are configured in `other/config/slatesuite/metadata/`: `genslate.toml`,
 `portableapps.toml` and `portapps.toml`. Each can hide the tab, change its order, and override
 individual apps:
 

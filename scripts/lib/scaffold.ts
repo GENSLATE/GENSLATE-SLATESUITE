@@ -3,7 +3,7 @@
  * Cargo.toml workspace dependency, config stubs and the placeholder icon.
  */
 
-/** The `[app]` table of `other/config/appdata/metadata/<name>.toml`. */
+/** The `[app]` table of `other/config/slatesuite/metadata/<name>.toml`. */
 export interface AppMetadata {
   readonly name?: string;
   readonly description?: string;
@@ -71,10 +71,10 @@ export function addWorkspaceDependency(cargoToml: string, crate: string, path: s
   return lines.join('\n');
 }
 
-/** `other/config/genslate/<name>/config.toml`: the shared sections, every key commented. */
+/** `other/config/slatesuite/apps/<name>.config.toml`: the shared sections, every key commented. */
 export function configStub(name: string, title: string): string {
   return `# ${title} — config. Every key is optional; delete a key to get its default.
-# Location: <installDir>/other/config/genslate/${name}/config.toml (suite), the same path beside
+# Location: <installDir>/other/config/slatesuite/apps/${name}.config.toml (suite), the same path beside
 # the app when run from its own zip, or the repo's other/config in dev. See other/documents/portability.md.
 
 [appearance]

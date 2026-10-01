@@ -16,7 +16,7 @@ Both are first-class: every component is designed, contrast-checked (WCAG 2.2 AA
 ## Choose a theme
 
 In the Launcher, type `/theme` and pick **system**, **dark** or **light**. Or set it in
-`other/config/genslate/launcher/config.toml`:
+`other/config/slatesuite/apps/launcher.config.toml`:
 
 ```toml
 [appearance]

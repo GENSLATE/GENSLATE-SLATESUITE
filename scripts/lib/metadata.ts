@@ -1,5 +1,5 @@
 /**
- * Launcher metadata (`other/config/appdata/metadata/<app>.toml`): the `[app]` table is
+ * Launcher metadata (`other/config/slatesuite/metadata/<app>.toml`): the `[app]` table is
  * hand-written; `[build]` (version, build, identifier, guid) and `[exe]` (per-OS launch path)
  * are stamped into the *packaged copy* at release time so they never drift.
  */

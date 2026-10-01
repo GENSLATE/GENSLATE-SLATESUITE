@@ -78,7 +78,7 @@ describe('template renderer (moon/Tera subset)', () => {
       expect(manifest.package.name).toBe('genslate-core-code-review');
       expect(manifest.dependencies).toHaveProperty('genslate-app-common');
       expect(await readFile(join(out, 'src/config.rs'), 'utf8')).toContain(
-        'other/config/genslate/code-review/config.toml',
+        'other/config/slatesuite/apps/code-review.config.toml',
       );
     } finally {
       await rm(out, { recursive: true, force: true });

@@ -25,7 +25,7 @@ fileGroups:
     # Rendered into the developer docs and the app icons at build time.
     - '/other/documents/**/*.md'
     - '/other/resources/icons/genslate/*.svg'
-    - '/other/config/appdata/metadata/*.toml'
+    - '/other/config/slatesuite/metadata/*.toml'
 
 tasks:
   # Vite dev server with HMR (docs and wiki reload on save).

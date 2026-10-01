@@ -28,7 +28,7 @@ your GENSLATE drive like everything else.
 ## Settings
 
 Like every GENSLATE app, Terminal will keep its settings in
-`other/config/genslate/terminal/config.toml` and `keybindings.toml`, hot-reloaded on save.
+`other/config/slatesuite/apps/terminal.config.toml` and `terminal.keybindings.toml`, hot-reloaded on save.
 
 ## Follow along
 

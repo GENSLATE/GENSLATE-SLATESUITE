@@ -9,8 +9,8 @@
 //! | `Standalone` | extracted from its own zip                             | the app's folder                        |
 //! | `Fallback`   | app folder read-only or macOS-translocated             | `<OS data dir>/GENSLATE`                |
 //!
-//! Inside `other/`: `config/genslate/<app>/{config,keybindings}.toml`,
-//! `config/appdata/metadata/`, `logs/app-logs/<app>/`, `databases/genslate/<app>/`,
+//! Inside `other/`: `config/slatesuite/apps/<app>.{config,keybindings}.toml`,
+//! `config/slatesuite/metadata/`, `logs/app-logs/<app>/`, `databases/genslate/<app>/`,
 //! `databases/genslate/shared/` (suite-wide databases every app shares, e.g. the AI memory),
 //! `cache/genslate/<app>/`.
 //!

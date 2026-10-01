@@ -2,7 +2,7 @@
  * `bun run new-app <name> [--title …] [--identifier …] [--port …] [--allow-existing]` — scaffold a
  * Tauri app from `.config/moon/templates/tauri-app` into `desktop/<name>` and its core crate from
  * `.config/moon/templates/app-core` into `crates/core/<name>`, plus its config stubs
- * (`other/config/genslate/<name>/`), launcher metadata, icon, bundle icons and log folder.
+ * (`other/config/slatesuite/apps/<name>.*.toml`), launcher metadata, icon, bundle icons and log folder.
  */
 import { cp, readdir, rm } from 'node:fs/promises';
 import { join, relative } from 'node:path';
@@ -81,7 +81,7 @@ Example
     if (apps.some((app) => app.port === port || app.port === port - 1 || app.port === port + 1)) {
       fail(`port ${port} (or its HMR port) is used by another app`);
     }
-    const metadataFile = fromRoot('other/config/appdata/metadata', `${name}.toml`);
+    const metadataFile = fromRoot('other/config/slatesuite/metadata', `${name}.toml`);
     const metadata = parseMetadata(
       (await Bun.file(metadataFile).exists()) ? await Bun.file(metadataFile).text() : undefined,
     );
@@ -116,17 +116,17 @@ Example
 
     await writeIfMissing(fromRoot('other/logs/app-logs', name, '.gitkeep'), '');
     await writeIfMissing(
-      fromRoot('other/config/genslate', name, 'config.toml'),
+      fromRoot('other/config/slatesuite/apps', `${name}.config.toml`),
       configStub(name, vars.title),
     );
     await writeIfMissing(
-      fromRoot('other/config/genslate', name, 'keybindings.toml'),
+      fromRoot('other/config/slatesuite/apps', `${name}.keybindings.toml`),
       `# ${vars.title} — keyboard shortcuts. Every key is optional.
 `,
     );
     await writeIfMissing(metadataFile, metadataStub(name, vars.title));
     log.info(
-      `config stubs in other/config/genslate/${name}/, metadata in other/config/appdata/metadata/${name}.toml`,
+      `config stubs in other/config/slatesuite/apps/${name}.*.toml, metadata in other/config/slatesuite/metadata/${name}.toml`,
     );
     const icon = fromRoot('other/resources/icons/genslate', `${name}.svg`);
     if (await writeIfMissing(icon, placeholderIcon(vars.title))) {

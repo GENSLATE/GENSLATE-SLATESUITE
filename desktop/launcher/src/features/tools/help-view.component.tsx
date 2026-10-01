@@ -60,9 +60,9 @@ export function HelpView({ actions, keybindings, onBack }: HelpViewProps) {
         ))}
       </dl>
       <p className="mt-4 text-fg-muted text-xs">
-        Every setting lives in <span className="font-mono">other/config/genslate/launcher/</span> —
-        edit the files, the launcher updates as you save. Try{' '}
-        <span className="font-mono">/config</span>.
+        Every setting lives in{' '}
+        <span className="font-mono">other/config/slatesuite/apps/launcher.*.toml</span> — edit the
+        files, the launcher updates as you save. Try <span className="font-mono">/config</span>.
       </p>
     </WellSheet>
   );

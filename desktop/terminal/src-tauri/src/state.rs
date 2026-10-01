@@ -26,7 +26,7 @@ pub struct Terminal {
     profiles: Mutex<Option<Vec<Profile>>>,
     /// `--cwd` / `--profile` from the first launch.
     pub launch: LaunchArgs,
-    /// Serialises the read-modify-write of `snippets.toml`.
+    /// Serialises the read-modify-write of `terminal.snippets.toml`.
     snippets: Mutex<()>,
 }
 
@@ -57,7 +57,7 @@ impl Terminal {
         lock(&self.config)
     }
 
-    /// Runs `update` (a read-modify-write of `config.toml`) while holding the config lock, so
+    /// Runs `update` (a read-modify-write of `terminal.config.toml`) while holding the config lock, so
     /// two setting changes never interleave, then keeps the config it returns.
     pub fn update_config<E>(
         &self,
@@ -95,12 +95,12 @@ impl Terminal {
         detected
     }
 
-    /// `snippets.toml` next to `config.toml`.
+    /// `terminal.snippets.toml` next to `terminal.config.toml`.
     pub fn snippets_file(&self) -> std::path::PathBuf {
-        self.paths.config_dir.join(snippets::FILE_NAME)
+        self.paths.config_sibling(snippets::KIND)
     }
 
-    /// Held while `snippets.toml` is read and rewritten.
+    /// Held while `terminal.snippets.toml` is read and rewritten.
     pub fn snippets_lock(&self) -> MutexGuard<'_, ()> {
         lock(&self.snippets)
     }

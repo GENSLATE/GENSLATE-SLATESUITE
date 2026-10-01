@@ -2,7 +2,7 @@ import type { CodiconRef } from '@genslate/design-system';
 
 /**
  * The GENSLATE suite as the website presents it. `name`, `tagline`, `category`, `color` and
- * `keywords` mirror `other/config/appdata/metadata/<id>.toml` (what the launcher shows) — a unit
+ * `keywords` mirror `other/config/slatesuite/metadata/<id>.toml` (what the launcher shows) — a unit
  * test keeps them in sync. Everything else is website copy.
  */
 

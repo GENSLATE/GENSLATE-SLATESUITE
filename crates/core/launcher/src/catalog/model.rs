@@ -42,7 +42,7 @@ impl Source {
         }
     }
 
-    /// Tab settings + overrides file in `other/config/appdata/metadata/`.
+    /// Tab settings + overrides file in `other/config/slatesuite/metadata/`.
     pub const fn settings_file(self) -> &'static str {
         match self {
             Self::Genslate => "genslate.toml",

@@ -1,5 +1,5 @@
 # GENSLATE AI Studio — config. Every key is optional; delete a key to get its default.
-# Location: <installDir>/other/config/genslate/aistudio/config.toml (suite), the same path beside
+# Location: <installDir>/other/config/slatesuite/apps/aistudio.config.toml (suite), the same path beside
 # the app when run from its own zip, or the repo's other/config in dev. See other/documents/portability.md.
 
 [appearance]

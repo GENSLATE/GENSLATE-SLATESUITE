@@ -34,13 +34,13 @@ tabs, with icons extracted automatically.
 
 ## Where are my settings?
 
-In `other/config/genslate/<app>/config.toml` and `keybindings.toml`. Type `/config` or `/keys` in the
+In `other/config/slatesuite/apps/<app>.config.toml` and `<app>.keybindings.toml`. Type `/config` or `/keys` in the
 Launcher to open them. See [settings files](/docs/configuration/).
 
 ## The global shortcut doesn't work
 
 Another program is probably using <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>Space</kbd>. Choose another
-shortcut in `keybindings.toml` — see [keyboard shortcuts](/docs/keyboard-shortcuts/).
+shortcut in `launcher.keybindings.toml` — see [keyboard shortcuts](/docs/keyboard-shortcuts/).
 
 ## Windows or macOS won't open the app
 

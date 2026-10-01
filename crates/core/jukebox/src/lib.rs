@@ -1,6 +1,6 @@
 //! Core logic for GENSLATE Jukebox, kept free of Tauri so it is unit-testable.
 //!
-//! - [`config`]: the user config file (`other/config/genslate/jukebox/config.toml` in dev).
+//! - [`config`]: the user config file (`other/config/slatesuite/apps/jukebox.config.toml` in dev).
 //! - [`AppInfo`] (from `genslate-app-common`): the payload returned by the `get_app_info`
 //!   command.
 //!

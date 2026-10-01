@@ -30,6 +30,8 @@ const scopes = [
   'genslate-page',
   // repo areas
   'crates',
+  'slatesuite',
+  'config',
   'repo',
   'ci',
   'deps',
@@ -45,7 +47,7 @@ const config = {
     'scope-case': [2, 'always', 'kebab-case'],
     'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
     'header-max-length': [2, 'always', 100],
-    'body-max-line-length': [1, 'always', 100],
+    'body-max-line-length': [0],
   },
   helpUrl: 'https://www.conventionalcommits.org/en/v1.0.0/',
 };

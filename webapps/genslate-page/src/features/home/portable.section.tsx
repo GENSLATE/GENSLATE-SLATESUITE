@@ -135,13 +135,13 @@ export function PortableSection() {
               >
                 <TreeItem
                   id="config-launcher"
-                  label="genslate/launcher/config.toml"
+                  label="slatesuite/apps/launcher.config.toml"
                   icon="codicon:settings-gear"
                   trailing={<Hint>hot-reloaded</Hint>}
                 />
                 <TreeItem
                   id="keys"
-                  label="genslate/launcher/keybindings.toml"
+                  label="slatesuite/apps/launcher.keybindings.toml"
                   icon="codicon:record-keys"
                 />
               </TreeItem>

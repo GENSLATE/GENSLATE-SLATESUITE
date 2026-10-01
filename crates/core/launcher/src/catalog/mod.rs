@@ -23,7 +23,7 @@ use crate::metadata::TabSettings;
 pub struct CatalogRoots {
     /// `programs/` (suite and dev); `None` for standalone installs.
     pub programs: Option<PathBuf>,
-    /// `other/config/appdata/metadata/`
+    /// `other/config/slatesuite/metadata/`
     pub metadata: PathBuf,
     /// `other/resources/icons/genslate/`
     pub icons: PathBuf,

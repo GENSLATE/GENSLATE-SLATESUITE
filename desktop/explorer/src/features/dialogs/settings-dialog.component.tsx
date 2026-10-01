@@ -50,7 +50,7 @@ export function SettingsDialog() {
       <DialogPopup size="md" showClose>
         <DialogTitle>Settings</DialogTitle>
         <DialogDescription>
-          Saved in the Explorer’s config.toml and used by new windows and tabs.
+          Saved in the Explorer’s explorer.config.toml and used by new windows and tabs.
         </DialogDescription>
         <DialogBody className="flex flex-col gap-5">
           <Group title="View">

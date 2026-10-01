@@ -7,13 +7,13 @@ use crate::TempTree;
 /// Files that identify the root of a GENSLATE checkout (see `genslate-paths`).
 pub const REPO_MARKERS: [&str; 2] = [".config/moon/workspace.yml", "Cargo.toml"];
 
-/// A temporary tree shaped like the repository root: the [`REPO_MARKERS`], `other/config/genslate`,
+/// A temporary tree shaped like the repository root: the [`REPO_MARKERS`], `other/config/slatesuite/apps`,
 /// `other/logs/app-logs` and the launcher's dev install folder.
 pub fn fake_repo() -> io::Result<TempTree> {
     REPO_MARKERS
         .iter()
         .try_fold(TempTree::new()?, |tree, marker| tree.file(marker, ""))?
-        .dir("other/config/genslate")?
+        .dir("other/config/slatesuite/apps")?
         .dir("other/logs/app-logs")?
         .dir("desktop/launcher/installDir/programs/genslate")?
         .dir("desktop/launcher/installDir/storage/users/shared")
@@ -24,8 +24,8 @@ pub fn fake_repo() -> io::Result<TempTree> {
 pub fn fake_suite(apps: &[&str]) -> io::Result<TempTree> {
     apps.iter().try_fold(
         TempTree::new()?
-            .dir("other/config/genslate")?
-            .dir("other/config/appdata/metadata")?
+            .dir("other/config/slatesuite/apps")?
+            .dir("other/config/slatesuite/metadata")?
             .dir("programs/portableapps.com")?
             .dir("programs/portapps.io")?
             .dir("storage/users/shared")?,
@@ -43,7 +43,7 @@ mod tests {
         for marker in REPO_MARKERS {
             assert!(repo.join(marker).is_file(), "missing {marker}");
         }
-        assert!(repo.join("other/config/genslate").is_dir());
+        assert!(repo.join("other/config/slatesuite/apps").is_dir());
         assert!(repo.join("other/logs/app-logs").is_dir());
         Ok(())
     }

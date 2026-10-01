@@ -458,7 +458,7 @@ mod tests {
     #[test]
     fn repo_config_parses() -> Result<(), ConfigError> {
         let path = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../../other/config/genslate/terminal/config.toml");
+            .join("../../../other/config/slatesuite/apps/terminal.config.toml");
         let config = Config::load(&path)?;
         assert_eq!(
             config.terminal,

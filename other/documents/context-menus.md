@@ -32,12 +32,12 @@ Right-clicking the launcher's tray icon opens the same design-system menu, not t
 | Row | What it does |
 |---|---|
 | **Header** | GENSLATE mark, "GENSLATE Launcher", where it runs from (Suite · *name*, Standalone, Development build) and the version |
-| Show Launcher | Shows the launcher; the hint is the global hotkey from `keybindings.toml` |
+| Show Launcher | Shows the launcher; the hint is the global hotkey from `launcher.keybindings.toml` |
 | Pin on Top / Unpin from Top | Same as the titlebar's pin |
 | Recent ▸ | The last 5 launched apps with their icons. Apps that can't start are disabled. |
 | Favorites ▸ | Favorite apps by name |
 | Folders ▸ | Desktop, Documents, Downloads, Music, Pictures, Videos, then the Storage Folder |
-| Appearance ▸ | Theme (Polar Night · Snow Storm · Match System) and Window Size (Small · Medium · Large), written to `config.toml` |
+| Appearance ▸ | Theme (Polar Night · Snow Storm · Match System) and Window Size (Small · Medium · Large), written to `launcher.config.toml` |
 | Settings ▸ | Edit Settings…, Edit Keybindings…, Open Logs, Rescan Apps, Start with System ✓ |
 | Help | Shows the launcher on its help view |
 | Quit GENSLATE Launcher | Exits the launcher (apps keep running) |
@@ -136,7 +136,7 @@ What the apps add:
   - Titlebar: Pin on Top / Unpin, Open Tools, Help. Close is relabelled Hide to Tray (`labels={{ close: 'Hide to Tray' }}`).
   - Status bar: Show Usage / Show Temperatures (when sensors report temperatures), Open Settings File.
   - Documents rail: Open <Folder>.
-  - Its per-app row menu is unchanged. Theme changes are written to `config.toml`.
+  - Its per-app row menu is unchanged. Theme changes are written to `launcher.config.toml`.
 - **Design Kit:**
   - Titlebar and status bar: Search Components…, Show/Hide Sidebar, Open/Close Appearance Inspector.
   - The **Window › Window Context Menu** page demonstrates every area.

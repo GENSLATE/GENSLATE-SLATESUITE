@@ -62,8 +62,8 @@ Every runtime mode adheres to the exact same canonical layout:
 │   ├── portableapps.com/             PortableApps.com-format applications
 │   └── portapps.io/                  Portapps.io applications
 ├── other/                            System and application operational state
-│   ├── config/genslate/<app>/        Hand-editable TOML settings (config.toml & keybindings.toml, hot-reloaded)
-│   ├── config/appdata/metadata/      Per-app launcher metadata (<app>.toml) and tab configs
+│   ├── config/slatesuite/apps/       Hand-editable TOML settings (<app>.config.toml & <app>.keybindings.toml, hot-reloaded)
+│   ├── config/slatesuite/metadata/   Per-app launcher metadata (<app>.toml) and tab configs
 │   ├── databases/genslate/<app>/     Durable application state (window state, recents, persistent stores)
 │   ├── cache/genslate/<app>/         Disposable runtime state (webview profile, shader caches, bytecode)
 │   ├── logs/app-logs/<app>/          Structured application runtime logs
@@ -118,7 +118,7 @@ other/cache/genslate/<app>/
 
 | State Category | Folder | Nature | Safe to Delete? |
 |---|---|---|:---:|
-| **User Settings** | `other/config/genslate/<app>/` | Hand-editable TOML files (`config.toml`, `keybindings.toml`) | No (contains user settings) |
+| **User Settings** | `other/config/slatesuite/apps/` | Hand-editable TOML files (`<app>.config.toml`, `<app>.keybindings.toml`) | No (contains user settings) |
 | **Durable State** | `other/databases/genslate/<app>/` | Application databases, window geometry, recents | No (preserves app state) |
 | **User Files** | `storage/users/shared/` | User documents, downloads, desktop files | No (user workspace) |
 | **Runtime Logs** | `other/logs/app-logs/<app>/` | Timestamped rotating trace logs | Safe (resets logs) |

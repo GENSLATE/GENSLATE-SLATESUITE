@@ -1,5 +1,5 @@
-//! The launcher's hand-editable settings: `config.toml` and `keybindings.toml` in
-//! `other/config/genslate/launcher/`.
+//! The launcher's hand-editable settings: `launcher.config.toml` and
+//! `launcher.keybindings.toml` in `other/config/slatesuite/apps/`.
 //!
 //! Every key is optional (missing = default) and unknown keys are rejected so typos surface.
 //! TOML uses kebab-case keys; the UI receives camelCase JSON.
@@ -295,9 +295,9 @@ mod tests {
     #[test]
     fn repo_launcher_files_parse() -> Result<(), Box<dyn std::error::Error>> {
         let dir =
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../other/config/genslate/launcher");
-        LauncherConfig::load(&dir.join("config.toml"))?;
-        Keybindings::load(&dir.join("keybindings.toml"))?;
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../other/config/slatesuite/apps");
+        LauncherConfig::load(&dir.join("launcher.config.toml"))?;
+        Keybindings::load(&dir.join("launcher.keybindings.toml"))?;
         Ok(())
     }
 }

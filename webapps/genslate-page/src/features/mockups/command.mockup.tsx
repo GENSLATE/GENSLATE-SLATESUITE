@@ -100,7 +100,7 @@ export function CommandMockup() {
         <div className="flex min-w-0 flex-1 flex-col p-5">
           <p className="font-semibold text-fg-strong text-lg">Rename photos by date</p>
           <p className="mt-1 text-fg-muted text-sm">
-            Saved in other/config/genslate/command/automations.toml
+            Saved in other/config/slatesuite/apps/command.automations.toml
           </p>
           <ol className="mt-5 grid gap-3">
             {STEPS.map((step, index) => (

@@ -65,22 +65,25 @@ export async function metadataStamp(app: DesktopApp): Promise<MetadataStamp> {
 }
 
 /**
- * Writes one app's part of `other/`: its config defaults, its stamped launcher metadata and
- * its (empty) log folder. Never touches the repo's own files.
+ * Writes one app's part of `other/`: its `<app>.*.toml` config defaults, its stamped launcher
+ * metadata and its (empty) log folder. Never touches the repo's own files.
  */
 export async function writeAppOther(
   app: DesktopApp,
   otherDir: string,
   stamp: MetadataStamp,
 ): Promise<void> {
-  await copyTree(
-    fromRoot('other/config/genslate', app.name),
-    join(otherDir, 'config/genslate', app.name),
-  );
-  const source = Bun.file(fromRoot('other/config/appdata/metadata', `${app.name}.toml`));
+  const appsDir = fromRoot('other/config/slatesuite/apps');
+  const stagedApps = join(otherDir, 'config/slatesuite/apps');
+  await mkdir(stagedApps, { recursive: true });
+  for (const file of await readdir(appsDir)) {
+    // `<app>.<kind>.toml`: the dot keeps `terminal` from matching `terminal-x`.
+    if (file.startsWith(`${app.name}.`)) await cp(join(appsDir, file), join(stagedApps, file));
+  }
+  const source = Bun.file(fromRoot('other/config/slatesuite/metadata', `${app.name}.toml`));
   const metadata = (await source.exists()) ? await source.text() : '';
   await Bun.write(
-    join(otherDir, 'config/appdata/metadata', `${app.name}.toml`),
+    join(otherDir, 'config/slatesuite/metadata', `${app.name}.toml`),
     stampMetadata(metadata, stamp),
   );
   await mkdir(join(otherDir, 'logs/app-logs', app.name), { recursive: true });

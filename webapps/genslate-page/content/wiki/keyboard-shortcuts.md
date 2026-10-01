@@ -1,6 +1,6 @@
 ---
 title: Keyboard shortcuts
-description: Every Launcher shortcut, and how to change them in keybindings.toml.
+description: Every Launcher shortcut, and how to change them in launcher.keybindings.toml.
 section: Using GENSLATE
 order: 3
 icon: codicon:record-keys
@@ -34,7 +34,7 @@ GENSLATE is keyboard-complete: everything you can click, you can also reach from
 
 ## Change a shortcut
 
-Open `keybindings.toml` with `/keys`, edit and save — the change applies immediately.
+Open `launcher.keybindings.toml` with `/keys`, edit and save — the change applies immediately.
 
 ```toml
 [global]

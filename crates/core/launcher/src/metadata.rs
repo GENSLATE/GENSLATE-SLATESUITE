@@ -1,4 +1,4 @@
-//! Files in `other/config/appdata/metadata/`:
+//! Files in `other/config/slatesuite/metadata/`:
 //! - `<app>.toml` — how a GENSLATE app is shown (hand-written `[app]`, stamped `[build]`/`[exe]`).
 //! - `genslate.toml`, `portableapps.toml`, `portapps.toml` — tab settings and the user's
 //!   per-app overrides. The launcher edits these with `toml_edit`, so comments survive.
@@ -350,7 +350,7 @@ mod tests {
     #[test]
     fn repo_metadata_files_parse() -> Result<(), Box<dyn std::error::Error>> {
         let dir =
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../other/config/appdata/metadata");
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../other/config/slatesuite/metadata");
         for entry in fs::read_dir(&dir)? {
             let path = entry?.path();
             let is_tab = Source::ALL.iter().any(|source| {

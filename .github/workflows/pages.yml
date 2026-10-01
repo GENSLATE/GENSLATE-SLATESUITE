@@ -16,7 +16,7 @@ on:
       - 'packages/tokens/**'
       - 'other/documents/**'
       - 'other/resources/**'
-      - 'other/config/appdata/metadata/**'
+      - 'other/config/slatesuite/metadata/**'
       - 'package.json'
       - 'bun.lock'
       - '.github/workflows/pages.yml'

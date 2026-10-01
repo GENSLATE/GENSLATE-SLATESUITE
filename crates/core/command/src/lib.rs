@@ -1,6 +1,6 @@
 //! Core logic for GENSLATE Command, kept free of Tauri so it is unit-testable.
 //!
-//! - [`config`]: the user config file (`other/config/genslate/command/config.toml` in dev).
+//! - [`config`]: the user config file (`other/config/slatesuite/apps/command.config.toml` in dev).
 //! - [`AppInfo`] (from `genslate-app-common`): the payload returned by the `get_app_info`
 //!   command.
 //!

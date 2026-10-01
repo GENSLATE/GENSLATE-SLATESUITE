@@ -14,7 +14,7 @@ use crate::metadata::AppMetadata;
 pub struct GenslateRoots {
     /// `programs/genslate/`
     pub programs: PathBuf,
-    /// `other/config/appdata/metadata/`
+    /// `other/config/slatesuite/metadata/`
     pub metadata: PathBuf,
     /// `other/resources/icons/genslate/` (`<app>.svg`)
     pub icons: PathBuf,

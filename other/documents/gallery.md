@@ -87,7 +87,7 @@ portable install.
 
 ## Settings
 
-`[gallery]` in `other/config/genslate/gallery/config.toml`: `view`, `group-by`, `sort-by`,
+`[gallery]` in `other/config/slatesuite/apps/gallery.config.toml`: `view`, `group-by`, `sort-by`,
 `sort-descending`, `thumbnail-size`, `show-videos`, `include-hidden`, `confirm-trash`,
 `slideshow-seconds` (1–60), `info-panel`, `suggest-pictures`. The settings dialog writes them
 back (comments are kept).

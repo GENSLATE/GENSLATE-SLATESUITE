@@ -54,7 +54,7 @@ export function SettingsDialog() {
       <DialogPopup size="md" showClose>
         <DialogTitle>Settings</DialogTitle>
         <DialogDescription>
-          Saved in the Terminal’s config.toml; shells you add there show up as profiles.
+          Saved in the Terminal’s terminal.config.toml; shells you add there show up as profiles.
         </DialogDescription>
         <DialogBody className="flex flex-col gap-6">
           <Group title="Startup">

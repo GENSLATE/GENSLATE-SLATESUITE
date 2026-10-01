@@ -50,6 +50,10 @@ Plan: `~/.claude/plans/whimsical-doodling-swing.md` (approved). Milestones:
 - New tokens `media-shade` / `on-media` (badges over photos); `setFullscreen` in the bridge.
 - **Next:** run it natively on Windows/macOS (schemes, watcher, Trash, video ranges); HEIC/AVIF/RAW decoding; the real AI on top of `genslate_storage::ai_memory`.
 
+## Config folder restructure (2026-09-30)
+- `other/config/genslate/<app>/*.toml` → `other/config/slatesuite/apps/<app>.<kind>.toml`; `other/config/appdata/metadata/` → `other/config/slatesuite/metadata/`. `genslate-paths` (`config_sibling`), scripts, CI, website and docs updated. Decision 40 in `decisions.md`.
+- **Next:** run `launcher:dev` once to QA hot reload from `launcher.config.toml` (the watched folder now holds every app's files).
+
 ## Open questions
 - Code signing / notarisation for macOS and Windows (secrets not configured yet; release workflow builds unsigned drafts).
 - Updater (tauri-plugin-updater) — not enabled; `uploadUpdaterJson` is off until signing keys exist.

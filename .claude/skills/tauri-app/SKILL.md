@@ -12,10 +12,10 @@ Every app under `desktop/<name>/` is a moon project tagged `desktop-app` (it inh
 bun run new-app <name>        # kebab-case, e.g. notes
 ```
 The script renders two templates (with `moon generate`, or its own Tera-subset renderer when moon can't load the workspace offline):
-- `.config/moon/templates/tauri-app` → `desktop/<name>` — variables `name`, `title` (default `GENSLATE <metadata name>`), `identifier` (`space.angeletti.genslate.<name>`), `port` (next free Vite port; HMR = port + 1), `description` and `category` (defaults from `other/config/appdata/metadata/<name>.toml`).
+- `.config/moon/templates/tauri-app` → `desktop/<name>` — variables `name`, `title` (default `GENSLATE <metadata name>`), `identifier` (`space.angeletti.genslate.<name>`), `port` (next free Vite port; HMR = port + 1), `description` and `category` (defaults from `other/config/slatesuite/metadata/<name>.toml`).
 - `.config/moon/templates/app-core` → `crates/core/<name>` (crate `genslate-core-<name>`), added to `[workspace.dependencies]` in the root `Cargo.toml` (members already glob `crates/core/*`).
 
-It also writes `other/config/genslate/<name>/{config,keybindings}.toml`, the launcher metadata and `other/logs/app-logs/<name>/` when missing, a placeholder icon when `other/resources/icons/genslate/<name>.svg` is missing, runs `bun install`, and generates `src-tauri/icons` from the SVG (`bun run tauri icon`, desktop sizes only).
+It also writes `other/config/slatesuite/apps/<name>.{config,keybindings}.toml`, the launcher metadata and `other/logs/app-logs/<name>/` when missing, a placeholder icon when `other/resources/icons/genslate/<name>.svg` is missing, runs `bun install`, and generates `src-tauri/icons` from the SVG (`bun run tauri icon`, desktop sizes only).
 
 Template files are Tera: never write `{{`, `{%` or `{#` in them except for variables (hoist JSX object literals such as `windowState={…}` into a variable). `scripts/tests/template.test.ts` renders both templates and fails on leftovers.
 
@@ -37,7 +37,7 @@ crates/core/<name>/src/{lib,config}.rs      # Config = shared sections (genslate
 The version shown comes from `get_app_info` (`useAppInfo()` in `@genslate/tauri-bridge`), falling back to `package.json` in a browser.
 
 ## 3. Wire it up
-1. Business logic goes in `crates/core/<name>`; add the app's own config sections next to `appearance`/`window`/`logging` in its `Config` (and document them in `other/config/genslate/<name>/config.toml`).
+1. Business logic goes in `crates/core/<name>`; add the app's own config sections next to `appearance`/`window`/`logging` in its `Config` (and document them in `other/config/slatesuite/apps/<name>.config.toml`).
 2. Icon: replace a placeholder glyph in `other/resources/icons/genslate/<name>.svg` (icon family: nord1 plate with nord2 rim, Snow Storm line work with a 40 % secondary layer, one signature Nord accent that matches `color` in the metadata), then `bun run tauri icon ../../other/resources/icons/genslate/<name>.svg` in `desktop/<name>` and delete `src-tauri/icons/{android,ios}`.
 3. Packaging: add `scripts/bun-commands/package/<name>.ts` if the app needs custom packaging; installers land in `release/<name>/<version>/`.
 4. Commit scopes: add `<name>` to `.config/commitlint.config.ts`; add a `<name>-web` entry to `.claude/launch.json`.

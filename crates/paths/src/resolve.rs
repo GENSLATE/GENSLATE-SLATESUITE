@@ -9,9 +9,10 @@ use crate::{Environment, Layout, Mode, PathsError, detect_layout, fallback_layou
 ///
 /// | Field | Location (inside `<root>/other/`) |
 /// |---|---|
-/// | `config_file` | `config/genslate/<app>/config.toml` |
-/// | `keybindings_file` | `config/genslate/<app>/keybindings.toml` |
-/// | `metadata_dir` | `config/appdata/metadata/` |
+/// | `config_file` | `config/slatesuite/apps/<app>.config.toml` |
+/// | `keybindings_file` | `config/slatesuite/apps/<app>.keybindings.toml` |
+/// | `config_sibling(kind)` | `config/slatesuite/apps/<app>.<kind>.toml` (e.g. `snippets`) |
+/// | `metadata_dir` | `config/slatesuite/metadata/` |
 /// | `log_dir` | `logs/app-logs/<app>/` |
 /// | `data_dir` | `databases/genslate/<app>/` |
 /// | `shared_data_dir` | `databases/genslate/shared/` (suite-wide databases, e.g. AI memory) |
@@ -20,7 +21,9 @@ use crate::{Environment, Layout, Mode, PathsError, detect_layout, fallback_layou
 pub struct AppPaths {
     /// The layout the paths were resolved in.
     pub layout: Layout,
-    /// Folder holding the config and keybindings files.
+    /// The app's name (lowercase kebab-case); prefixes its files in [`AppPaths::config_dir`].
+    pub app: String,
+    /// Folder holding every app's config files (`<app>.<kind>.toml`), shared by the suite.
     pub config_dir: PathBuf,
     /// The app's TOML config (may not exist yet).
     pub config_file: PathBuf,
@@ -43,6 +46,12 @@ impl AppPaths {
     /// The mode the paths were resolved in.
     pub fn mode(&self) -> Mode {
         self.layout.mode
+    }
+
+    /// `<app>.<kind>.toml` next to the config file (the file need not exist), e.g. the
+    /// Terminal's `snippets`.
+    pub fn config_sibling(&self, kind: &str) -> PathBuf {
+        self.config_dir.join(format!("{}.{kind}.toml", self.app))
     }
 
     /// Creates the config, data, shared data, cache and log folders.
@@ -72,13 +81,15 @@ impl Layout {
     pub fn app(&self, app: &str) -> Result<AppPaths, PathsError> {
         validate(app)?;
         let config = self.other.join("config");
-        let config_dir = config.join("genslate").join(app);
+        let slatesuite = config.join("slatesuite");
+        let config_dir = slatesuite.join("apps");
         let databases = self.other.join("databases").join("genslate");
         Ok(AppPaths {
-            config_file: config_dir.join("config.toml"),
-            keybindings_file: config_dir.join("keybindings.toml"),
+            config_file: config_dir.join(format!("{app}.config.toml")),
+            keybindings_file: config_dir.join(format!("{app}.keybindings.toml")),
             config_dir,
-            metadata_dir: config.join("appdata").join("metadata"),
+            metadata_dir: slatesuite.join("metadata"),
+            app: app.to_owned(),
             data_dir: databases.join(app),
             shared_data_dir: databases.join(SHARED_DATA),
             cache_dir: self.other.join("cache").join("genslate").join(app),
@@ -143,15 +154,15 @@ mod tests {
         assert_eq!(paths.mode(), Mode::Suite);
         assert_eq!(
             paths.config_file,
-            suite.join("other/config/genslate/launcher/config.toml")
+            suite.join("other/config/slatesuite/apps/launcher.config.toml")
         );
         assert_eq!(
             paths.keybindings_file,
-            suite.join("other/config/genslate/launcher/keybindings.toml")
+            suite.join("other/config/slatesuite/apps/launcher.keybindings.toml")
         );
         assert_eq!(
             paths.metadata_dir,
-            suite.join("other/config/appdata/metadata")
+            suite.join("other/config/slatesuite/metadata")
         );
         assert_eq!(paths.log_dir, suite.join("other/logs/app-logs/launcher"));
         assert_eq!(
@@ -163,6 +174,10 @@ mod tests {
             suite.join("other/databases/genslate/shared")
         );
         assert_eq!(paths.cache_dir, suite.join("other/cache/genslate/launcher"));
+        assert_eq!(
+            paths.config_sibling("snippets"),
+            suite.join("other/config/slatesuite/apps/launcher.snippets.toml")
+        );
         paths.create_dirs()?;
         assert!(paths.cache_dir.is_dir());
         assert!(paths.shared_data_dir.is_dir());
@@ -182,7 +197,7 @@ mod tests {
         assert_eq!(paths.mode(), Mode::Dev);
         assert_eq!(
             paths.config_file,
-            repo.join("other/config/genslate/example/config.toml")
+            repo.join("other/config/slatesuite/apps/example.config.toml")
         );
         assert_eq!(paths.log_dir, repo.join("other/logs/app-logs/example"));
         assert_eq!(

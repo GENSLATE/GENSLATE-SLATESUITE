@@ -1,5 +1,5 @@
 # GENSLATE Explorer — config. Every key is optional; delete a key to get its default.
-# Location: <installDir>/other/config/genslate/explorer/config.toml (suite), the same path beside
+# Location: <installDir>/other/config/slatesuite/apps/explorer.config.toml (suite), the same path beside
 # the app when run from its own zip, or the repo's other/config in dev. See other/documents/portability.md.
 
 [appearance]
