@@ -75,14 +75,42 @@ fn parse(uri_path: &str) -> Option<(u32, PathBuf)> {
 mod tests {
     use super::*;
 
+    /// An absolute path for the host OS (a bare `/…` is not absolute on Windows), percent-encoded.
+    fn absolute(name: &str) -> (PathBuf, String) {
+        let path = if cfg!(windows) {
+            PathBuf::from(format!(r"C:\home\me\{name}"))
+        } else {
+            PathBuf::from(format!("/home/me/{name}"))
+        };
+        let encoded = path
+            .to_string_lossy()
+            .bytes()
+            .map(|byte| match byte {
+                b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'.' | b'-' | b'_' => {
+                    char::from(byte).to_string()
+                }
+                _ => format!("%{byte:02X}"),
+            })
+            .collect();
+        (path, encoded)
+    }
+
     #[test]
     fn parses_edge_and_path() {
-        let (edge, path) = parse("/128/%2Fhome%2Fme%2Fa%20b.png").unwrap_or_default();
+        let (expected, encoded) = absolute("a b.png");
+        let (edge, path) = parse(&format!("/128/{encoded}")).unwrap_or_default();
         assert_eq!(edge, 128);
-        assert_eq!(path, PathBuf::from("/home/me/a b.png"));
-        assert_eq!(parse("/9999/%2Fa.png").map(|(edge, _)| edge), Some(512));
-        assert_eq!(parse("/1/%2Fa.png").map(|(edge, _)| edge), Some(64));
-        assert_eq!(parse("/x/%2Fa.png"), None);
+        assert_eq!(path, expected);
+        let (_, encoded) = absolute("a.png");
+        assert_eq!(
+            parse(&format!("/9999/{encoded}")).map(|(edge, _)| edge),
+            Some(512)
+        );
+        assert_eq!(
+            parse(&format!("/1/{encoded}")).map(|(edge, _)| edge),
+            Some(64)
+        );
+        assert_eq!(parse(&format!("/x/{encoded}")), None);
         assert_eq!(parse("/128/relative.png"), None);
         assert_eq!(parse("/128"), None);
     }
