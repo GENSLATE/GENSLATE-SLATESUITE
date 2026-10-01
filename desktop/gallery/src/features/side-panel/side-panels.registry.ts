@@ -2,8 +2,7 @@
  * The side panel's tabs. Each is a self-contained module (id, icon, title, component), so new
  * panels plug in without touching the shell. `preview` marks the AI features still to come.
  */
-import type { CodiconRef } from '@genslate/design-system';
-import type { ComponentType } from 'react';
+import type { SidebarTab } from '@genslate/design-system';
 
 import type { SidePanelId } from '../../app/gallery.context';
 import { AssistantPanel } from './assistant-panel.component';
@@ -13,16 +12,7 @@ import { MemoriesPanel } from './memories-panel.component';
 import { PeoplePanel } from './people-panel.component';
 import { PlacesPanel } from './places-panel.component';
 
-export interface SidePanelModule {
-  readonly id: SidePanelId;
-  readonly title: string;
-  readonly icon: CodiconRef;
-  /** A preview of a coming feature (shown with a "Coming soon" hint). */
-  readonly preview: boolean;
-  readonly component: ComponentType;
-}
-
-export const SIDE_PANELS: readonly SidePanelModule[] = [
+export const SIDE_PANELS: readonly SidebarTab<SidePanelId>[] = [
   {
     id: 'library',
     title: 'Library',

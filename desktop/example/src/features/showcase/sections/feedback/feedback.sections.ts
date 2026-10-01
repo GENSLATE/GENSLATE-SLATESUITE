@@ -2,6 +2,7 @@ import type { ShowcaseSection } from '../../showcase.types';
 import { BadgeSection } from './badge.section';
 import { BannerSection } from './banner.section';
 import { EmptyStateSection } from './empty-state.section';
+import { FeatureTeaserSection } from './feature-teaser.section';
 import { ProgressSection } from './progress.section';
 import { SkeletonSection } from './skeleton.section';
 
@@ -46,5 +47,13 @@ export const feedbackSections: readonly ShowcaseSection[] = [
     category: 'feedback',
     icon: 'codicon:inbox',
     component: EmptyStateSection,
+  },
+  {
+    id: 'feature-teaser',
+    title: 'Feature teaser',
+    description: 'Previews of features still to come, the same way in every app.',
+    category: 'feedback',
+    icon: 'codicon:sparkle',
+    component: FeatureTeaserSection,
   },
 ];

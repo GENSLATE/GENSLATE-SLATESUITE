@@ -1,10 +1,9 @@
-import { Icon, ScrollArea } from '@genslate/design-system';
+import { FeatureTeaser, FeatureTeaserSample, Icon, ScrollArea } from '@genslate/design-system';
 
 import { useGallery } from '../../app/gallery.context';
 import type { MediaItem } from '../../ipc/gallery.types';
 import { countryName, formatMonthTitle } from '../../model/format.util';
 import { MediaThumb } from '../library/media-thumb.component';
-import { TeaserHero, TeaserSample } from './teaser.component';
 
 interface SampleMemory {
   readonly title: string;
@@ -39,11 +38,11 @@ export function MemoriesPanel() {
 
   return (
     <ScrollArea className="min-h-0 flex-1" aria-label="Memories">
-      <TeaserHero icon="codicon:history" title="Memories">
+      <FeatureTeaser icon="codicon:history" title="Memories">
         Trips and moments, gathered from your photos’ places and dates, with the best shots picked
         for you and ready to play as a slideshow.
-      </TeaserHero>
-      <TeaserSample label="Example">
+      </FeatureTeaser>
+      <FeatureTeaserSample label="Example">
         <div className="flex flex-col gap-2 pb-4">
           {memories.map((memory) => (
             <div
@@ -61,7 +60,7 @@ export function MemoriesPanel() {
             </div>
           ))}
         </div>
-      </TeaserSample>
+      </FeatureTeaserSample>
     </ScrollArea>
   );
 }

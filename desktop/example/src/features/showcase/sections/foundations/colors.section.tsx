@@ -20,7 +20,11 @@ const SEMANTIC_GROUPS: readonly { title: string; match: (key: SemanticKey) => bo
       key === 'canvas' || key.startsWith('surface') || key === 'field' || key === 'scrim',
   },
   { title: 'Borders', match: (key) => key.startsWith('border') },
-  { title: 'Text', match: (key) => key.startsWith('fg') || key.startsWith('on-') },
+  {
+    title: 'Text',
+    match: (key) => key.startsWith('fg') || (key.startsWith('on-') && key !== 'on-media'),
+  },
+  { title: 'Over photos', match: (key) => key === 'media-shade' || key === 'on-media' },
   { title: 'Accent & focus', match: (key) => key.startsWith('accent') || key.startsWith('focus') },
   {
     title: 'Selection, fills & controls',

@@ -1,9 +1,16 @@
-import { Badge, cn, Icon, IconButton, ScrollArea } from '@genslate/design-system';
+import {
+  Badge,
+  cn,
+  FeatureTeaser,
+  FeatureTeaserSample,
+  Icon,
+  IconButton,
+  ScrollArea,
+} from '@genslate/design-system';
 
 import { useExplorer } from '../../app/explorer.context';
 import { plural } from '../../model/format.util';
 import { baseName } from '../../model/path.util';
-import { TeaserHero, TeaserSample } from './teaser.component';
 
 const PROMPTS = [
   { icon: 'codicon:note', text: 'Summarize this folder' },
@@ -28,10 +35,10 @@ export function ChatPanel() {
   return (
     <div data-slot="chat-panel" className="flex min-h-0 flex-1 flex-col">
       <ScrollArea className="min-h-0 flex-1" aria-label="Chat">
-        <TeaserHero icon="codicon:chat-sparkle" title="Chat with your files">
+        <FeatureTeaser icon="codicon:chat-sparkle" title="Chat with your files">
           Ask in plain words and the assistant finds, explains and organizes files for you, then
           shows each change before it makes it.
-        </TeaserHero>
+        </FeatureTeaser>
 
         <div className="flex flex-col gap-1.5 px-4 pb-4">
           <p className="font-semibold text-2xs text-fg-muted uppercase tracking-wider">
@@ -51,7 +58,7 @@ export function ChatPanel() {
           ))}
         </div>
 
-        <TeaserSample label="Example">
+        <FeatureTeaserSample label="Example">
           <div className="flex flex-col gap-2 pb-4">
             <Bubble from="you">Which files in Downloads can I delete?</Bubble>
             <Bubble from="assistant">
@@ -67,7 +74,7 @@ export function ChatPanel() {
               </span>
             </div>
           </div>
-        </TeaserSample>
+        </FeatureTeaserSample>
       </ScrollArea>
 
       <div className="hairline-t flex flex-col gap-1.5 p-2">

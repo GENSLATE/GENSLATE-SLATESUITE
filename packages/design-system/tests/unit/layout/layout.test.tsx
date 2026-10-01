@@ -10,6 +10,7 @@ import {
   SidebarContent,
   SidebarItem,
   SidebarSection,
+  SidebarTabs,
 } from '../../../src/components/layout/sidebar';
 
 describe('Sidebar', () => {
@@ -116,5 +117,43 @@ describe('ScrollArea', () => {
     const region = screen.getByRole('region', { name: 'Log' });
     expect(region).toHaveAttribute('tabindex', '0');
     expect(region).toHaveTextContent('Line');
+  });
+});
+
+describe('SidebarTabs', () => {
+  function Files() {
+    return <p>Files view</p>;
+  }
+  function Assistant() {
+    return <p>Assistant view</p>;
+  }
+  const tabs = [
+    { id: 'files', title: 'Files', icon: 'codicon:files', component: Files },
+    {
+      id: 'assistant',
+      title: 'Assistant',
+      icon: 'codicon:sparkle',
+      preview: true,
+      component: Assistant,
+    },
+  ] as const;
+
+  test('names preview tabs, mounts only the active view and reports changes', async () => {
+    const user = userEvent.setup();
+    const onValueChange = mock();
+    render(
+      <Sidebar>
+        <SidebarTabs tabs={tabs} value="files" onValueChange={onValueChange} header />
+      </Sidebar>,
+    );
+    expect(screen.getByRole('tablist', { name: 'Side panel tabs' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Files' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText('Files view')).toBeInTheDocument();
+    expect(screen.queryByText('Assistant view')).toBeNull();
+    // The header repeats the active module's title.
+    expect(screen.getAllByText('Files').length).toBeGreaterThan(0);
+
+    await user.click(screen.getByRole('tab', { name: 'Assistant (coming soon)' }));
+    expect(onValueChange).toHaveBeenCalledWith('assistant');
   });
 });

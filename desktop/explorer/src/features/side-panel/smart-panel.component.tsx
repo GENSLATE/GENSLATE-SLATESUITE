@@ -1,6 +1,4 @@
-import { type CodiconRef, Icon, ScrollArea } from '@genslate/design-system';
-
-import { TeaserHero } from './teaser.component';
+import { type CodiconRef, FeatureTeaser, Icon, ScrollArea } from '@genslate/design-system';
 
 const SMART_FOLDERS: readonly { icon: CodiconRef; name: string; hint: string }[] = [
   { icon: 'codicon:device-camera', name: 'Screenshots', hint: 'Every screenshot, newest first' },
@@ -18,10 +16,10 @@ const SMART_FOLDERS: readonly { icon: CodiconRef; name: string; hint: string }[]
 export function SmartPanel() {
   return (
     <ScrollArea className="min-h-0 flex-1" aria-label="Smart folders">
-      <TeaserHero icon="codicon:sparkle" title="Smart folders">
+      <FeatureTeaser icon="codicon:sparkle" title="Smart folders">
         Folders that fill themselves: describe what belongs in one and the assistant keeps it up to
         date, without moving your files.
-      </TeaserHero>
+      </FeatureTeaser>
       <ul className="flex flex-col gap-px px-2 pb-4">
         {SMART_FOLDERS.map((folder) => (
           <li key={folder.name}>

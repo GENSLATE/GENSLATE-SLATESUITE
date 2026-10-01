@@ -40,6 +40,10 @@ export const sidebarVariants = tv({
       'group-aria-[current]/item:text-accent-fg window-inactive:group-aria-[current]/item:text-fg-muted',
     ],
     itemLabel: 'truncate-flex flex-1',
+    tabs: 'flex min-h-0 flex-1 flex-col',
+    tabsList: 'shrink-0 px-1',
+    tab: 'h-9 flex-1 px-0',
+    tabsPanel: 'flex min-h-0 flex-1 flex-col data-hidden:hidden',
     itemCount:
       'shrink-0 text-fg-muted text-sm tabular-nums group-aria-[current]/item:text-fg-secondary',
   },

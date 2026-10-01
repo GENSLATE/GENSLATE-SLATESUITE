@@ -4,6 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { Badge } from '../../../src/components/feedback/badge';
 import { Banner } from '../../../src/components/feedback/banner';
 import { EmptyState } from '../../../src/components/feedback/empty-state';
+import {
+  FeatureTeaser,
+  FeatureTeaserSample,
+} from '../../../src/components/feedback/feature-teaser';
 import { ProgressBar } from '../../../src/components/feedback/progress-bar';
 import { Skeleton } from '../../../src/components/feedback/skeleton';
 import { Spinner } from '../../../src/components/feedback/spinner';
@@ -100,5 +104,28 @@ describe('Banner', () => {
     );
     await user.click(screen.getByRole('button', { name: 'Close message' }));
     expect(onDismiss).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('FeatureTeaser', () => {
+  test('names the feature as a heading with a Coming soon badge', () => {
+    render(
+      <FeatureTeaser icon="codicon:sparkle" title="Assistant" labels={{ soon: 'Bientôt' }}>
+        Ask in plain words.
+      </FeatureTeaser>,
+    );
+    expect(screen.getByRole('heading', { level: 2, name: 'Assistant' })).toBeInTheDocument();
+    expect(screen.getByText('Bientôt')).toBeInTheDocument();
+    expect(screen.getByText('Ask in plain words.')).toBeInTheDocument();
+  });
+
+  test('the sample is hidden from assistive tech and inert', () => {
+    render(
+      <FeatureTeaserSample label="Example">
+        <button type="button">Create album</button>
+      </FeatureTeaserSample>,
+    );
+    expect(screen.getByText('Example')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Create album' })).toBeNull();
   });
 });

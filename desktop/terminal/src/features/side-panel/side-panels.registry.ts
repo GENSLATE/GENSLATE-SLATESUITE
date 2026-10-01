@@ -2,8 +2,7 @@
  * The side panel's tabs. Each is a self-contained module (id, icon, title, component), so new
  * panels plug in without touching the shell. `preview` panels show what is coming.
  */
-import type { CodiconRef } from '@genslate/design-system';
-import type { ComponentType } from 'react';
+import type { SidebarTab } from '@genslate/design-system';
 
 import type { SidePanelId } from '../../app/terminal.context';
 import { AssistantPanel } from './assistant-panel.component';
@@ -13,16 +12,7 @@ import { SessionsPanel } from './sessions-panel.component';
 import { SnippetsPanel } from './snippets-panel.component';
 import { WorkflowsPanel } from './workflows-panel.component';
 
-export interface SidePanelModule {
-  readonly id: SidePanelId;
-  readonly title: string;
-  readonly icon: CodiconRef;
-  /** A preview of a coming feature (shown with a "Coming soon" hint). */
-  readonly preview: boolean;
-  readonly component: ComponentType;
-}
-
-export const SIDE_PANELS: readonly SidePanelModule[] = [
+export const SIDE_PANELS: readonly SidebarTab<SidePanelId>[] = [
   { id: 'files', title: 'Files', icon: 'codicon:files', preview: false, component: FilesPanel },
   {
     id: 'sessions',

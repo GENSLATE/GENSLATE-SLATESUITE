@@ -60,12 +60,12 @@ Base UI 1.8 primitives styled with Tailwind v4 + tailwind-variants.
 | Category | Examples |
 |---|---|
 | `window` | TitleBar (+ command center), TrafficLights (the only window controls, every OS), StatusBar, AppShell, WindowContextMenu ([context menus](./context-menus.md)) |
-| `layout` | panels, split views, stacks, separators |
+| `layout` | panels, split views, stacks, separators, Sidebar (+ SidebarTabs: an app's side panel of icon-tab modules) |
 | `actions` | Button, IconButton, ToggleButton/ToggleGroup, SegmentedControl, Toolbar |
 | `inputs` | text field, checkbox, switch, radio, select, slider |
 | `navigation` | Tabs, Tree, sidebar/source list |
 | `overlays` | Menu (+ MenuHeader, app icons in rows via `media`), Popover, Dialog, Tooltip, Toast |
-| `feedback` | Badge, Banner, ProgressBar, Spinner, Skeleton, EmptyState |
+| `feedback` | Badge, Banner, ProgressBar, Spinner, Skeleton, EmptyState, FeatureTeaser (+ FeatureTeaserSample: how every app previews a feature still to come) |
 | `display` | Icon, Kbd, avatars, lists |
 
 File layout per component: `src/components/<category>/<name>/{<name>.component.tsx, <name>.variants.ts, <name>.types.ts, index.ts}`. Styles ship through `src/styles/design-system.css` (fonts in `fonts.css`). Also exported: providers (`DesignSystemProvider`, `ThemeProvider`, platform, window state), hooks (`useTheme`, `usePlatform`, `useHotkey`, …) and utils (`cn`, `tv`).

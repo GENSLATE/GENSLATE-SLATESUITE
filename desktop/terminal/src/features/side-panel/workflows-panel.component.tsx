@@ -1,6 +1,4 @@
-import { Icon, ScrollArea } from '@genslate/design-system';
-
-import { TeaserHero, TeaserSample } from './teaser.component';
+import { FeatureTeaser, FeatureTeaserSample, Icon, ScrollArea } from '@genslate/design-system';
 
 const WORKFLOWS = [
   {
@@ -30,11 +28,11 @@ const WORKFLOWS = [
 export function WorkflowsPanel() {
   return (
     <ScrollArea className="min-h-0 flex-1" aria-label="Workflows">
-      <TeaserHero icon="codicon:run-all" title="Workflows">
+      <FeatureTeaser icon="codicon:run-all" title="Workflows">
         Save a routine once and run it with a click: commands in order, panes laid out, a stop on
         the first failure. The assistant will suggest them from what you repeat.
-      </TeaserHero>
-      <TeaserSample label="Examples">
+      </FeatureTeaser>
+      <FeatureTeaserSample label="Examples">
         <ul className="flex flex-col gap-2 pb-4">
           {WORKFLOWS.map((workflow) => (
             <li
@@ -63,13 +61,13 @@ export function WorkflowsPanel() {
             </li>
           ))}
         </ul>
-      </TeaserSample>
-      <TeaserSample label="From your history">
+      </FeatureTeaserSample>
+      <FeatureTeaserSample label="From your history">
         <div className="mb-4 flex items-center gap-2 rounded-card border border-accent-border border-dashed p-2.5 text-fg-secondary text-xs">
           <Icon name="codicon:sparkle" size={14} className="shrink-0 text-accent-fg" />
           You ran these 4 commands together 12 times this week. Save them as a workflow?
         </div>
-      </TeaserSample>
+      </FeatureTeaserSample>
     </ScrollArea>
   );
 }

@@ -1,6 +1,4 @@
-import { cn, Icon, ScrollArea } from '@genslate/design-system';
-
-import { TeaserHero, TeaserSample } from './teaser.component';
+import { cn, FeatureTeaser, FeatureTeaserSample, Icon, ScrollArea } from '@genslate/design-system';
 
 const CHANGES = [
   { name: 'explorer.md', folder: 'docs', status: 'M' },
@@ -21,11 +19,11 @@ const STATUS_TONE = { M: 'text-warning-fg', A: 'text-success-fg', U: 'text-info-
 export function GitPanel() {
   return (
     <ScrollArea className="min-h-0 flex-1" aria-label="Git">
-      <TeaserHero icon="codicon:source-control" title="Git">
+      <FeatureTeaser icon="codicon:source-control" title="Git">
         Open a folder that is a Git repository to see its branch, changed files and history, with
         status badges right in the file list.
-      </TeaserHero>
-      <TeaserSample label="Example">
+      </FeatureTeaser>
+      <FeatureTeaserSample label="Example">
         <div className="flex flex-col gap-3 pb-4">
           <div className="flex items-center gap-1.5 text-fg text-sm">
             <Icon name="codicon:git-branch-compact" size={14} className="text-fg-muted" />
@@ -73,7 +71,7 @@ export function GitPanel() {
             ))}
           </div>
         </div>
-      </TeaserSample>
+      </FeatureTeaserSample>
     </ScrollArea>
   );
 }
