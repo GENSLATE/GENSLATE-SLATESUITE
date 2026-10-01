@@ -115,6 +115,7 @@
     "README.md": "LICENSE, CLAUDE.md, CLAUDE.local.md, *.md",
     ".prototools": ".editorconfig, .gitattributes, .gitignore, .git-blame-ignore-revs, .env.example, lefthook.yml",
     "design-system.css": "design-system.*.css, fonts.css",
+    "genslate.code-snippets": "html.code-snippets, react.code-snippets, rust.code-snippets, tailwind.code-snippets, tauri.code-snippets",
     "*.tokens.ts": "${capture}.tokens.test.ts"
   },
 

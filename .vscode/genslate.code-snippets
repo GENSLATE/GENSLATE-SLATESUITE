@@ -1,0 +1,17 @@
+{
+  "Section Header Comment": {
+    "prefix": "gssection",
+    "body": ["// ── ${1:Section Name} ──────────────────────────────────────────"],
+    "description": "GENSLATE standard section header comment"
+  },
+  "TODO Comment": {
+    "prefix": "gstodo",
+    "body": ["// TODO(${1:author}): ${2:description}"],
+    "description": "GENSLATE formatted TODO comment"
+  },
+  "FIXME Comment": {
+    "prefix": "gsfixme",
+    "body": ["// FIXME(${1:author}): ${2:description}"],
+    "description": "GENSLATE formatted FIXME comment"
+  }
+}
