@@ -30,6 +30,7 @@ release/*
 
 # ─── Claude Code (personal / runtime) ─────────────────────────────────
 .claude/settings.local.json
+.claude/worktrees/
 .claude/logs/*
 !.claude/logs/.gitkeep
 CLAUDE.local.md

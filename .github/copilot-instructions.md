@@ -9,7 +9,7 @@ GENSLATE is a **moon 2.5 + bun 1.4** monorepo of **Tauri 2** desktop apps with a
 - Never edit generated files: `packages/tokens/src/generated/**`, `crates/design-tokens/src/generated/**`, `*.generated.ts`, `src-tauri/gen/**`, lockfiles. Edit `packages/tokens/src` and run `bun run tokens`.
 - Tool configs live in `.config/` (Biome: `--config-path=.config/biome.json`).
 - File names are kebab-case and dotted by kind: `title-bar.component.tsx`, `button.variants.ts`, `button.types.ts`, `use-theme.hook.ts`, `cn.util.ts`, `nord.polar-night.theme.ts`.
-- Conventional Commits: `<type>(<scope>): <subject>` with lowercase subject (e.g., `feat(repo): add ...`, NOT `Add ...`). Max 100 chars. Scopes: `tokens, design-system, tauri-bridge, config-typescript, config-vite`, every app (`example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox`), `crates, slatesuite, config, repo, ci, deps, agents, docs, release`.
+- Conventional Commits: `<type>(<scope>): <subject>` with lowercase subject (e.g., `feat(repo): add ...`, NOT `Add ...`). Max 100 chars. Scopes: `tokens, design-system, tauri-bridge, config-typescript, config-vite`, every app (`example, launcher, aistudio, browser, coder, command, editor, explorer, gallery, jukebox, terminal, theater, toolbox`), `crates, slatesuite, config, vscode, repo, ci, deps, agents, docs, release`.
 
 ## Layout
 `packages/` (tokens, design-system, tauri-bridge, config-typescript, config-vite) · `crates/` (design-tokens, paths, testing, core/<app>) · `desktop/<app>` (Tauri apps; `example` is the Design Kit showcase) · `webapps/` · `scripts/bun-commands/` · `tests/e2e` · `other/documents/` (docs).

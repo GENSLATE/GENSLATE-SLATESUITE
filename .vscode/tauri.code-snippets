@@ -1,0 +1,64 @@
+{
+  "Tauri Bridge Invoke Command": {
+    "prefix": "gsbridge-invoke",
+    "body": [
+      "const ${1:result} = await invokeCommand<${2:ReturnType}>('${3:command_name}', {",
+      "  ${4:payload}: ${5:value},",
+      "});"
+    ],
+    "description": "Invoke a Tauri IPC backend command using @genslate/tauri-bridge",
+    "scope": "typescript,typescriptreact"
+  },
+  "Tauri Bridge Listen Event": {
+    "prefix": "gsbridge-listen",
+    "body": [
+      "useEffect(() => {",
+      "  let unlisten: (() => void) | undefined;",
+      "  const setup = async () => {",
+      "    unlisten = await listenEvent<${1:PayloadType}>('${2:event_name}', (event) => {",
+      "      ${0}",
+      "    });",
+      "  };",
+      "  void setup();",
+      "  return () => {",
+      "    unlisten?.();",
+      "  };",
+      "}, []);"
+    ],
+    "description": "Listen to a Tauri IPC event using @genslate/tauri-bridge with useEffect cleanup",
+    "scope": "typescriptreact"
+  },
+  "Tauri Core Raw Invoke": {
+    "prefix": "gscore-invoke",
+    "body": [
+      "import { invoke } from '@tauri-apps/api/core';",
+      "",
+      "const ${1:result} = await invoke<${2:ReturnType}>('${3:command_name}', {",
+      "  ${4:payload}: ${5:value},",
+      "});"
+    ],
+    "description": "Raw Tauri 2 core invoke call",
+    "scope": "typescript,typescriptreact"
+  },
+  "Tauri Core Raw Listen": {
+    "prefix": "gscore-listen",
+    "body": [
+      "import { listen } from '@tauri-apps/api/event';",
+      "",
+      "useEffect(() => {",
+      "  let unlisten: (() => void) | undefined;",
+      "  const setup = async () => {",
+      "    unlisten = await listen<${1:PayloadType}>('${2:event_name}', (event) => {",
+      "      ${0}",
+      "    });",
+      "  };",
+      "  void setup();",
+      "  return () => {",
+      "    unlisten?.();",
+      "  };",
+      "}, []);"
+    ],
+    "description": "Raw Tauri 2 event listener with useEffect cleanup",
+    "scope": "typescriptreact"
+  }
+}

@@ -32,6 +32,7 @@ const scopes = [
   'crates',
   'slatesuite',
   'config',
+  'vscode',
   'repo',
   'ci',
   'deps',

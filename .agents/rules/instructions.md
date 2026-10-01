@@ -62,5 +62,5 @@
   - Updated app metadata definitions
   ```
 - **Valid Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
-- **Valid Scopes** (when provided): `tokens`, `design-system`, `tauri-bridge`, `config-typescript`, `config-vite`, app names (`example`, `launcher`, `aistudio`, `browser`, `coder`, `command`, `editor`, `explorer`, `gallery`, `jukebox`, `terminal`, `theater`, `toolbox`), `genslate-page`, `crates`, `slatesuite`, `config`, `repo`, `ci`, `deps`, `agents`, `docs`, `release`.
+- **Valid Scopes** (when provided): `tokens`, `design-system`, `tauri-bridge`, `config-typescript`, `config-vite`, app names (`example`, `launcher`, `aistudio`, `browser`, `coder`, `command`, `editor`, `explorer`, `gallery`, `jukebox`, `terminal`, `theater`, `toolbox`), `genslate-page`, `crates`, `slatesuite`, `config`, `vscode`, `repo`, `ci`, `deps`, `agents`, `docs`, `release`.
 - **Zero Attribution**: Never include co-author trailers, signatures, or any mention of tools or assistants. All commits must reflect human authorship.

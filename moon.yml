@@ -74,7 +74,10 @@ tasks:
   spell:
     command: 'cspell'
     args: ['--config', '.config/cspell.json', '--no-progress', '--gitignore', '.']
-    inputs: ['/**/*', '/.config/cspell.json', '/.config/cspell/**/*']
+    inputs:
+      - '/**/*.{ts,tsx,rs,md,json,yml,yaml,toml,css}'
+      - '/.config/cspell.json'
+      - '/.config/cspell/**/*'
     toolchains: ['javascript', 'bun']
   knip:
     command: 'knip'

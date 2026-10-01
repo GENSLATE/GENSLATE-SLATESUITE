@@ -27,15 +27,18 @@
 
   // ── TypeScript 7 (native compiler, via the TypeScript Native Preview extension) ──
   "js/ts.tsdk.path": "node_modules/typescript",
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.preferences.importModuleSpecifierEnding": "minimal",
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.preferences.importModuleSpecifier": "relative",
+  "js/ts.preferences.importModuleSpecifierEnding": "minimal",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.tsserver.maxMemory": 8192,
+  "js/ts.suggest.completeFunctionCalls": true,
 
   // ── Rust ────────────────────────────────────────────────────────────
   "rust-analyzer.check.command": "clippy",
   "rust-analyzer.check.allTargets": true,
   "rust-analyzer.check.extraArgs": ["--locked"],
   "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.procMacro.enable": true,
   "rust-analyzer.rustfmt.extraArgs": ["--config-path", "rustfmt.toml"],
   "rust-analyzer.linkedProjects": ["Cargo.toml"],
 
@@ -45,6 +48,9 @@
   "tailwindCSS.classAttributes": ["class", "className"],
   "tailwindCSS.lint.cssConflict": "warning",
   "css.lint.unknownAtRules": "ignore",
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
 
   // ── Files ───────────────────────────────────────────────────────────
   "files.associations": {
@@ -63,6 +69,7 @@
   "files.readonlyInclude": {
     "packages/tokens/src/generated/**": true,
     "crates/design-tokens/src/generated/**": true,
+    "desktop/*/src-tauri/gen/**": true,
     "**/*.generated.ts": true,
     "bun.lock": true,
     "Cargo.lock": true
@@ -96,10 +103,15 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "*.component.tsx": "${capture}.variants.ts, ${capture}.types.ts, ${capture}.context.ts, ${capture}-*.component.tsx",
+    "*.component.tsx": "${capture}.variants.ts, ${capture}.types.ts, ${capture}.context.ts, ${capture}.hook.ts, ${capture}.recipe.ts, ${capture}.test.tsx, ${capture}.stories.tsx, ${capture}.demo.tsx, ${capture}-*.component.tsx",
     "*.provider.tsx": "${capture}.context.ts, ${capture}.types.ts, ${capture}.script.ts",
+    "*.hook.ts": "${capture}.test.ts",
+    "*.util.ts": "${capture}.test.ts",
+    "*.service.ts": "${capture}.test.ts",
+    "*.rs": "${capture}_test.rs",
     "package.json": "bun.lock, bunfig.toml, tsconfig.json, tsconfig.*.json, moon.yml, vite.config.ts, knip.json",
-    "Cargo.toml": "Cargo.lock, build.rs, rust-toolchain.toml, rustfmt.toml, tauri.conf.json, tauri.*.conf.json",
+    "vite.config.ts": "vite.config.*.ts",
+    "Cargo.toml": "Cargo.lock, build.rs, rust-toolchain.toml, rustfmt.toml, clippy.toml, tauri.conf.json, tauri.*.conf.json",
     "README.md": "LICENSE, CLAUDE.md, CLAUDE.local.md, *.md",
     ".prototools": ".editorconfig, .gitattributes, .gitignore, .git-blame-ignore-revs, .env.example, lefthook.yml",
     "design-system.css": "design-system.*.css, fonts.css",
@@ -124,7 +136,7 @@
       "text": "Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
     },
     {
-      "text": "Allowed scopes: tokens, design-system, tauri-bridge, config-typescript, config-vite, aistudio, browser, coder, command, editor, example, explorer, gallery, jukebox, launcher, terminal, theater, toolbox, genslate-page, crates, slatesuite, config, repo, ci, deps, agents, docs, release."
+      "text": "Allowed scopes: tokens, design-system, tauri-bridge, config-typescript, config-vite, aistudio, browser, coder, command, editor, example, explorer, gallery, jukebox, launcher, terminal, theater, toolbox, genslate-page, crates, slatesuite, config, vscode, repo, ci, deps, agents, docs, release."
     },
     {
       "text": "Example:\nchore(repo): update application configurations\n\n- Removed obsolete keybindings from genslate example config\n- Added configuration files and keybindings for new apps\n- Updated app metadata definitions"
@@ -141,6 +153,15 @@
   "workbench.editor.pinnedTabsOnSeparateRow": true,
   "workbench.editor.pinnedTabSizing": "compact",
   "workbench.editor.tabSizing": "fit",
+  "terminal.integrated.env.windows": {
+    "RUST_BACKTRACE": "1"
+  },
+  "terminal.integrated.env.linux": {
+    "RUST_BACKTRACE": "1"
+  },
+  "terminal.integrated.env.osx": {
+    "RUST_BACKTRACE": "1"
+  },
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
     "https://json.schemastore.org/dependabot-2.0.json": ".github/dependabot.yml",

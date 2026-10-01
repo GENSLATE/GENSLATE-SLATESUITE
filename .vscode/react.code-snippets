@@ -1,0 +1,89 @@
+{
+  "GENSLATE React 19 Component": {
+    "prefix": "gscomp",
+    "body": [
+      "import * as React from 'react';",
+      "import { cn } from '../../utils/cn.util';",
+      "import { ${1:ComponentName}Variants } from './${2:kebab-name}.variants';",
+      "import type { ${1:ComponentName}Props } from './${2:kebab-name}.types';",
+      "",
+      "export function ${1:ComponentName}({",
+      "  className,",
+      "  variant,",
+      "  size,",
+      "  children,",
+      "  ref,",
+      "  ...props",
+      "}: ${1:ComponentName}Props & { ref?: React.Ref<${3:HTMLDivElement}> }) {",
+      "  return (",
+      "    <div",
+      "      ref={ref}",
+      "      data-slot=\"${2:kebab-name}\"",
+      "      className={cn(${1:ComponentName}Variants({ variant, size }), className)}",
+      "      {...props}",
+      "    >",
+      "      {children}",
+      "    </div>",
+      "  );",
+      "}"
+    ],
+    "description": "GENSLATE React 19 functional component with ref prop, data-slot, and variants",
+    "scope": "typescriptreact"
+  },
+  "GENSLATE Component Types": {
+    "prefix": "gstypes",
+    "body": [
+      "import type * as React from 'react';",
+      "import type { ${1:ComponentName}VariantProps } from './${2:kebab-name}.variants';",
+      "",
+      "export interface ${1:ComponentName}Props",
+      "  extends React.HTMLAttributes<${3:HTMLDivElement}>,",
+      "    ${1:ComponentName}VariantProps {",
+      "  children?: React.ReactNode;",
+      "}"
+    ],
+    "description": "GENSLATE component prop types with VariantProps",
+    "scope": "typescript,typescriptreact"
+  },
+  "GENSLATE Unit Test (Bun + RTL)": {
+    "prefix": "gstest",
+    "body": [
+      "import { describe, expect, it } from 'bun:test';",
+      "import { render, screen } from '@testing-library/react';",
+      "import { ${1:ComponentName} } from './${2:kebab-name}.component';",
+      "",
+      "describe('${1:ComponentName}', () => {",
+      "  it('renders children with default classes', () => {",
+      "    render(<${1:ComponentName}>Content</${1:ComponentName}>);",
+      "    expect(screen.getByText('Content')).toBeInTheDocument();",
+      "  });",
+      "});"
+    ],
+    "description": "GENSLATE unit test using bun:test and @testing-library/react",
+    "scope": "typescriptreact,typescript"
+  },
+  "GENSLATE React Context": {
+    "prefix": "gscontext",
+    "body": [
+      "import * as React from 'react';",
+      "",
+      "interface ${1:Feature}ContextValue {",
+      "  ${2:state}: ${3:string};",
+      "}",
+      "",
+      "const ${1:Feature}Context = React.createContext<${1:Feature}ContextValue | null>(null);",
+      "",
+      "export function use${1:Feature}() {",
+      "  const context = React.useContext(${1:Feature}Context);",
+      "  if (!context) {",
+      "    throw new Error('use${1:Feature} must be used within a ${1:Feature}Provider');",
+      "  }",
+      "  return context;",
+      "}",
+      "",
+      "export const ${1:Feature}Provider = ${1:Feature}Context.Provider;"
+    ],
+    "description": "GENSLATE typed React context and consumer hook pattern",
+    "scope": "typescriptreact,typescript"
+  }
+}

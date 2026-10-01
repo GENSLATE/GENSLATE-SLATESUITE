@@ -1,0 +1,47 @@
+{
+  "Tauri Command": {
+    "prefix": "gscmd",
+    "body": [
+      "#[tauri::command]",
+      "#[tracing::instrument(skip_all)]",
+      "pub async fn ${1:command_name}(",
+      "    ${2:app_handle}: tauri::AppHandle,",
+      ") -> Result<${3:()}, String> {",
+      "    ${0}",
+      "    Ok(())",
+      "}"
+    ],
+    "description": "Scaffold a GENSLATE Tauri IPC command with tracing and Result",
+    "scope": "rust"
+  },
+  "Rust Test Module": {
+    "prefix": "gstestmod",
+    "body": [
+      "#[cfg(test)]",
+      "mod tests {",
+      "    use super::*;",
+      "",
+      "    #[test]",
+      "    fn test_${1:feature}() {",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "Scaffold a Rust unit test module",
+    "scope": "rust"
+  },
+  "Rust Error Enum": {
+    "prefix": "gserror",
+    "body": [
+      "#[derive(Debug, thiserror::Error)]",
+      "pub enum ${1:Error} {",
+      "    #[error(\"${2:IO error: {0}}\")]",
+      "    ${3:Io}(#[from] std::io::Error),",
+      "    #[error(\"${4:Internal error: {0}}\")]",
+      "    ${5:Internal}(String),",
+      "}"
+    ],
+    "description": "Scaffold a thiserror enum for typed Rust errors",
+    "scope": "rust"
+  }
+}

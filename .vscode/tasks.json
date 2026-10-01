@@ -20,7 +20,7 @@
         "owner": "vite",
         "pattern": { "regexp": "^x^" },
         "background": {
-          "activesBegin": ".",
+          "activeOnStart": true,
           "beginsPattern": "VITE|vite",
           "endsPattern": "Local:|ready in"
         }

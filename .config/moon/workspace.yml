@@ -48,6 +48,11 @@ hasher:
   optimization: 'accuracy'
   walkStrategy: 'vcs'
   warnOnMissingInputs: true
+  ignorePatterns:
+    - '**/node_modules/**'
+    - '**/.claude/worktrees/**'
+    - '**/target/**'
+    - '**/dist/**'
 
 notifier:
   terminalNotifications: 'failure'
